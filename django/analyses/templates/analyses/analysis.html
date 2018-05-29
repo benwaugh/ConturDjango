@@ -1,0 +1,76 @@
+<h1>Contur analysis {{ ana.anaid }}</h1>
+
+{% if ana.used_analyses_set.all %}
+<p>
+    Is used in the following model scans
+</p>
+    <ul>
+    {% for ua in ana.used_analyses_set.all %}
+            <li>
+                <a href="{% url 'model' ua.modelname %}">
+                    {{ ua.modelname }}
+                </a>
+            </li>
+    {% endfor %}
+    </ul>
+{% else %}
+<p>
+    Is not used in any model scan.
+</p>
+{% endif %}
+
+{% if ana.pool %}
+<p>
+	belongs to pool 
+	<a href="{% url 'pools' ana.pool %}">{{ ana.pool }}</a>
+</p>
+{% else %}
+<p>
+	belongs to no pool
+</p>
+{% endif %}
+
+<p>
+	uses lumi factor {{ ana.lumi }}
+</p>
+
+{% if ana.whitelist_set.all %}
+	<h2>Whitelist</h2>
+	<p>Only the following measurements will be used:</p>
+	<p>
+    {% for bl in ana.whitelist_set.all %}
+        	{{ bl.pattern }}
+    {% endfor %}
+    </p>
+{% endif %}
+
+
+{% if ana.blacklist_set.all %}
+	<h2>Blacklist</h2>
+	<p>The following measurements will <b>not</b> be used:</p>
+	<p>
+    {% for bl in ana.blacklist_set.all %}
+        	{{ bl.pattern }}
+    {% endfor %}
+    </p>
+{% endif %}
+
+
+{% if ana.normalization_set.all %}
+	<h2>Normalization</h2>
+	<ul>
+    {% for bl in ana.normalization_set.all %}
+        	<li>{{ bl.pattern }} {{ bl.norm }} {{ bl.scalemc }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+
+{% if ana.subpool_set.all %}
+	<h2>Subpools</h2>
+	<ul>
+    {% for bl in ana.subpool_set.all %}
+        	<li>{{ bl.subanaid }}: {{ bl.pattern }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}

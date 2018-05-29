@@ -1,0 +1,2 @@
+[paths]
+default = ssh://waugh@login.hepforge.org//hepforge/hg/contur/private/django

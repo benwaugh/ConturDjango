@@ -1,0 +1,15 @@
+<h1>Contur pool {{ pool.pool }}</h1>
+
+<h2>Related Analyses</h2>
+{% if pool.analysis_set.all %}
+    <ul>
+    {% for ana in pool.analysis_set.all %}
+        <li>
+        	<a href="{% url 'analysis' ana.anaid %}">{{ ana.anaid }}</a>:
+        	luminosity factor {{ ana.lumi }} 
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No analyses are available.</p>
+{% endif %}

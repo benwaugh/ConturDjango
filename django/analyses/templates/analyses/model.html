@@ -1,0 +1,14 @@
+<h1>Contur model {{ mod.name }}</h1>
+
+{% if mod.used_analyses_set.all %}
+	<h2>Uses these analyses</h2>
+	<ul>
+    {% for ua in mod.used_analyses_set.all %}
+        	<li>
+                <a href="{% url 'analysis' ua.anaid %}">
+                    {{ ua.anaid }}
+                </a>
+            </li>
+    {% endfor %}
+    </ul>
+{% endif %}

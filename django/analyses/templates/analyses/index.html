@@ -1,0 +1,48 @@
+<h1>Contur</h1>
+
+
+<h2>Model scans</h2>
+{% if models_list %}
+    <ul>
+    {% for m in models_list %}
+        <li>
+            <a href="{% url 'model' m.name %}">{{ m.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No model scans are available.</p>
+{% endif %}
+
+
+
+<h2>Analysis pools</h2>
+{% if analysis_pools %}
+    <ul>
+    {% for pool in analysis_pools %}
+        <li>
+        	<a href="{% url 'pools' pool.pool %}">{{ pool.pool }}</a>
+        	[{{ pool.analysis_set.all | length }}]
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No analyses are available.</p>
+{% endif %}
+
+
+
+<h2>Analyses</h2>
+{% if analysis_list %}
+    <ul>
+    {% for ana in analysis_list %}
+        <li>
+            <a href="{% url 'analysis' ana.anaid %}">{{ ana.anaid }}</a>:
+            luminosity factor {{ ana.lumi }} Pool {{ ana.pool }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No analyses are available.</p>
+{% endif %}
+
