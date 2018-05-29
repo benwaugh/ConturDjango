@@ -3,36 +3,36 @@ PRAGMA foreign_keys=ON;
 CREATE TABLE IF NOT EXISTS analysis_pool (
     pool    TEXT NOT NULL PRIMARY KEY
 );
-INSERT INTO analysis_pool VALUES('ATLAS_7_JETS');  
-INSERT INTO analysis_pool VALUES('CMS_7_JETS');    
+INSERT INTO analysis_pool VALUES('ATLAS_7_JETS');
+INSERT INTO analysis_pool VALUES('CMS_7_JETS');
 
-INSERT INTO analysis_pool VALUES('ATLAS_7_GAMMA');  
-INSERT INTO analysis_pool VALUES('CMS_7_GAMMA');      
+INSERT INTO analysis_pool VALUES('ATLAS_7_GAMMA');
+INSERT INTO analysis_pool VALUES('CMS_7_GAMMA');
 
 INSERT INTO analysis_pool VALUES('ATLAS_7_LMDY');
 
 INSERT INTO analysis_pool VALUES('ATLAS_7_Zjj_EL');
 INSERT INTO analysis_pool VALUES('ATLAS_7_Zjj_MU');
-INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj_EL'); 
-INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj_MU'); 
-INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj'); 
-INSERT INTO analysis_pool VALUES('CMS_7_Zjj');  
-INSERT INTO analysis_pool VALUES('CMS_7_Wjj');    
+INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj_EL');
+INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj_MU');
+INSERT INTO analysis_pool VALUES('ATLAS_7_Wjj');
+INSERT INTO analysis_pool VALUES('CMS_7_Zjj');
+INSERT INTO analysis_pool VALUES('CMS_7_Wjj');
 INSERT INTO analysis_pool VALUES('ATLAS_7_Z_GAMMA');
-INSERT INTO analysis_pool VALUES('ATLAS_7_W_GAMMA_MU'); 
+INSERT INTO analysis_pool VALUES('ATLAS_7_W_GAMMA_MU');
 INSERT INTO analysis_pool VALUES('ATLAS_7_W_GAMMA_EL');
-INSERT INTO analysis_pool VALUES('ATLAS_7_ZZ');         
-INSERT INTO analysis_pool VALUES('ATLAS_7_WW');         
+INSERT INTO analysis_pool VALUES('ATLAS_7_ZZ');
+INSERT INTO analysis_pool VALUES('ATLAS_7_WW');
 
-INSERT INTO analysis_pool VALUES('ATLAS_8_JETS');  
-INSERT INTO analysis_pool VALUES('CMS_8_JETS');  
+INSERT INTO analysis_pool VALUES('ATLAS_8_JETS');
+INSERT INTO analysis_pool VALUES('CMS_8_JETS');
 
 INSERT INTO analysis_pool VALUES('ATLAS_8_GAMMA');
 INSERT INTO analysis_pool VALUES('CMS_8_GAMMA');
 
 INSERT INTO analysis_pool VALUES('ATLAS_8_HMDY');
 
-INSERT INTO analysis_pool VALUES('ATLAS_8_Zjj');  
+INSERT INTO analysis_pool VALUES('ATLAS_8_Zjj');
 INSERT INTO analysis_pool VALUES('ATLAS_8_Wjj');
 INSERT INTO analysis_pool VALUES('CMS_8_Wjj');
 
@@ -94,7 +94,7 @@ INSERT INTO analysis VALUES('ATLAS_2014_I1288706',1600.0,'ATLAS_7_LMDY');
 INSERT INTO analysis VALUES('CMS_2013_I1224539_WJET',5.0,'CMS_7_Wjj');
 INSERT INTO analysis VALUES('CMS_2013_I1224539_ZJET',5.0,'CMS_7_Zjj');
 
--- 7 TeV W+jets. 
+-- 7 TeV W+jets.
 INSERT INTO analysis VALUES('ATLAS_2014_I1319490_MU',4600.0,'ATLAS_7_Wjj_MU');
 INSERT INTO analysis VALUES('ATLAS_2014_I1319490_EL',4600.0,'ATLAS_7_Wjj_EL');
 INSERT INTO analysis VALUES('CMS_2014_I1303894',5000.0,'CMS_7_Wjj');
@@ -112,7 +112,7 @@ INSERT INTO analysis VALUES('CMS_2013_I1256943',5000.0,'CMS_7_Zjj');
 -- 7 TeV WW. Plots in fb.
 INSERT INTO analysis VALUES('ATLAS_2013_I1190187',4.6,'ATLAS_7_WW');
 
--- 7 TeV dibosons, in fb-1 
+-- 7 TeV dibosons, in fb-1
 INSERT INTO analysis VALUES('ATLAS_2013_I1217863_Z',4.6,'ATLAS_7_Z_GAMMA');
 INSERT INTO analysis VALUES('ATLAS_2013_I1217863_W_MU',4.6,'ATLAS_7_W_GAMMA_MU');
 INSERT INTO analysis VALUES('ATLAS_2013_I1217863_W_EL',4.6,'ATLAS_7_W_GAMMA_EL');
@@ -148,7 +148,7 @@ INSERT INTO analysis VALUES('ATLAS_2017_I1589844',20200.0,'ATLAS_8_Zjj');
 INSERT INTO analysis VALUES('CMS_2016_I1454211',19.7,'CMS_8_Wjj');
 INSERT INTO analysis VALUES('ATLAS_2015_I1397637',20.3,'ATLAS_8_Wjj');
 
--- plots in fb 
+-- plots in fb
 INSERT INTO analysis VALUES('CMS_2017_I1518399',19.7,'CMS_8_Wjj');
 INSERT INTO analysis VALUES('ATLAS_2016_I1426515',20.3,'ATLAS_8_WW');
 INSERT INTO analysis VALUES('CMS_2017_I1467451',19.4,'CMS_8_WW');
@@ -314,7 +314,7 @@ INSERT INTO subpool (anaid,pattern,subanaid) VALUES('ATLAS_2013_I1263495','d01-x
 INSERT INTO subpool (anaid,pattern,subanaid) VALUES('ATLAS_2016_I1457605','.',0);
 
 CREATE TABLE IF NOT EXISTS normalization (
---  analysis anaid, plot pattern, norm factor for ref data, was mc plot area normalised by rivet?  (0=no, 1=yes) 
+--  analysis anaid, plot pattern, norm factor for ref data, was mc plot area normalised by rivet?  (0=no, 1=yes)
     id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
     pattern TEXT NOT NULL,
     norm    REAL NOT NULL,
@@ -322,7 +322,7 @@ CREATE TABLE IF NOT EXISTS normalization (
     anaid   TEXT NOT NULL REFERENCES analysis(anaid),
     UNIQUE(anaid,pattern)
 );
--- this is BR to a single charged lepton, needed when the xsec is report as a W 
+-- this is BR to a single charged lepton, needed when the xsec is report as a W
 -- and the generator reports the final state.
 -- INSERT INTO normalization (anaid,pattern,norm,scalemc) VALUES('ATLAS_2014_I1319490_MU','d',0.108059,0);
 -- INSERT INTO normalization (anaid,pattern,norm,scalemc) VALUES('ATLAS_2014_I1319490_EL','d',0.108059,0);
@@ -417,4 +417,29 @@ INSERT INTO normalization (anaid,pattern,norm,scalemc) VALUES('ATLAS_2013_I11901
 INSERT INTO normalization (anaid,pattern,norm,scalemc) VALUES('ATLAS_2017_I1598613','d',17700000,1);
 INSERT INTO normalization (anaid,pattern,norm,scalemc) VALUES('ATLAS_2017_I1598613_BB','d',17700000,1);
 --
+
+-- Added table to represent linked reports
+
+CREATE TABLE IF NOT EXISTS reports (
+--  analysis anaid, plot pattern, norm factor for ref data, was mc plot area normalised by rivet?  (0=no, 1=yes)
+    id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    report_name TEXT NOT NULL   
+);
+
+-- Add Junction table to model many-to-many relationship of report and analysis data
+
+CREATE TABLE IF NOT EXISTS ana_rep_junction (
+--  analysis anaid, plot pattern, norm factor for ref data, was mc plot area normalised by rivet?  (0=no, 1=yes)
+    id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+    anaid   TEXT NOT NULL REFERENCES analysis(anaid),
+    repid TEXT NOT NULL REFERENCES reports(id)
+);
+
+
+
+
+
+
+
+
 --COMMIT;
