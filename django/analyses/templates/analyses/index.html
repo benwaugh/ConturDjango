@@ -33,6 +33,16 @@
 
 
 <h2>Analyses</h2>
+
+{% block content %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="myfile">
+    <button type="submit">Upload</button>
+  </form>
+
+{% endblock %}
+
 {% if analysis_list %}
     <ul>
     {% for ana in analysis_list %}
@@ -45,4 +55,3 @@
 {% else %}
     <p>No analyses are available.</p>
 {% endif %}
-

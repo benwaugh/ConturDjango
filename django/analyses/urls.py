@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^model/(?P<name>[_A-Za-z0-9]+)/$', views.model, name='model'),
     url(r'^(?P<anaid>[_A-Za-z0-9]+)/blacklists/$', views.blacklists, name='blacklists'),
     url(r'^pool/(?P<pool>[_A-Za-z0-9]+)/$', views.pool, name='pools'),
+    #url(r'^upload', views.model_form_upload, name='upload'),
 ]

@@ -32,6 +32,8 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'analyses.apps.AnalysesConfig',
+    'import_export',
+    'tablib',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

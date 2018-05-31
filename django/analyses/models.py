@@ -11,6 +11,12 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
+class Document(models.Model):
+    description = models.CharField(max_length=255, blank=True)
+    document = models.FileField(upload_to='documents/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
 
 @python_2_unicode_compatible
 class Analysis(models.Model):
@@ -110,6 +116,3 @@ class Used_analyses(models.Model):
     class Meta:
         db_table = 'used_analyses'
         unique_together = (('modelname', 'anaid'),)
-
-
-

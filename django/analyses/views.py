@@ -3,10 +3,56 @@ from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
-
+from import_export import resources
+from tablib import Dataset
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
 # Create your views here.
 
-from .models import Analysis, AnalysisPool, BSM_Model
+from .models import Analysis, AnalysisPool, BSM_Model, Used_analyses, Document
+from .forms import DocumentForm
+
+
+
+class export_resource(resources.ModelResource):
+    class Meta:
+        model = Used_analyses
+        fields = ('anaid',)
+
+class Used_resource(resources.ModelResource):
+    class Meta:
+        model = Used_analyses
+
+class Ana_resource(resources.ModelResource):
+    class Meta:
+        model = Analysis
+
+class Pool_resource(resources.ModelResource):
+    class Meta:
+        model = AnalysisPool
+
+class BSM_resource(resources.ModelResource):
+    class Meta:
+        model = BSM_Model
+
+
+def export(mod_name):
+    ana_resource = export_resource()
+    filtered =  Used_analyses.objects.filter(modelname=mod_name)
+    dataset = ana_resource.export(filtered)
+    return dataset.csv
+
+def model_form_upload(request):
+    if request.method == 'POST':
+        form = DocumentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    else:
+        form = DocumentForm()
+    return render(request, 'core/model_form_upload.html', {
+        'form': form
+    })
 
 def index(request):
     analysis_pools = AnalysisPool.objects.order_by('pool')
@@ -17,7 +63,7 @@ def index(request):
         'analysis_list' : analysis_list,
         'models_list' : models_list,
     }
-    return render(request, 'analyses/index.html', context)
+    return render(request, 'analyses/index.html',context)
 
 def pool(request, pool):
     p = get_object_or_404(AnalysisPool, pk=pool)
@@ -42,4 +88,3 @@ def model(request, name):
 
 def blacklists(request, anaid):
     return HttpResponse("You're looking at blacklists for %s." % anaid)
-
