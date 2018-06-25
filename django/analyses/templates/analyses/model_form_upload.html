@@ -1,0 +1,12 @@
+<h1>Upload Data</h1>
+
+{% block content %}
+<h2>File Selection</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+  </form>
+
+  <p><a href="{% url 'index' %}">Return to index</a></p>
+{% endblock %}

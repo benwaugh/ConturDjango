@@ -1,0 +1,13 @@
+<h1>Record Creation and Download</h1>
+
+{% block content %}
+<h2>Record Creation</h2>
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+
+  <p><a href="{% url 'index' %}">Return to index</a></p>
+{% endblock %}

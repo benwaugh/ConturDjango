@@ -1,0 +1,14 @@
+<h1>{{ key.key_word }}</h1>
+
+{% if key.linked_keys_set.all %}
+	<h2>Relates to these categories</h2>
+	<ul>
+    {% for ua in key.linked_keys_set.all %}
+        	<li>
+                <a href="{% url 'analysis' ua.anaid %}">{{ ua.anaid }}</a>
+            </li>
+    {% endfor %}
+    </ul>
+{% else %}
+	<p>No keywords are available.</p>
+{% endif %}

@@ -34,12 +34,17 @@ INSTALLED_APPS = [
     'analyses.apps.AnalysesConfig',
     'import_export',
     'tablib',
+    'pandas',
+    'numpy',
+    'shutil',
+    'json',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'mptt',
 ]
 
 MIDDLEWARE = [

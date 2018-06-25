@@ -1,5 +1,20 @@
 <h1>Contur</h1>
 
+<a href="{% url 'upload' %}" class="button">Upload New Data</a>
+
+<h2>Runcards and Results</h2>
+{% if runcard_list %}
+<a href="{% url 'export' %}" class="button">Create or Export Run Card</a>
+    <ul>
+    {% for r in runcard_list %}
+        <li>
+            <a href="{% url 'runcard' r.runcard_name %}">{{ r.runcard_name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No results are available.</p>
+{% endif %}
 
 <h2>Model scans</h2>
 {% if models_list %}
@@ -13,8 +28,6 @@
 {% else %}
     <p>No model scans are available.</p>
 {% endif %}
-
-
 
 <h2>Analysis pools</h2>
 {% if analysis_pools %}
@@ -33,16 +46,6 @@
 
 
 <h2>Analyses</h2>
-
-{% block content %}
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <input type="file" name="myfile">
-    <button type="submit">Upload</button>
-  </form>
-
-{% endblock %}
-
 {% if analysis_list %}
     <ul>
     {% for ana in analysis_list %}
@@ -54,4 +57,21 @@
     </ul>
 {% else %}
     <p>No analyses are available.</p>
+{% endif %}
+
+
+
+<h2>Keywords</h2>
+<a href="{% url 'load_kws' %}" class="button">Fetch Keywords from Inspire</a>
+{% if keywords_list %}
+    <ul>
+    {% for key in keywords_list %}
+        <li>
+            <a href="{% url 'keyword' key.key_word %}">{{ key.key_word }}</a>
+            [{{ key.linked_keys_set.all | length }}]
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No keywords are available.</p>
 {% endif %}
