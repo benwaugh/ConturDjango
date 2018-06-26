@@ -90,6 +90,7 @@ class Whitelist(models.Model):
         db_table = 'whitelist'
 
 
+
 @python_2_unicode_compatible
 class BSM_Model(models.Model):
     name = models.TextField(primary_key=True)
@@ -98,6 +99,7 @@ class BSM_Model(models.Model):
 
     class Meta:
         db_table = 'bsm_model'
+
 
 
 @python_2_unicode_compatible
@@ -112,6 +114,7 @@ class Used_analyses(models.Model):
         unique_together = (('modelname', 'anaid'),)
 
 
+
 @python_2_unicode_compatible
 class Download(models.Model):
     now = datetime.datetime.now()
@@ -119,6 +122,8 @@ class Download(models.Model):
     FILE_CHOICES = zip(BSM_Model.objects.all().values_list('name', flat=True) [0::1], BSM_Model.objects.all().values_list('name', flat=True)[0::1])
     Model = models.CharField(max_length=200, choices=FILE_CHOICES, default='')
     Parameter_Card = models.FileField(upload_to='analyses/parameters-cards/', default='')
+
+
 
 @python_2_unicode_compatible
 class Document(models.Model):
@@ -131,6 +136,8 @@ class Document(models.Model):
     upload_file = models.FileField(upload_to='analyses/temp/',default='')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
+
+
 @python_2_unicode_compatible
 class Keyword(models.Model):
     key_word = models.TextField(primary_key=True)
@@ -140,6 +147,8 @@ class Keyword(models.Model):
 
     class Meta:
         db_table = 'keywords_list'
+
+
 
 @python_2_unicode_compatible
 class Linked_keys(models.Model):
@@ -151,6 +160,8 @@ class Linked_keys(models.Model):
     class Meta:
         db_table = 'linked_keywords'
         unique_together = (('key_word', 'anaid'),)
+
+
 
 @python_2_unicode_compatible
 class runcard(models.Model):
@@ -166,24 +177,9 @@ class runcard(models.Model):
         db_table = 'runcard_export'
         unique_together = (('runcard_name', 'param_card'),)
 
-#@python_2_unicode_compatible
-#class results_table(models.Model):
-#    runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False)
-#    mc_ver = models.CharField(max_length=20, default='0.0.0')
-#    contur_ver = models.CharField(max_length=20, default='0.0.0')
-#    results = models.ForeignKey('yoda_link',models.DO_NOTHING, db_column='ID', blank=False, null=False))
-
-#    def __str__(self):
-#        return self.runcard.runcard_name
-
-#    class Meta:
-#        db_table = 'results_detail'
-#        unique_together = (('runcard', 'results'),)
-
-#@python_2_unicode_compatible
-#class yoda_link(models.Model):
 
 
+# Define Modified Preorder Tree Traversal  Structure
 class results_header(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
     runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False)
@@ -194,12 +190,15 @@ class results_header(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
+
+
 class results_position(MPTTModel):
     name = models.CharField(max_length=50)
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='position')
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
 
 
 class results_analyses(MPTTModel):
@@ -209,6 +208,8 @@ class results_analyses(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['name']
+
+
 
 class scatter3_data(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter3')
@@ -225,6 +226,8 @@ class scatter3_data(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['parent']
 
+
+
 class scatter2_data(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter2')
     xval = models.FloatField()
@@ -237,6 +240,8 @@ class scatter2_data(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['parent']
 
+
+
 class scatter1_data(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter1')
     xval = models.FloatField()
@@ -245,6 +250,8 @@ class scatter1_data(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['parent']
+
+
 
 class histo1_data(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='histo1')
@@ -258,6 +265,8 @@ class histo1_data(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['parent']
+
+
 
 class profile1_data(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='profile1')
@@ -273,6 +282,8 @@ class profile1_data(MPTTModel):
 
     class MPTTMeta:
         order_insertion_by = ['parent']
+
+
 
 class overflow_underflow(MPTTModel):
     parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='overunder')
