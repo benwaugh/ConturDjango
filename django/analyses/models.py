@@ -169,6 +169,7 @@ class runcard(models.Model):
     runcard_name = models.CharField(max_length=50, default=now.strftime("%d%m%Y%H%M"),primary_key=True)
     modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='name', blank=False, null=False)
     param_card = models.FileField(upload_to='analyses/parameters-cards/')
+    UFO_model = models.URLField(default="http://feynrules.irmp.ucl.ac.be/")
 
     def __str__(self):
         return self.runcard_name
@@ -176,6 +177,7 @@ class runcard(models.Model):
     class Meta:
         db_table = 'runcard_export'
         unique_together = (('runcard_name', 'param_card'),)
+
 
 
 
