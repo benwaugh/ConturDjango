@@ -1,0 +1,1 @@
+source /unix/cedar/software/sl6/Herwig-Tip/setupEnv.sh; cd /home/npart/bitbucket/conturtest/ctest/mY_100_mX_100; source /home/npart/bitbucket/conturtest/setupContur.sh; Herwig run --seed=100100 --tag=mY_100_mX_100 --jobs=2 --numevents=30000 LHC.run;

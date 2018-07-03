@@ -10,10 +10,6 @@ from .models import Analysis, AnalysisPool,\
                 scatter3_data,scatter2_data,scatter1_data,histo1_data,\
                 profile1_data,overflow_underflow
 
-#admin.site.register(Analysis)
-#admin.site.register(AnalysisPool)
-#admin.site.register(BSM_Model)
-#admin.site.register(Used_analyses)
 # Register models with import-export instead of basic django functionality
 
 
