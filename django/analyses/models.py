@@ -184,7 +184,7 @@ class runcard(models.Model):
 # Define Modified Preorder Tree Traversal  Structure
 class results_header(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
-    runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False)
+    runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False,default='')
     mc_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='results')
@@ -204,99 +204,104 @@ class results_position(MPTTModel):
 
 
 class results_analyses(MPTTModel):
-    name = models.ForeignKey('Analysis',models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+
+    #name = models.ForeignKey('Analysis',models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+    name = models.CharField(max_length=50,null=False,blank=False)
     parent = TreeForeignKey('results_position',on_delete=models.CASCADE, null=True, blank=True, related_name='analyses')
-    xyd = models.CharField(max_length=50)
-
-    class MPTTMeta:
-        order_insertion_by = ['name']
-
-
-
-class scatter3_data(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter3')
-    xval = models.FloatField()
-    xerr_n = models.FloatField()
-    xerr_p = models.FloatField()
-    yval = models.FloatField()
-    yerr_n = models.FloatField()
-    yerr_p = models.FloatField()
-    zval = models.FloatField()
-    zerr_n = models.FloatField()
-    zerr_p = models.FloatField()
-
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+    xyd = models.CharField(max_length=50,default="",null=True)
+    Path = models.CharField(max_length=50,default="",null=True)
+    Title = models.CharField(max_length=50,default="",null=True)
+    Type = models.CharField(max_length=50,default="",null=True)
+    XLabel = models.CharField(max_length=50,default="",null=True)
+    YLabel = models.CharField(max_length=50,default="",null=True)
+    ScaledBy = models.FloatField(default=1,null=True)
+    PolyMarker = models.CharField(max_length=50,default="",null=True)
+    ErrorBars = models.CharField(max_length=50,default="",null=True)
+    LineColor = models.CharField(max_length=50,default="",null=True)
+    yodamerge_scale = models.CharField(max_length=50,default="",null=True)
+    mean = models.FloatField(default=0,null=True)
+    area = models.FloatField(default=0,null=True)
 
 
+class scatter3_data(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    xval = models.FloatField(null=True)
+    xerr_n = models.FloatField(null=True)
+    xerr_p = models.FloatField(null=True)
+    yval = models.FloatField(null=True)
+    yerr_n = models.FloatField(null=True)
+    yerr_p = models.FloatField(null=True)
+    zval = models.FloatField(null=True)
+    zerr_n = models.FloatField(null=True)
+    zerr_p = models.FloatField(null=True)
 
-class scatter2_data(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter2')
-    xval = models.FloatField()
-    xerr_n = models.FloatField()
-    xerr_p = models.FloatField()
-    yval = models.FloatField()
-    yerr_n = models.FloatField()
-    yerr_p = models.FloatField()
-
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+class scatter2_data(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    xval = models.FloatField(null=True)
+    xerr_n = models.FloatField(null=True)
+    xerr_p = models.FloatField(null=True)
+    yval = models.FloatField(null=True)
+    yerr_n = models.FloatField(null=True)
+    yerr_p = models.FloatField(null=True)
 
 
-
-class scatter1_data(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='scatter1')
-    xval = models.FloatField()
-    xerr_n = models.FloatField()
-    xerr_p = models.FloatField()
-
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+class scatter1_data(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    xval = models.FloatField(null=True)
+    xerr_n = models.FloatField(null=True)
+    xerr_p = models.FloatField(null=True)
 
 
 
-class histo1_data(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='histo1')
-    xlow = models.FloatField()
-    xhigh = models.FloatField()
-    sumw = models.FloatField()
-    sumw2 = models.FloatField()
-    sumwx = models.FloatField()
-    sumwx2 = models.FloatField()
-    numEntries = models.IntegerField()
-
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+class histo1_data(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    xlow = models.FloatField(null=True)
+    xhigh = models.FloatField(null=True)
+    sumw = models.FloatField(null=True)
+    sumw2 = models.FloatField(null=True)
+    sumwx = models.FloatField(null=True)
+    sumwx2 = models.FloatField(null=True)
+    numEntries = models.IntegerField(null=True)
 
 
 
-class profile1_data(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='profile1')
-    xlow = models.FloatField()
-    xhigh = models.FloatField()
-    sumw = models.FloatField()
-    sumw2 = models.FloatField()
-    sumwx = models.FloatField()
-    sumwx2 = models.FloatField()
-    sumwy = models.FloatField()
-    sumwy2 = models.FloatField()
-    numEntries = models.IntegerField()
 
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+class profile1_data(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    xlow = models.FloatField(null=True)
+    xhigh = models.FloatField(null=True)
+    sumw = models.FloatField(null=True)
+    sumw2 = models.FloatField(null=True)
+    sumwx = models.FloatField(null=True)
+    sumwx2 = models.FloatField(null=True)
+    sumwy = models.FloatField(null=True)
+    sumwy2 = models.FloatField(null=True)
+    numEntries = models.IntegerField(null=True)
 
 
 
-class overflow_underflow(MPTTModel):
-    parent = TreeForeignKey('results_analyses',on_delete=models.CASCADE, null=True, blank=True, related_name='overunder')
+class overflow_underflow_profile(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
-    sumw = models.FloatField()
-    sumw2 = models.FloatField()
-    sumwx = models.FloatField()
-    sumwx2 = models.FloatField()
-    sumwy = models.FloatField()
-    sumwy2 = models.FloatField()
-    numEntries  = models.IntegerField()
+    sumw = models.FloatField(null=True)
+    sumw2 = models.FloatField(null=True)
+    sumwx = models.FloatField(null=True)
+    sumwx2 = models.FloatField(null=True)
+    sumwy = models.FloatField(null=True)
+    sumwy2 = models.FloatField(null=True)
+    numEntries  = models.IntegerField(null=True)
 
-    class MPTTMeta:
-        order_insertion_by = ['parent']
+class overflow_underflow_histo(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    row_type = models.CharField(max_length=50)
+    sumw = models.FloatField(null=True)
+    sumw2 = models.FloatField(null=True)
+    sumwx = models.FloatField(null=True)
+    sumwx2 = models.FloatField(null=True)
+    numEntries = models.IntegerField(null=True)
+
+class counter(models.Model):
+    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    sumw = models.FloatField(null=True)
+    sumw2 = models.FloatField(null=True)
+    numEntries = models.IntegerField(null=True)

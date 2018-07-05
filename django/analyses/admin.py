@@ -8,7 +8,8 @@ from .models import Analysis, AnalysisPool,\
                 BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, results_position, results_analyses, \
                 scatter3_data,scatter2_data,scatter1_data,histo1_data,\
-                profile1_data,overflow_underflow
+                profile1_data,overflow_underflow_histo,overflow_underflow_profile,\
+                counter
 
 # Register models with import-export instead of basic django functionality
 
@@ -75,6 +76,14 @@ class Histo1Admin(ImportExportModelAdmin):
 class Profile1Admin(ImportExportModelAdmin):
     pass
 
-@admin.register(overflow_underflow)
-class OverUnderAdmin(ImportExportModelAdmin):
+@admin.register(overflow_underflow_histo)
+class OverUnderAdminHisto(ImportExportModelAdmin):
+    pass
+
+@admin.register(overflow_underflow_profile)
+class OverUnderAdminProfile(ImportExportModelAdmin):
+    pass
+
+@admin.register(counter)
+class counterAdmin(ImportExportModelAdmin):
     pass
