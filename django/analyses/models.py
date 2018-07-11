@@ -305,3 +305,18 @@ class counter(models.Model):
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
     numEntries = models.IntegerField(null=True)
+
+class map_header(MPTTModel):
+    parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='map')
+    analyses = models.CharField(max_length=50)
+
+class map_data(models.Model):
+    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
+    meas = models.FloatField(null=True)
+    bg = models.FloatField(null=True)
+    sErr = models.FloatField(null=True)
+    measErr = models.FloatField(null=True)
+    s = models.FloatField(null=True)
+    bgErr = models.FloatField(null=True)
+    kev = models.FloatField(null=True)
+    isRatio = models.BooleanField(null=True)

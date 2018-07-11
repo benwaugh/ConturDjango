@@ -128,7 +128,6 @@ class store_data(object):
                         self.yoda_dict[self.file_id][self.entry][header] = ''
 
 
-
 class db_upload(object):
 
     def __init__(self,yoda_dict,rc_name):
