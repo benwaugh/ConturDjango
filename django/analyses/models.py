@@ -312,6 +312,7 @@ class map_header(MPTTModel):
 
 class map_data(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
+    model_position = models.IntegerField(null=True)
     meas = models.FloatField(null=True)
     bg = models.FloatField(null=True)
     sErr = models.FloatField(null=True)
