@@ -319,4 +319,4 @@ class map_data(models.Model):
     s = models.FloatField(null=True)
     bgErr = models.FloatField(null=True)
     kev = models.FloatField(null=True)
-    isRatio = models.BooleanField(null=True)
+    isRatio = models.BooleanField()
