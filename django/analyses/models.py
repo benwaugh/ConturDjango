@@ -13,6 +13,9 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 import datetime
 from mptt.models import MPTTModel, TreeForeignKey
+from picklefield.fields import PickledObjectField
+
+
 
 @python_2_unicode_compatible
 class Analysis(models.Model):
@@ -321,3 +324,7 @@ class map_data(models.Model):
     bgErr = models.FloatField(null=True)
     kev = models.FloatField(null=True)
     isRatio = models.BooleanField()
+
+class map_pickle(models.Model):
+    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
+    pickle = PickledObjectField()

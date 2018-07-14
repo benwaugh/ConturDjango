@@ -3,6 +3,8 @@ import glob
 from argparse import ArgumentParser
 import django
 import sys
+import pickle
+from picklefield.fields import PickledObjectField
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
@@ -11,7 +13,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(CURRENT_DIR))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
-from analyses.models import map_data, runcard, results_header, map_header
+from analyses.models import map_data, runcard, results_header, map_header, map_pickle
 
 class file_discovery(object):
 
@@ -27,7 +29,8 @@ class file_discovery(object):
 
     def get_files(self):
         print(self.dir_path)
-        for filename in glob.iglob(self.dir_path + '/**/*.map2.txt', recursive=True):
+        for filename in glob.iglob(self.dir_path + '/**/.map', recursive=True):
+            print(filename)
             self.map_list.append(filename)
 
     def identify_relevent(self):
@@ -47,25 +50,26 @@ class store_data(object):
     def read_map(self):
         for file_name in self.file_dict:
             print(file_name)
-            self.file_id = file_name.split("/")[-1].replace(".txt","")
-            self.map_dict[self.file_id] = dict()
-            with open(file_name, 'r') as myfile:
-                data = myfile.read()
-            id = 0
-            for unedit_line in data.replace("{","").split("}"):
-                if len(unedit_line.split(":")) > 2:
-                    titles = []
-                    datas = []
-                    line = unedit_line.replace("]","]:")
-                    for i in range(int(len(line.split(":"))/2)):
+            self.file_id = file_name.split("/")[-1]
+            with open(file_name, 'r+b') as myfile:
+                data = pickle.load(myfile)
+                self.map_dict[self.file_id] = data
 
-                        titles.append(line.split(":")[2*i].replace(",","").strip().replace("'",""))
-                        datas.append(line.split(":")[2*i+1].strip())
-
-                    self.map_dict[self.file_id][id] = dict()
-                    for i in range(len(titles)):
-                        self.map_dict[self.file_id][id][titles[i]] = datas[i].replace("[","").replace("]","")
-                id += 1
+            # id = 0
+            # for unedit_line in data.replace("{","").split("}"):
+            #     if len(unedit_line.split(":")) > 2:
+            #         titles = []
+            #         datas = []
+            #         line = unedit_line.replace("]","]:")
+            #         for i in range(int(len(line.split(":"))/2)):
+            #
+            #             titles.append(line.split(":")[2*i].replace(",","").strip().replace("'",""))
+            #             datas.append(line.split(":")[2*i+1].strip())
+            #
+            #         self.map_dict[self.file_id][id] = dict()
+            #         for i in range(len(titles)):
+            #             self.map_dict[self.file_id][id][titles[i]] = datas[i].replace("[","").replace("]","")
+            #     id += 1
 
 
 class db_upload(object):
@@ -80,6 +84,7 @@ class db_upload(object):
     def upload(self):
         header = self.upload_header()
         for item in self.map_dict:
+
             self.upload_map_position(item,header)
 
 
@@ -101,6 +106,7 @@ class db_upload(object):
                     parent=None)
 
             upload_header.save()
+
             return upload_header
 
     def upload_map_position(self,item,header):
@@ -108,33 +114,41 @@ class db_upload(object):
             map_header.objects.get_or_create(analyses=str(item), parent=header)
 
         upload_pos.save()
-
+        print("Uploaded")
         self.upload_map_data(upload_pos, self.map_dict[item], item)
 
 
     def upload_map_data(self,header,select_dict,item):
-        j = 0
-        for term in select_dict:
-            row = select_dict[term]
-            print(row)
-            for i in range(0,len(row['meas'].split(','))):
+        upload_object, created_object = \
+                            map_pickle.objects.get_or_create(
+                                parent=header,
+                                pickle=item,
+                         )
+        upload_object.save()
 
-                    upload_data, created_data = \
-                        map_data.objects.get_or_create(
-                            model_position = j,
-                            meas=row['meas'].split(',')[i],
-                            bg=row['bg'].split(',')[i],
-                            sErr=row['sErr'].split(',')[i],
-                            measErr=row['measErr'].split(',')[i],
-                            s=row['s'].split(',')[i],
-                            bgErr=row['bgErr'].split(',')[i],
-                            kev=row['kev'].split(',')[i],
-                            isRatio=row['isRatio'].split(',')[i].strip().replace("'",""),
-                            parent=header
-                        )
 
-                    upload_data.save()
-            j = j + 1
+        # j = 0
+        # for term in select_dict:
+        #     row = select_dict[term]
+        #     print(row)
+        #     for i in range(0,len(row['meas'].split(','))):
+        #
+        #             upload_data, created_data = \
+        #                 map_data.objects.get_or_create(
+        #                     model_position = j,
+        #                     meas=row['meas'].split(',')[i],
+        #                     bg=row['bg'].split(',')[i],
+        #                     sErr=row['sErr'].split(',')[i],
+        #                     measErr=row['measErr'].split(',')[i],
+        #                     s=row['s'].split(',')[i],
+        #                     bgErr=row['bgErr'].split(',')[i],
+        #                     kev=row['kev'].split(',')[i],
+        #                     isRatio=row['isRatio'].split(',')[i].strip().replace("'",""),
+        #                     parent=header
+        #                 )
+        #
+        #             upload_data.save()
+        #     j = j + 1
 
 
 if __name__ == "__main__":
