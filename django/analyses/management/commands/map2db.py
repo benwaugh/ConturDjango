@@ -39,6 +39,7 @@ class file_discovery(object):
             name = address[-1]
             self.file_dict.append(item)
 
+
 class store_data(object):
 
     def __init__(self,file_dict):
@@ -53,23 +54,8 @@ class store_data(object):
             self.file_id = file_name.split("/")[-1]
             with open(file_name, 'r+b') as myfile:
                 data = pickle.load(myfile)
+                print(data)
                 self.map_dict[self.file_id] = data
-
-            # id = 0
-            # for unedit_line in data.replace("{","").split("}"):
-            #     if len(unedit_line.split(":")) > 2:
-            #         titles = []
-            #         datas = []
-            #         line = unedit_line.replace("]","]:")
-            #         for i in range(int(len(line.split(":"))/2)):
-            #
-            #             titles.append(line.split(":")[2*i].replace(",","").strip().replace("'",""))
-            #             datas.append(line.split(":")[2*i+1].strip())
-            #
-            #         self.map_dict[self.file_id][id] = dict()
-            #         for i in range(len(titles)):
-            #             self.map_dict[self.file_id][id][titles[i]] = datas[i].replace("[","").replace("]","")
-            #     id += 1
 
 
 class db_upload(object):
@@ -122,33 +108,9 @@ class db_upload(object):
         upload_object, created_object = \
                             map_pickle.objects.get_or_create(
                                 parent=header,
-                                pickle=item,
+                                pickle=select_dict,
                          )
         upload_object.save()
-
-
-        # j = 0
-        # for term in select_dict:
-        #     row = select_dict[term]
-        #     print(row)
-        #     for i in range(0,len(row['meas'].split(','))):
-        #
-        #             upload_data, created_data = \
-        #                 map_data.objects.get_or_create(
-        #                     model_position = j,
-        #                     meas=row['meas'].split(',')[i],
-        #                     bg=row['bg'].split(',')[i],
-        #                     sErr=row['sErr'].split(',')[i],
-        #                     measErr=row['measErr'].split(',')[i],
-        #                     s=row['s'].split(',')[i],
-        #                     bgErr=row['bgErr'].split(',')[i],
-        #                     kev=row['kev'].split(',')[i],
-        #                     isRatio=row['isRatio'].split(',')[i].strip().replace("'",""),
-        #                     parent=header
-        #                 )
-        #
-        #             upload_data.save()
-        #     j = j + 1
 
 
 if __name__ == "__main__":

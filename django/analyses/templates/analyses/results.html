@@ -1,0 +1,14 @@
+
+{% if rc.results_table_set.all %}
+	<ul>
+    {% for res in rc.results_table_set.all %}
+					<h3>Runcard Name: <a>{{ res.runcard }}</a></h3>
+          </li>
+					<p></p>
+
+    {% endfor %}
+    </ul>
+{% else %}
+	<p>No results are available.</p>
+{% endif %}
+<p><a href="{% url 'index' %}">Return to index</a></p>

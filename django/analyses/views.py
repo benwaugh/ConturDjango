@@ -177,3 +177,11 @@ def keywords_list(request, key_word):
         'key' : k,
     }
     return render(request, 'analyses/key_word.html', context)
+
+def results_list(request, result):
+    r = get_object_or_404(results_header, pk=result)
+    context = {
+        'res' : r,
+    }
+    return render(request, 'analyses/result.html', context)
+

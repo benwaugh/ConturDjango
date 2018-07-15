@@ -2,7 +2,21 @@
 
 <a href="{% url 'upload' %}" class="button">Upload New Data</a>
 
-<h2>Runcards and Results</h2>
+<h2>Results Objects</h2>
+{% if results_list %}
+    <ul>
+    {% for r in results_list %}
+        <li>
+            <a href="{% url 'results' r.name %}">{{ r.name }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No results are available.</p>
+{% endif %}
+
+
+<h2>Runcards</h2>
 {% if runcard_list %}
 <a href="{% url 'export' %}" class="button">Create or Export Run Card</a>
     <ul>

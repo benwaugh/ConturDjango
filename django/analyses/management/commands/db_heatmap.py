@@ -24,7 +24,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(CURRENT_DIR))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
-from analyses.models import map_data, runcard, results_header,map_header
+from analyses.models import map_data, runcard, results_header,map_header,map_pickle
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)
@@ -103,42 +103,9 @@ if __name__ == "__main__":
     data = None
 
     for id in results_objects:
-        #id = results_objects.objects.values_list('id',flat=True)
-        print(id)
-        temp_data = map_data.objects.filter(parent_id=id)
-        if len(temp_data) > 2:
-            data = temp_data
+        temp = map_pickle.objects.filter(parent_id=id).values_list('pickle',flat=True)
 
-    if data == None:
-        print("No Heatmap data found in Results Object")
-        raise IndexError
-
-    x_preprocessed = data.values_list('model_position','meas', 'bg', 'sErr', 'measErr', 's', 'bgErr', 'kev', 'isRatio')
-    i_max = max(data.values_list('model_position',flat=True))+1
-
-
-    i=-1
-    x_list = []
-    for item in x_preprocessed:
-        if (i == item[0]):
-            data_store = ct.conturPoint()
-            data_store.meas = item[1]
-            data_store.bg = item[2]
-            data_store.sErr = item[3]
-            data_store.measErr = item[4]
-            data_store.s = item[5]
-            data_store.bgErr = item[6]
-            data_store.kev = item[7]
-            data_store.isRatio = item[8]
-            x.addPoint(data_store)
-        else:
-            i=i+1
-            if (i > 0):
-                x_list.append(x)
-            x = ct.conturDepot("LL")
-
-
-    x = x_list
+    x = temp[0]
     n_pools = len(x[0].sortedPoints)
 
     #print(("Loaded file", m, " which has ", n_pools, " pools"))
