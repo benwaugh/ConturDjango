@@ -195,21 +195,12 @@ def results(request, name):
     }
     return render(request, 'analyses/results.html', context)
 
-def heatmap_display(request, analyses):
+
+def heatmap_display(request,analyses):
     file = get_object_or_404(map_header, pk=analyses)
     data = map_pickle.objects.filter(parent=file.tree_id).values_list('pickle',flat=True)
-
-    import mpld3
     from .management.commands.generate_heatmap import gen_heatmap
+    gen_heatmap(data)
+    return redirect(request.META['HTTP_REFERER'])
 
-    mpl_figure = plt.figure(1, figsize=(6, 6))
-
-    fig_html = gen_heatmap(data)
-
-    context = {
-        'hea' : file,
-        'dat': data,
-        'figure': fig_html,
-    }
-    return render(request, 'analyses/heatmap.html', context)
 

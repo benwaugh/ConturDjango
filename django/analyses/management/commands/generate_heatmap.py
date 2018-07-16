@@ -17,6 +17,7 @@ from collections import defaultdict
 import django
 import json
 import mpld3
+from bokeh.plotting import figure, show, output_file
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
@@ -114,9 +115,11 @@ def gen_heatmap(temp):
                 # ended loop over files -------------------------------
 
     print("Recalculating")
+
     for key in depots:
 
         cDepot = depots[key]
+        print(cDepot)
         cDepot.buildFinal()
 
         confLim[contourXaxis.index(cDepot.ModelParam1)][contourYaxis.index(cDepot.ModelParam2)] = cDepot.conturPoint.CLs
@@ -134,8 +137,6 @@ def gen_heatmap(temp):
                         # set up for the plots here.
         print("Setting up plots")
 
-        mpl_figure = plt.figure(1, figsize=(6, 6))
-
         Xaxis = np.array(list(map(float, contourXaxis)))
         Yaxis = np.array(list(map(float, contourYaxis)))
 
@@ -143,7 +144,6 @@ def gen_heatmap(temp):
         Xaxis.sort()
         Yaxis.sort()
 
-        print(Xaxis)
         # find the grid spacings:
 
         dx = (min([x for x in (Xaxis) if x > min(Xaxis)]) - min(Xaxis)) / 2.0
@@ -153,6 +153,7 @@ def gen_heatmap(temp):
         yy, xx = np.mgrid[min(Yaxis) - dy:max(Yaxis) + 2 * dy:2 * dy, min(Xaxis) - dx:max(Xaxis) + 2 * dx:2 * dx]
 
         cl_values = confLim[:len(contourXaxis), :len(contourYaxis)]
+
 
         # translate from the parameters of the  to something more readable
         #fmt = plt.FuncFormatter(xlab)
@@ -178,11 +179,10 @@ def gen_heatmap(temp):
         #    ax.yaxis.set_major_locator(my_locator_y)
         #    ax.xaxis.set_major_locator(my_locator_x)
 
-        plt.pcolormesh(xx, yy, cl_values.T, cmap=plt.cm.magma, vmin=0, vmax=1)
-        #plt.scatter(xx,yy)
+        #plt.pcolormesh(xx, yy, cl_values.T, cmap=plt.cm.magma, vmin=0, vmax=1)
         # axis labels
-        plt.xlabel(xAxisLabel)
-        plt.ylabel(yAxisLabel)
+        #plt.xlabel(xAxisLabel)
+        #plt.ylabel(yAxisLabel)
 
         #x_grid_min = min(Xaxis)
         #HeatMap_Limits = False
@@ -271,6 +271,8 @@ def gen_heatmap(temp):
 
         # Now the overall contour plot -------------------------------------------------------------------------------
         print("Overall contour plot")
+
+
         #fig = plt.figure(figsize=fig_dims)
 
         #ax = fig.add_subplot(1, 1, 1)
@@ -369,23 +371,38 @@ def gen_heatmap(temp):
         #plt.savefig("./plots/contur.pdf")
         #plt.savefig("./plots/contur.png")
 
-        fig_html = mpld3.fig_to_html(mpl_figure)
-        return fig_html
+
 
         # Now the colour bar key --------------------------------------------------------------------------
-        #fig = plt.figure(figsize=[fig_dims[0] * 2, 0.5])
-        #ax = fig.add_subplot(1, 1, 1)
+
+        #cbar = plt.figure(1, figsize=[fig_dims[0] * 2, 0.5])
+
+        #ax = cbar.add_subplot(1, 1, 1)
+
         #import matplotlib as mpl
 
         #norm = mpl.colors.Normalize(vmin=0, vmax=1)
-        #cb = mpl.colorbar.ColorbarBase(ax, cmap=plt.cm.magma, orientation='horizontal', norm=norm)
-        #cb.set_label("CL of exclusion")
-        #fig.tight_layout(pad=0.1)
+        #mpl.colorbar.ColorbarBase(ax, cmap=plt.cm.magma, orientation='horizontal', norm=norm)
+        #cbar.set_label("CL of exclusion")
+        #cbar.tight_layout(pad=0.1)
         #plt.savefig('./plots/colorbarkey.pdf')
         #plt.savefig('./plots/colorbarkey.png')
 
         # close the html file
         #index.write("\n </body> \n")
         #index.close()
+    d = cl_values.T
+
+    def max_value(inputlist):
+        return max([sublist[-1] for sublist in inputlist])
 
 
+
+    p = figure(x_range=(0, max_value(xx)), y_range=(0, max_value(yy)),
+               tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image"),("Contributing Analyses","")])
+
+    # must give a vector of image data for image parameter
+    p.image(image=[d], x=0, y=0, dw=max_value(xx), dh=max_value(yy), palette="Magma256")
+
+    output_file("image.html", title="image.py example")
+    show(p)

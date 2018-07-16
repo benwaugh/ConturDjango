@@ -98,7 +98,7 @@ if __name__ == "__main__":
     if len(db) == 0:
         print("Results object Does not exist, please select an existing results object")
 
-    results_objects = map_header.objects.filter(parent=db.values_list('id',flat=True)[0]).values_list('id',flat=True)
+    results_objects = map_header.objects.filter(parent=db.values_list('name',flat=True)[0]).values_list('tree_id',flat=True)
 
     data = None
 
@@ -175,6 +175,8 @@ for key in depots:
     yy, xx = np.mgrid[min(Yaxis) - dy:max(Yaxis) + 2 * dy:2 * dy, min(Xaxis) - dx:max(Xaxis) + 2 * dx:2 * dx]
 
     cl_values = confLim[:len(contourXaxis), :len(contourYaxis)]
+
+    print(cl_values.T)
 
     # translate from the parameters of the  to something more readable
     fmt = plt.FuncFormatter(xlab)

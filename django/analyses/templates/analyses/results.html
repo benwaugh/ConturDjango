@@ -16,8 +16,8 @@
     </ul>
 
 	<h3>Linked Heatmaps</h3>
-	<ul>
-		<a href="{% url 'heatmap' mh.analyses %}">{{mh.analyses}}
-    </ul>
+
+	<a href="{% url 'produce_heatmap' mh.analyses %}" class="button">View Combined Heatmap</a>
+
 
 <p><a href="{% url 'index' %}">Return to index</a></p>
