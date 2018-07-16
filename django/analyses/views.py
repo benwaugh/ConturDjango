@@ -14,7 +14,7 @@ import json
 
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
-                runcard, results_header
+                runcard, results_header, map_header, map_pickle
 
 from .forms import DocumentForm, DownloadForm
 
@@ -131,12 +131,14 @@ def index(request):
     models_list = BSM_Model.objects.order_by('name')
     keywords_list = Keyword.objects.order_by('key_word')
     runcard_list = runcard.objects.order_by('runcard_name')
+    results_list = results_header.objects.order_by('name')
     context = {
         'analysis_pools' : analysis_pools,
         'analysis_list' : analysis_list,
         'models_list' : models_list,
         'keywords_list': keywords_list,
         'runcard_list':runcard_list,
+        'results_list':results_list
     }
     return render(request, 'analyses/index.html',context)
 
@@ -178,10 +180,21 @@ def keywords_list(request, key_word):
     }
     return render(request, 'analyses/key_word.html', context)
 
-def results_list(request, result):
-    r = get_object_or_404(results_header, pk=result)
+def results(request, name):
+    n = get_object_or_404(results_header, pk=name)
+    map_h = map_header.objects.filter(parent=n)
     context = {
-        'res' : r,
+        'res' : n,
+        'mh':map_h[0],
     }
-    return render(request, 'analyses/result.html', context)
+    return render(request, 'analyses/results.html', context)
+
+def heatmap_display(request, analyses):
+    file = get_object_or_404(map_header, pk=analyses)
+    data = map_pickle.objects.filter(parent=file)
+    context = {
+        'hea' : file,
+        'dat': data,
+    }
+    return render(request, 'analyses/heatmap.html', context)
 

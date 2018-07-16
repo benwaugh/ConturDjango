@@ -186,7 +186,7 @@ class runcard(models.Model):
 
 # Define Modified Preorder Tree Traversal  Structure
 class results_header(MPTTModel):
-    name = models.CharField(max_length=50, unique=True)
+    name = models.CharField(max_length=50, unique=True,primary_key=True)
     runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False,default='')
     mc_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
@@ -311,7 +311,7 @@ class counter(models.Model):
 
 class map_header(MPTTModel):
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='map')
-    analyses = models.CharField(max_length=50)
+    analyses = models.CharField(max_length=50,primary_key=True)
 
 class map_data(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
@@ -326,5 +326,5 @@ class map_data(models.Model):
     isRatio = models.BooleanField()
 
 class map_pickle(models.Model):
-    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
+    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_pickle', blank=False, null=False)
     pickle = PickledObjectField()

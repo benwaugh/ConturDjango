@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^export', views.model_form_download, name='export'),
     url(r'^keyword/(?P<key_word>[_A-Za-z0-9]+)/$', views.keywords_list, name='keyword'),
     url(r'^runcard/(?P<runcard_name>[_A-Za-z0-9]+)/$', views.Runcard, name='runcard'),
-    url(r'^results/(?P<runcard_name>[_A-Za-z0-9]+)/$', views.results_list, name='results'),
+    url(r'^results/(?P<name>[_A-Za-z0-9]+)/$', views.results, name='results'),
+    url(r'^heatmap/(?P<analyses>[_A-Za-z0-9]+)/$', views.heatmap_display, name='heatmap'),
     url(r'^fetch_keywords', views.upload_keywords, name='load_kws'),
 ]

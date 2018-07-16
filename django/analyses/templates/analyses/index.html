@@ -5,9 +5,9 @@
 <h2>Results Objects</h2>
 {% if results_list %}
     <ul>
-    {% for r in results_list %}
+    {% for n in results_list %}
         <li>
-            <a href="{% url 'results' r.name %}">{{ r.name }}</a>
+            <a href="{% url 'results' n.name %}">{{ n.name}}</a>
         </li>
     {% endfor %}
     </ul>

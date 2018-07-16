@@ -1,14 +1,23 @@
+<h1>Results Object: {{res.name}}</h1>
 
-{% if rc.results_table_set.all %}
+	<h3>Runcard Details</h3>
 	<ul>
-    {% for res in rc.results_table_set.all %}
-					<h3>Runcard Name: <a>{{ res.runcard }}</a></h3>
-          </li>
+					<a href="{% url 'runcard' res.runcard %}">
+                    {{ res.runcard }}
+                	</a>
+					<li>
+							MC Generator Version: <a>{{ res.mc_ver }}</a>
+					</li>
+					<li>
+              Contur Version: <a>{{ res.contur_ver }}</a>
+					</li>
 					<p></p>
 
-    {% endfor %}
     </ul>
-{% else %}
-	<p>No results are available.</p>
-{% endif %}
+
+	<h3>Linked Heatmaps</h3>
+	<ul>
+		<a href="{% url 'heatmap' mh.analyses %}">{{mh.analyses}}
+    </ul>
+
 <p><a href="{% url 'index' %}">Return to index</a></p>

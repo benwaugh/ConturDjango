@@ -46,7 +46,6 @@ class RuncardAdmin(ImportExportModelAdmin):
 class ResultsAdmin(ImportExportModelAdmin):
     pass
 
-
 # Register ImportExport model admin for results tree structure
 @admin.register(results_position)
 class ResultPositionAdmin(ImportExportModelAdmin):
