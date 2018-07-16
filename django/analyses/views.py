@@ -10,6 +10,12 @@ from django.core.files.storage import FileSystemStorage
 import os
 import pandas as pd
 import json
+import matplotlib
+matplotlib.use('Agg')
+from matplotlib import pyplot as plt
+import numpy as np
+import mpld3
+
 # Create your views here.
 
 from .models import Analysis, AnalysisPool,\
@@ -191,10 +197,19 @@ def results(request, name):
 
 def heatmap_display(request, analyses):
     file = get_object_or_404(map_header, pk=analyses)
-    data = map_pickle.objects.filter(parent=file)
+    data = map_pickle.objects.filter(parent=file.tree_id).values_list('pickle',flat=True)
+
+    import mpld3
+    from .management.commands.generate_heatmap import gen_heatmap
+
+    mpl_figure = plt.figure(1, figsize=(6, 6))
+
+    fig_html = gen_heatmap(data)
+
     context = {
         'hea' : file,
         'dat': data,
+        'figure': fig_html,
     }
     return render(request, 'analyses/heatmap.html', context)
 
