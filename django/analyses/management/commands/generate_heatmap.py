@@ -119,7 +119,7 @@ def gen_heatmap(temp):
     for key in depots:
 
         cDepot = depots[key]
-        print(cDepot)
+
         cDepot.buildFinal()
 
         confLim[contourXaxis.index(cDepot.ModelParam1)][contourYaxis.index(cDepot.ModelParam2)] = cDepot.conturPoint.CLs
@@ -395,8 +395,6 @@ def gen_heatmap(temp):
 
     def max_value(inputlist):
         return max([sublist[-1] for sublist in inputlist])
-
-
 
     p = figure(x_range=(0, max_value(xx)), y_range=(0, max_value(yy)),
                tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image"),("Contributing Analyses","")])
