@@ -17,7 +17,8 @@ from collections import defaultdict
 import django
 import json
 import mpld3
-from bokeh.plotting import figure, show, output_file
+from bokeh.plotting import figure, show, output_file, ColumnDataSource
+from bokeh.models import HoverTool
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
@@ -116,6 +117,8 @@ def gen_heatmap(temp):
 
     print("Recalculating")
 
+    contributing_analyses = dict()
+    contributing_histos = dict()
     for key in depots:
 
         cDepot = depots[key]
@@ -128,11 +131,45 @@ def gen_heatmap(temp):
 
             confLims[ctp.pools][contourXaxis.index(cDepot.ModelParam1)][
                 contourYaxis.index(cDepot.ModelParam2)] = ctp.CLs
+            a = str(ctp.tags)
+
+            if contourXaxis.index(cDepot.ModelParam1) not in contributing_analyses:
+                contributing_analyses[contourXaxis.index(cDepot.ModelParam1)] = dict()
+                contributing_analyses[contourXaxis.index(cDepot.ModelParam1)][
+                    contourYaxis.index(cDepot.ModelParam2)] = []
+
+            if contourXaxis.index(cDepot.ModelParam1) not in contributing_histos:
+                contributing_histos[contourXaxis.index(cDepot.ModelParam1)] = dict()
+                contributing_histos[contourXaxis.index(cDepot.ModelParam1)][
+                    contourYaxis.index(cDepot.ModelParam2)] = []
+
+
+            if contourYaxis.index(cDepot.ModelParam2) not in contributing_analyses[contourXaxis.index(cDepot.ModelParam1)]:
+                contributing_analyses[contourXaxis.index(cDepot.ModelParam1)][
+                    contourYaxis.index(cDepot.ModelParam2)] = []
+
+            if contourYaxis.index(cDepot.ModelParam2) not in contributing_histos[contourXaxis.index(cDepot.ModelParam1)]:
+                contributing_histos[contourXaxis.index(cDepot.ModelParam1)][
+                    contourYaxis.index(cDepot.ModelParam2)] = []
+
+
+
+
+            for item in a.split(',/'):
+                ana = item.split('/')[0]
+
+                if ana not in contributing_analyses[contourXaxis.index(cDepot.ModelParam1)][contourYaxis.index(cDepot.ModelParam2)] \
+                        and ana is not '':
+                    contributing_analyses[contourXaxis.index(cDepot.ModelParam1)][contourYaxis.index(cDepot.ModelParam2)].append(ana)
+
+            for item in a.split(',/'):
+                    contributing_histos[contourXaxis.index(cDepot.ModelParam1)][contourYaxis.index(cDepot.ModelParam2)].append(item)
+
+
             if ctp.CLs > 0.5 and not ctp.pools in bestPlots:
                 bestPlots[ctp.pools] = ctp.tags + ":" + str(ctp.CLs)
                 if ctp.CLs > 0.5 and not ctp.tags in bestPlots[ctp.pools]:
                     bestPlots[ctp.pools] = ctp.tags + ":" + str(ctp.CLs)
-
 
                         # set up for the plots here.
         print("Setting up plots")
@@ -396,11 +433,46 @@ def gen_heatmap(temp):
     def max_value(inputlist):
         return max([sublist[-1] for sublist in inputlist])
 
+    ca_list = [ [None] * np.shape(d)[1] ] * np.shape(d)[0]
+    i = 0
+    for x in contributing_analyses:
+        j = 0
+        for y in contributing_analyses[x]:
+            ca_list[j][i] = (str(contributing_analyses[x][y]))
+            j = j + 1
+        i = i + 1
+
+
+    hg_list = [[None] * np.shape(d)[1]] * np.shape(d)[0]
+    i = 0
+    for x in contributing_histos:
+        j = 0
+        for y in contributing_histos[x]:
+            if j == 0 and i ==0:
+                hg_list[j][i] = "S"
+            else:
+                hg_list[j][i] = (str(contributing_histos[x][y]))
+            j = j + 1
+        i = i + 1
+    print(hg_list)
+
+    hover = HoverTool(
+        tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image"),("Contributing Analyses","@ca_list"),("Contributing Histograms","@hg_list")]
+    )
+
+    data = ColumnDataSource(
+        dict(
+            image = [d],
+            ca_list = [ca_list],
+            hg_list = [hg_list]
+             )
+    )
+
     p = figure(x_range=(0, max_value(xx)), y_range=(0, max_value(yy)),
-               tooltips=[("x", "$x"), ("y", "$y"), ("value", "@image"),("Contributing Analyses","")])
+               tools=[hover,"crosshair","pan","box_zoom","wheel_zoom","reset","save"])
 
     # must give a vector of image data for image parameter
-    p.image(image=[d], x=0, y=0, dw=max_value(xx), dh=max_value(yy), palette="Magma256")
+    p.image(source=data,image='image' , x=0, y=0, dw=max_value(xx), dh=max_value(yy), palette="Magma256")
 
     output_file("image.html", title="image.py example")
     show(p)

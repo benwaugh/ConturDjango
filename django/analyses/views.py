@@ -20,7 +20,10 @@ import mpld3
 
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
-                runcard, results_header, map_header, map_pickle
+                runcard, results_header, map_header, map_pickle, results_position,\
+                results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
+                histo1_data,profile1_data,overflow_underflow_profile,\
+                overflow_underflow_histo
 
 from .forms import DocumentForm, DownloadForm
 
@@ -189,12 +192,45 @@ def keywords_list(request, key_word):
 def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
+    yoda_list = results_position.objects.filter(parent=n)
     context = {
         'res' : n,
         'mh':map_h[0],
+        'yoda_list':yoda_list
     }
     return render(request, 'analyses/results.html', context)
 
+def positions(request, id):
+    y = get_object_or_404(results_position,pk=id)
+    analyses_list = results_analyses.objects.filter(parent=id)
+    context = {
+        'y':y,
+        'ana_list':analyses_list,
+    }
+    return render(request, 'analyses/positions.html', context)
+
+def ana_data(request, id):
+    details = get_object_or_404(results_analyses,pk=id)
+    counter_list = counter.objects.filter(parent=id)
+    scatter1 = scatter1_data.objects.filter(parent=id)
+    scatter2 = scatter2_data.objects.filter(parent=id)
+    scatter3 = scatter3_data.objects.filter(parent=id)
+    histo1 = histo1_data.objects.filter(parent=id)
+    profile1 = profile1_data.objects.filter(parent=id)
+    overflow_underflow_histogram = overflow_underflow_histo.objects.filter(parent=id)
+    overflow_underflow_prof = overflow_underflow_profile.objects.filter(parent=id)
+    context = {
+        'details':details,
+        'counter_list':counter_list,
+        'scatter1':scatter1,
+        'scatter2':scatter2,
+        'scatter3':scatter3,
+        'histo1':histo1,
+        'profile1':profile1,
+        'ouh':overflow_underflow_histogram,
+        'oup':overflow_underflow_prof,
+    }
+    return render(request, 'analyses/ana_data.html', context)
 
 def heatmap_display(request,analyses):
     file = get_object_or_404(map_header, pk=analyses)

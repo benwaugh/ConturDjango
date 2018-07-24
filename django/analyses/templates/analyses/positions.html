@@ -1,0 +1,17 @@
+<h1>Results Object: {{y.name}}</h1>
+
+	<h3>Yoda Data</h3>
+
+    {% if ana_list %}
+        <ul>
+        {% for a in ana_list %}
+            <li>
+                <a href="{% url 'ana_data' a.id %}">{{ a.name }} :: {{a.xyd}}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No yoda data to display.</p>
+    {% endif %}
+
+<p><a href="{% url 'index' %}">Return to index</a></p>

@@ -164,6 +164,7 @@ class db_upload(object):
 
 
     def upload_positions(self,position,header):
+        print(header)
         upload_pos, created_position = \
             results_position.objects.get_or_create(name=str(position),parent=header)
 

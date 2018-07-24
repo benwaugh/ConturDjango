@@ -19,5 +19,18 @@
 
 	<a href="{% url 'produce_heatmap' mh.analyses %}" class="button">View Combined Heatmap</a>
 
+	<h3>Yoda Data</h3>
+
+    {% if yoda_list %}
+        <ul>
+        {% for y in yoda_list %}
+            <li>
+                <a href="{% url 'positions' y.id %}">{{ y.name }}</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No yoda data to display.</p>
+    {% endif %}
 
 <p><a href="{% url 'index' %}">Return to index</a></p>

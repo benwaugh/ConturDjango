@@ -198,8 +198,8 @@ class results_header(MPTTModel):
 
 
 class results_position(MPTTModel):
-    name = models.CharField(max_length=50)
-    parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='position')
+    name = models.CharField(max_length=50,unique=False)
+    parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=False, blank=True, related_name='position')
 
     class MPTTMeta:
         order_insertion_by = ['name']

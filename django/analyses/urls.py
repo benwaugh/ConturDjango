@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'^results/(?P<name>[_A-Za-z0-9]+)/$', views.results, name='results'),
     url(r'^fetch_keywords', views.upload_keywords, name='load_kws'),
     url(r'^produce_heatmap/(?P<analyses>[_A-Za-z0-9]+)/$',views.heatmap_display, name='produce_heatmap'),
+    url(r'^positions/(?P<id>[_A-Za-z0-9]+)/$',views.positions, name='positions'),
+    url(r'^ana_data/(?P<id>[_A-Za-z0-9]+)/$',views.ana_data, name='ana_data')
 ]

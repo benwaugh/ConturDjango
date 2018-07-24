@@ -1,0 +1,99 @@
+{% load render_table from django_tables2 %}
+{% load static %}
+
+<h1>Results Object: {{y.name}}</h1>
+
+
+{% if scatter1 %}
+<h2>1D Scatter Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table scatter1 %}
+    </body>
+</html>
+{% endif %}
+
+{% if scatter2 %}
+<h2>2D Scatter Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table scatter2 %}
+    </body>
+</html>
+{% endif %}
+
+{% if scatter3 %}
+<h2>3D Scatter Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table scatter3 %}
+    </body>
+</html>
+{% endif %}
+
+{% if profile1 %}
+<h2>1D Profile Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table profile1 %}
+    </body>
+</html>
+{% endif %}
+
+
+{% if histo1 %}
+<h2>1D Histogram Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table histo1 %}
+    </body>
+</html>
+{% endif %}
+
+
+{% if counter_list %}
+<h2>Counter Data</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table counter_list %}
+    </body>
+</html>
+{% endif %}
+
+
+{% if oup %}
+<h2>Overflow/Underflow Data (Profile)</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table oup %}
+    </body>
+</html>
+{% endif %}
+
+{% if ouh %}
+<h2>Overflow/Underflow Data (Histogram)</h2>
+    <link rel="stylesheet" href="{% static
+'ticket/static/css/screen.css' %}" />
+    </head>
+    <body>
+        {% render_table ouh %}
+    </body>
+</html>
+{% endif %}
+
+
+<p><a href="{% url 'index' %}">Return to index</a></p>
