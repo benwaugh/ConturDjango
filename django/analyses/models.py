@@ -280,7 +280,6 @@ class profile1_data(models.Model):
     numEntries = models.IntegerField(null=True)
 
 
-
 class overflow_underflow_profile(models.Model):
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
@@ -292,6 +291,7 @@ class overflow_underflow_profile(models.Model):
     sumwy2 = models.FloatField(null=True)
     numEntries  = models.IntegerField(null=True)
 
+
 class overflow_underflow_histo(models.Model):
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
@@ -301,15 +301,18 @@ class overflow_underflow_histo(models.Model):
     sumwx2 = models.FloatField(null=True)
     numEntries = models.IntegerField(null=True)
 
+
 class counter(models.Model):
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
     numEntries = models.IntegerField(null=True)
 
+
 class map_header(MPTTModel):
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='map')
     analyses = models.CharField(max_length=50,primary_key=True)
+
 
 class map_data(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
@@ -323,19 +326,23 @@ class map_data(models.Model):
     kev = models.FloatField(null=True)
     isRatio = models.BooleanField()
 
+
 class map_pickle(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_pickle', blank=False, null=False)
     pickle = PickledObjectField()
+
 
 class ufo_objects(models.Model):
     name = models.TextField()
     download_location = models.TextField()
     date_downloaded = models.DateField()
 
+
 class dat_database(models.Model):
     results_object = models.ForeignKey('results_header',models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
     uploaded = models.DateField()
+
 
 class contur_plots(models.Model):
     results_object = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
