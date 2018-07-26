@@ -16,7 +16,6 @@
     <p>No results are available.</p>
 {% endif %}
 
-
 <h2>Runcards</h2>
 {% if runcard_list %}
 <a href="{% url 'export' %}" class="button">Create or Export Run Card</a>
@@ -31,7 +30,10 @@
     <p>No results are available.</p>
 {% endif %}
 
+
+
 <h2>Model scans</h2>
+<a href="{% url 'ufo_home' %}" class="button">Export Model from UFO</a>
 {% if models_list %}
     <ul>
     {% for m in models_list %}

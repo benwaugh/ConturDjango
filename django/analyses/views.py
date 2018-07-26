@@ -7,7 +7,7 @@ from import_export import resources
 from tablib import Dataset
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-import os
+import glob, os, sys
 import pandas as pd
 import json
 import matplotlib
@@ -15,17 +15,18 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import numpy as np
 import mpld3
-
-# Create your views here.
+from datetime import datetime
+import wget
+import tarfile
 
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo
+                overflow_underflow_histo,ufo_objects
 
-from .forms import DocumentForm, DownloadForm
+from .forms import DocumentForm, DownloadForm,UFOForm
 
 
 class export_resource(resources.ModelResource):
@@ -238,5 +239,37 @@ def heatmap_display(request,analyses):
     from .management.commands.generate_heatmap import gen_heatmap
     gen_heatmap(data)
     return redirect(request.META['HTTP_REFERER'])
+
+def ufo_home(request):
+    answer = ''
+    if request.method == 'POST':
+        form = UFOForm(request.POST, request.FILES)
+        name = form['name'].value()
+        link = form['download_location'].value()
+        date = datetime.now()
+        create_record_and_dl(name,link,date)
+    else:
+        form = UFOForm()
+    return render(request, 'analyses/ufo_home.html', {
+        'form': form
+    })
+
+def create_record_and_dl(name,link,date):
+    directory = "analyses/modelUFOs/" + name + "/"
+    #if not os.path.exists(directory):
+    os.makedirs(directory)
+    ufo_record,ufo_created = ufo_objects.objects.get_or_create(name=name,download_location=link,date_downloaded=date)
+    wget.download(link,out=directory)
+
+    sys.path.append(os.path.dirname(os.path.dirname(directory)))
+
+    #os.chdir(directory)
+    for file in glob.glob("*.tgz"):
+        tar = tarfile.open(directory + file)
+        tar.extractall()
+        tar.close()
+        print("here")
+
+
 
 

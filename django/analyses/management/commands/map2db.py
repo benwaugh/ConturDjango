@@ -4,7 +4,6 @@ from argparse import ArgumentParser
 import django
 import sys
 import pickle
-from picklefield.fields import PickledObjectField
 
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
@@ -114,13 +113,8 @@ class db_upload(object):
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Upload Map Data to Database")
-    parser.add_argument('--directory', '-d')
-    parser.add_argument('--runcard', '-r')
+    parser = ArgumentParser(description="Create Yoda File from Database")
+    parser.add_argument('--id', '-i')
     arguments = parser.parse_args()
 
-    files = file_discovery(arguments.directory)
-    map_list = files.file_dict
-    data = store_data(map_list)
-    map_dict = data.map_dict
-    db = db_upload(map_dict, arguments.runcard)
+

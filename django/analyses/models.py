@@ -267,8 +267,6 @@ class histo1_data(models.Model):
     numEntries = models.IntegerField(null=True)
 
 
-
-
 class profile1_data(models.Model):
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xlow = models.FloatField(null=True)
@@ -328,3 +326,19 @@ class map_data(models.Model):
 class map_pickle(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_pickle', blank=False, null=False)
     pickle = PickledObjectField()
+
+class ufo_objects(models.Model):
+    name = models.TextField()
+    download_location = models.TextField()
+    date_downloaded = models.DateField()
+
+class dat_database(models.Model):
+    results_object = models.ForeignKey('results_header',models.DO_NOTHING, db_column='results_header',
+                                       blank=False, null=False)
+    location = models.IntegerField()
+
+class contur_plots(models.Model):
+    results_object = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+                                       blank=False, null=False)
+    location = models.IntegerField()
+

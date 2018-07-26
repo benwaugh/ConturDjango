@@ -281,6 +281,7 @@ class db_upload(object):
 
         if select_dict['Type'] == 'Scatter2D':
             for item_list in datas[0]:
+                print(item_list)
                 upload_scatter, created_scatter = scatter2_data.objects.get_or_create(
                     parent=upload_info,
                     xval=item_list[0],
