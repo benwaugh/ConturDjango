@@ -1,0 +1,44 @@
+# BEGIN PLOT
+DrawOnly=/REF/ATLAS_2013_I1190187/d01-x01-y03 /LHC.yoda/ATLAS_2013_I1190187/d01-x01-y03 /THY/ATLAS_2013_I1190187/d01-x01-y03
+Title=Total fiducial cross-section $WW\to e\nu\mu\nu$
+RatioPlotMode=datamc
+RatioPlotReference=/REF/ATLAS_2013_I1190187/d01-x01-y03
+RatioPlot=1
+LogY=1
+XLabel=$\sqrt{s}$~[GeV]
+MainPlot=1
+YLabel=$\sigma_{WW\to e\nu\mu\nu}$~[fb]
+Legend=1
+RatioPlotYMin=1
+# END PLOT
+
+# BEGIN HISTO1D /REF/ATLAS_2013_I1190187/d01-x01-y03
+IsRef=1
+LineColor=green
+Path=/REF/ATLAS_2013_I1190187/d01-x01-y03
+Title=~
+# xlow	 xhigh	 val	 errminus	 errplus
+6.999500e+03	7.000500e+03	2.623000e+02	1.230000e+01	-1.230000e+01
+# END HISTO1D
+
+
+# BEGIN HISTO1D /REF/ATLAS_2013_I1190187/d01-x01-y03
+ConnectBins=0
+ErrorBars=1
+IsRef=1
+Path=/REF/ATLAS_2013_I1190187/d01-x01-y03
+PolyMarker=*
+Title=Data
+# xlow	 xhigh	 val	 errminus	 errplus
+6.999500e+03	7.000500e+03	2.623000e+02	1.230000e+01	-1.230000e+01
+# END HISTO1D
+
+
+# BEGIN HISTO1D /LHC.yoda/ATLAS_2013_I1190187/d01-x01-y03
+LineColor=red
+Path=/LHC.yoda/ATLAS_2013_I1190187/d01-x01-y03
+Title=~
+# xlow	 xhigh	 val	 errminus	 errplus
+6.999500e+03	7.000500e+03	2.623000e+02	1.230000e+01	-1.230000e+01
+# END HISTO1D
+

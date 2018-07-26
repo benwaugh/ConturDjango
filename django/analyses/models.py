@@ -335,10 +335,10 @@ class ufo_objects(models.Model):
 class dat_database(models.Model):
     results_object = models.ForeignKey('results_header',models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
-    location = models.IntegerField()
+    uploaded = models.DateField()
 
 class contur_plots(models.Model):
     results_object = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
-    location = models.IntegerField()
+    uploaded = models.DateField()
 
