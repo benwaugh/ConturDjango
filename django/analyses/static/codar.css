@@ -1,0 +1,101 @@
+body{
+    width: available;
+    height: available;
+}
+
+.container{
+    width: available;
+    height: available;
+}
+
+.toppane{
+    font-family: Arial, sans-serif;
+    width: 99%;
+    height: 100px;
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tleftpane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    min-width: 350px;
+    height: 400px;
+    min-height: 400px;
+    float: left;
+    background-color: Beige;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}
+
+.tmiddlepane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    min-width: 350px;
+    height: 400px;
+    min-height: 400px;
+    float: left;
+    background-color: Linen;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}
+
+.trightpane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    min-width: 350px;
+    height: 400px;
+    min-height: 400px;
+    float: left;
+    background-color: Linen;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}
+
+.bleftpane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    min-width: 350px;
+    height: available;
+    min-height: 400px;
+    float: left;
+    background-color: Beige;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}
+
+.bmiddlepane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    height: 400px;
+    min-height: 400px;
+    float: left;
+    background-color: MintCream;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}
+
+.brightpane{
+    font-family: Arial, sans-serif;
+    width: 33%;
+    min-width: 350px;
+    height: 400px;
+    min-height: 400px;
+    float: left;
+    background-color: MintCream;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}

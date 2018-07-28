@@ -18,6 +18,6 @@ urlpatterns = [
     url(r'^positions/(?P<id>[_A-Za-z0-9]+)/$',views.positions, name='positions'),
     url(r'^ana_data/(?P<id>[_A-Za-z0-9]+)/$',views.ana_data, name='ana_data'),
     url(r'^ufo_home', views.ufo_home, name='ufo_home'),
-
+    url(r'^download_html/(?P<id>[_A-Za-z0-9]+)', views.download_html, name='html_render'),
 
 ]

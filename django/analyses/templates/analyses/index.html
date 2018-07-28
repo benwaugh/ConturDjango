@@ -1,94 +1,176 @@
 
-<h1>Contur</h1>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-<a href="{% url 'upload' %}" class="button">Upload New Data</a>
+{% load static %}
+    <html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
-<h2>Results Objects</h2>
-{% if results_list %}
-    <ul>
-    {% for n in results_list %}
-        <li>
-            <a href="{% url 'results' n.name %}">{{ n.name}}</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No results are available.</p>
-{% endif %}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
 
-<h2>Runcards</h2>
-{% if runcard_list %}
-<a href="{% url 'export' %}" class="button">Create or Export Run Card</a>
-    <ul>
-    {% for r in runcard_list %}
-        <li>
-            <a href="{% url 'runcard' r.runcard_name %}">{{ r.runcard_name }}</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No results are available.</p>
-{% endif %}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+      <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+      <title>
+        Contur Data and Results (CoDaR)
+      </title>
+      <link rel="shortcut icon" href="/favicon.ico">
+      <link rel="stylesheet" type="text/css" href="{% static 'codar.css' %}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'underscore.js' %}"></script>
+    <script type="text/javascript" src="{% static 'doctools.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <div class="container">
+            <div class="toppane"><h1>Contur Data and Results (CoDaR)</h1></div>
+
+            <div class="tleftpane"><h1><center>BSM Models</center></h1>
+                <center><a href="{% url 'ufo_home' %}" class="button">Create New Model from UFO</a></center>
+                {% if models_list %}
+                    <table>
+                        <tr>
+                        <th>Name</th>
+                            </tr>
+                    {% for m in models_list %}
+                        {% cycle '' '<tr>'%}
+                            <td><a href="{% url 'model' m.name %}">{{ m.name }}</a></td>
+                        {% cycle '' '</tr>' %}
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <p>No model scans are available.</p>
+                {% endif %}
+            </div>
+            <div class="tmiddlepane"><h1><center>Histogram Results [Single]</center></h1>
+
+                    {% if histo_list %}
+                        <table>
+                            <tr>
+                        <th>Name</th>
+                                <th>Model</th>
+                                <th>Creator</th>
+                            </tr>
+                        {% for n in histo_list %}
+                            {% cycle '' '<tr>'%}
+                                <td><a href="{% url 'results' n.name %}">{{ n.name}}</a></td>
+                                <td>{{n.runcard.modelname}}</td>
+                                <td>{{n.author}}</td>
+                            {% cycle '' '</tr>' %}
+                        {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>No results are available.</p>
+                    {% endif %}
+            </div>
+
+            <div class="trightpane"><h1><center>Heatmaps Results [Batch]</center></h1>
+
+                    {% if heatmap_list %}
+                        <table>
+                            <tr>
+                        <th>Name</th>
+                                <th>Model</th>
+                                <th>Creator</th>
+                            </tr>
+                        {% for n in heatmap_list %}
+                            {% cycle '' '<tr>'%}
+                                <td><a href="{% url 'results' n.name %}">{{ n.name}}</a></td>
+                                <td>{{n.runcard.modelname}}</td>
+                                <td>{{n.author}}</td>
+                            {% cycle '' '</tr>' %}
+                        {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>No results are available.</p>
+                    {% endif %}
+
+            </div>
 
 
+            <div class="bleftpane"><h1><center>Runcards</center></h1>
+                {% if runcard_list %}
+                <center><a href="{% url 'export' %}" class="button">Create or Export Run Card</a></center>
+                    <table>
+                        <tr>
+                        <th>Name</th>
+                                <th>Author</th>
+                                <th>Runcard</th>
+                            <th>Date</th>
+                            </tr>
+                    {% for r in runcard_list %}
+                        {% cycle '' '<tr>'%}
+                            <td><a href="{% url 'runcard' r.runcard_name %}">{{ r.runcard_name }}</a></td>
+                            <td>{{r.author}}</td>
+                            <td>{{r.modelname}}</td>
+                            <td>{{r.now}}</td>
+                        {% cycle '' '</tr>' %}
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <p>No results are available.</p>
+                {% endif %}
+            </div>
+            <div class="bmiddlepane"><h1><center>Analyses</center></h1>
+                <center><a href="{% url 'ufo_home' %}" class="button">Upload Analyses</a></center>
+                {% if analysis_list %}
+                    <table>
+                        <tr>
+                        <th>Analysis</th>
+                        <th>Luminosity Factor</th>
+                        <th>Pool</th>
+                        </tr>
+                    {% for ana in analysis_list %}
+                        {% cycle '' '<tr>'%}
+                            <td><a href="{% url 'analysis' ana.anaid %}">{{ ana.anaid }}</a></td>
+                            <td>{{ ana.lumi }}</td> <td>{{ ana.pool }}</td>
+                        {% cycle '' '</tr>' %}
+                    {% endfor %}
+                    </table>
+                {% else %}
+                    <p>No analyses are available.</p>
+                {% endif %}
+            </div>
+            <div class="brightpane"><h1><center>Analyses Pools</center></h1>
+                <center><a href="{% url 'ufo_home' %}" class="button">Upload Analyses</a></center>
+                    {% if analysis_pools %}
+                        <table>
+                            <tr>
+                        <th>Pool</th>
+                        <th>Analysis Count</th>
+                            </tr>
+                        {% for pool in analysis_pools %}
+                            {% cycle '' '<tr>'%}
+                                <td><a href="{% url 'pools' pool.pool %}">{{ pool.pool }}</a></td>
+                                <td>[{{ pool.analysis_set.all | length }}]</td>
+                            {% cycle '' '</tr>' %}
+                        {% endfor %}
+                        </table>
+                    {% else %}
+                        <p>No analyses are available.</p>
+                    {% endif %}
+            </div>
+        </div>
 
-<h2>Model scans</h2>
-<a href="{% url 'ufo_home' %}" class="button">Export Model from UFO</a>
-{% if models_list %}
-    <ul>
-    {% for m in models_list %}
-        <li>
-            <a href="{% url 'model' m.name %}">{{ m.name }}</a>
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No model scans are available.</p>
-{% endif %}
-
-<h2>Analysis pools</h2>
-{% if analysis_pools %}
-    <ul>
-    {% for pool in analysis_pools %}
-        <li>
-        	<a href="{% url 'pools' pool.pool %}">{{ pool.pool }}</a>
-        	[{{ pool.analysis_set.all | length }}]
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No analyses are available.</p>
-{% endif %}
-
-
-
-<h2>Analyses</h2>
-{% if analysis_list %}
-    <ul>
-    {% for ana in analysis_list %}
-        <li>
-            <a href="{% url 'analysis' ana.anaid %}">{{ ana.anaid }}</a>:
-            luminosity factor {{ ana.lumi }} Pool {{ ana.pool }}
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No analyses are available.</p>
-{% endif %}
-
-
-
-<h2>Keywords</h2>
-<a href="{% url 'load_kws' %}" class="button">Fetch Keywords from Inspire</a>
-{% if keywords_list %}
-    <ul>
-    {% for key in keywords_list %}
-        <li>
-            <a href="{% url 'keyword' key.key_word %}">{{ key.key_word }}</a>
-            [{{ key.linked_keys_set.all | length }}]
-        </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No keywords are available.</p>
-{% endif %}

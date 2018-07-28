@@ -1,5 +1,5 @@
 from django import forms
-from .models import Document,Download,ufo_objects
+from .models import Document,Download,ufo_objects,runcard
 
 class DocumentForm(forms.ModelForm):
     class Meta:
@@ -8,8 +8,8 @@ class DocumentForm(forms.ModelForm):
 
 class DownloadForm(forms.ModelForm):
     class Meta:
-        model = Download
-        fields = ('runcard_name','Model','Parameter_Card',)
+        model = runcard
+        fields = ('runcard_name','modelname','param_card','author',)
 
 class UFOForm(forms.ModelForm):
     class Meta:

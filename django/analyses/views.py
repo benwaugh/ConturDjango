@@ -18,13 +18,17 @@ import mpld3
 from datetime import datetime
 import wget
 import tarfile
+from django.template import Template, Context
+from django.views.generic.base import TemplateView
+import os
+import zipfile
 
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo,ufo_objects
+                overflow_underflow_histo,ufo_objects, contur_plots
 
 from .forms import DocumentForm, DownloadForm,UFOForm
 
@@ -141,14 +145,17 @@ def index(request):
     models_list = BSM_Model.objects.order_by('name')
     keywords_list = Keyword.objects.order_by('key_word')
     runcard_list = runcard.objects.order_by('runcard_name')
-    results_list = results_header.objects.order_by('name')
+    #results_list = results_header.objects.order_by('name')
+    histo_list = results_header.objects.filter(type="Histogram").order_by('name')
+    heatmap_list = results_header.objects.filter(type="Heatmap").order_by('name')
     context = {
         'analysis_pools' : analysis_pools,
         'analysis_list' : analysis_list,
         'models_list' : models_list,
         'keywords_list': keywords_list,
         'runcard_list':runcard_list,
-        'results_list':results_list
+        'histo_list':histo_list,
+        'heatmap_list': heatmap_list,
     }
     return render(request, 'analyses/index.html',context)
 
@@ -194,10 +201,12 @@ def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
+    plots = contur_plots.objects.filter(results_object=n)
     context = {
         'res' : n,
-        'mh':map_h[0],
-        'yoda_list':yoda_list
+        'mh':map_h,
+        'yoda_list':yoda_list,
+        'plots':plots
     }
     return render(request, 'analyses/results.html', context)
 
@@ -271,5 +280,21 @@ def create_record_and_dl(name,link,date):
         print("here")
 
 
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        print(dirs)
+        for file in files:
+            ziph.write(os.path.join(root, file))
+
+def download_html(request,id):
+    zipf = zipfile.ZipFile(str(id) + '.zip', 'w', zipfile.ZIP_DEFLATED)
+    CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+    sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
+
+    zipdir(CURRENT_DIR+ '/dat_store/' + id + '/htmlplots/', zipf)
+    #print(os.path.dirname(os.path.abspath(__file__)))
+    zipf.close()
+    return redirect(request.META['HTTP_REFERER'])
 
 

@@ -169,10 +169,10 @@ class Linked_keys(models.Model):
 @python_2_unicode_compatible
 class runcard(models.Model):
     now = datetime.datetime.now()
+    author = models.CharField(max_length = 50, default="Contur User")
     runcard_name = models.CharField(max_length=50, default=now.strftime("%d%m%Y%H%M"),primary_key=True)
     modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='name', blank=False, null=False)
-    param_card = models.FileField(upload_to='analyses/parameters-cards/')
-    UFO_model = models.URLField(default="http://feynrules.irmp.ucl.ac.be/")
+    param_card = models.TextField(max_length=500)
 
     def __str__(self):
         return self.runcard_name
@@ -186,12 +186,13 @@ class runcard(models.Model):
 
 # Define Modified Preorder Tree Traversal  Structure
 class results_header(MPTTModel):
+    author = models.CharField(max_length=50, default="Contur User")
     name = models.CharField(max_length=50, unique=True,primary_key=True)
     runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False,default='')
     mc_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='results')
-
+    type = models.CharField(max_length=200, choices=(('Histogram','Histogram'),('Heatmap','Heatmap')))
     class MPTTMeta:
         order_insertion_by = ['name']
 

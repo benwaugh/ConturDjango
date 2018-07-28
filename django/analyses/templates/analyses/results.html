@@ -16,9 +16,14 @@
     </ul>
 
 	<h3>Linked Heatmaps</h3>
-
-	<a href="{% url 'produce_heatmap' mh.analyses %}" class="button">View Combined Heatmap</a>
-
+    {% if mh %}
+    <ul>
+        {% for m in mh %}
+        <li>
+	        <a href="{% url 'produce_heatmap' m.analyses %}" class="button">View Combined Heatmap</a>
+        </li>
+        {% endfor %}
+    {% endif %}
 	<h3>Yoda Data</h3>
 
     {% if yoda_list %}
@@ -31,6 +36,20 @@
         </ul>
     {% else %}
         <p>No yoda data to display.</p>
+    {% endif %}
+
+    <h3>Linked Histograms</h3>
+
+    {% if plots %}
+        <ul>
+            {% for y in plots %}
+            <li>
+                <a href="{% url 'html_render' y.id%}">{{ y.id }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No histogram data to display.</p>
     {% endif %}
 
 <p><a href="{% url 'index' %}">Return to index</a></p>
