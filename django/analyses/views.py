@@ -254,30 +254,31 @@ def ufo_home(request):
     if request.method == 'POST':
         form = UFOForm(request.POST, request.FILES)
         name = form['name'].value()
-        link = form['download_location'].value()
+        link = form['UFO_Link'].value()
+        author = form['author'].value()
         date = datetime.now()
-        create_record_and_dl(name,link,date)
+        create_record_and_dl(name,link,date,author)
     else:
         form = UFOForm()
     return render(request, 'analyses/ufo_home.html', {
         'form': form
     })
 
-def create_record_and_dl(name,link,date):
+def create_record_and_dl(name,link,date,author):
     directory = "analyses/modelUFOs/" + name + "/"
     #if not os.path.exists(directory):
     os.makedirs(directory)
-    ufo_record,ufo_created = ufo_objects.objects.get_or_create(name=name,download_location=link,date_downloaded=date)
-    wget.download(link,out=directory)
+    ufo_record,ufo_created = ufo_objects.objects.get_or_create(name=name,UFO_Link=link,date_downloaded=date,author=author)
+    #wget.download(link,out=directory)
 
-    sys.path.append(os.path.dirname(os.path.dirname(directory)))
+    #sys.path.append(os.path.dirname(os.path.dirname(directory)))
 
     #os.chdir(directory)
-    for file in glob.glob("*.tgz"):
-        tar = tarfile.open(directory + file)
-        tar.extractall()
-        tar.close()
-        print("here")
+   # for file in glob.glob("*.tgz"):
+   #     tar = tarfile.open(directory + file)
+   #     tar.extractall()
+   #     tar.close()
+   #     print("here")
 
 
 def zipdir(path, ziph):

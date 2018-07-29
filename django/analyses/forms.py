@@ -14,5 +14,5 @@ class DownloadForm(forms.ModelForm):
 class UFOForm(forms.ModelForm):
     class Meta:
         model = ufo_objects
-        fields = ('name','download_location',)
+        fields = ('name','UFO_Link','author')
 

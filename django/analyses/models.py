@@ -334,8 +334,9 @@ class map_pickle(models.Model):
 
 
 class ufo_objects(models.Model):
-    name = models.TextField()
-    download_location = models.TextField()
+    name = models.CharField(max_length=100)
+    UFO_Link = models.TextField()
+    author = models.CharField(max_length=50)
     date_downloaded = models.DateField()
 
 
