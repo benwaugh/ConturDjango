@@ -24,23 +24,23 @@ import os
 import zipfile
 
 from .models import Analysis, AnalysisPool,\
-                BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
+                BSM_Model, used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo,ufo_objects, contur_plots
+                overflow_underflow_histo, contur_plots, ana_file, ana_list
 
 from .forms import DocumentForm, DownloadForm,UFOForm
 
 
-class export_resource(resources.ModelResource):
-    class Meta:
-        model = Used_analyses
-        fields = ('anaid',)
+#class export_resource(resources.ModelResource):
+#    class Meta:
+#        model = Used_analyses
+#        fields = ('anaid',)
 
-class Used_resource(resources.ModelResource):
-    class Meta:
-        model = Used_analyses
+#class Used_resource(resources.ModelResource):
+#    class Meta:
+#        model = Used_analyses
 
 class Ana_resource(resources.ModelResource):
     class Meta:
@@ -55,11 +55,12 @@ class BSM_resource(resources.ModelResource):
         model = BSM_Model
 
 def retrieve_file_data(ana_file):
-    data_set = Used_analyses.objects.all().filter(modelname=ana_file)
-    data = data_set.values('anaid')
-    f = open(str(ana_file) + ".ana","w+")
-    for line in data:
-            f.write("insert Rivet:Analyses 0 " + str(line['anaid']) + "\n")
+    a = 1
+    #data_set = Used_analyses.objects.all().filter(modelname=ana_file)
+    #data = data_set.values('anaid')
+    #f = open(str(ana_file) + ".ana","w+")
+    #for line in data:
+    #        f.write("insert Rivet:Analyses 0 " + str(line['anaid']) + "\n")
 
 def model_form_download(request):
     answer = ''
@@ -118,7 +119,7 @@ def store_file_data():
                 for ana in ana_list:
                     upload_ana,create_a = Analysis.objects.get_or_create(anaid=ana)
                     upload_bsm,create_b = BSM_Model.objects.get_or_create(name=bsm_list[i])
-                    upload_used,create_u = Used_analyses.objects.get_or_create(anaid=upload_ana,modelname=upload_bsm)
+                    upload_used,create_u = ana_file.objects.get_or_create(anaid=upload_ana,modelname=upload_bsm)
                     upload_bsm.save()
                     upload_used.save()
                     upload_ana.save()
@@ -175,8 +176,10 @@ def analysis(request, anaid):
 
 def model(request, name):
     m = get_object_or_404(BSM_Model, pk=name)
+    linked_ana = used_analyses.objects.filter(modelname=m)
     context = {
         'mod' : m,
+        'ana' : linked_ana,
     }
     return render(request, 'analyses/model.html', context)
 
@@ -266,23 +269,23 @@ def ufo_home(request):
 
 def create_record_and_dl(name,link,date,author):
     directory = "analyses/modelUFOs/" + name + "/"
-    #if not os.path.exists(directory):
-    os.makedirs(directory)
-    ufo_record,ufo_created = ufo_objects.objects.get_or_create(name=name,UFO_Link=link,date_downloaded=date,author=author)
-    #wget.download(link,out=directory)
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    ufo_record,ufo_created = BSM_Model.objects.get_or_create(name=name,UFO_Link=link,date_downloaded=date,author=author)
+    ufo_record.save()
+    wget.download(link,out=directory)
 
-    #sys.path.append(os.path.dirname(os.path.dirname(directory)))
+    sys.path.append(os.path.dirname(os.path.dirname(directory)))
 
-    #os.chdir(directory)
-   # for file in glob.glob("*.tgz"):
-   #     tar = tarfile.open(directory + file)
-   #     tar.extractall()
-   #     tar.close()
-   #     print("here")
+    for file in glob.glob(directory + "/*.tgz"):
+        print(file)
+        tar = tarfile.open(file)
+        tar.extractall("analyses/models/" + str(ufo_record.name) + "/")
+        tar.close()
+        print("here")
 
 
 def zipdir(path, ziph):
-    # ziph is zipfile handle
     for root, dirs, files in os.walk(path):
         print(dirs)
         for file in files:
@@ -298,4 +301,36 @@ def download_html(request,id):
     zipf.close()
     return redirect(request.META['HTTP_REFERER'])
 
+def dl_bsm(request,name):
+    a = 1
 
+def add_ana(request,name):
+    ana_file_list = ana_list.objects.all()
+    model = BSM_Model.objects.filter(name=name)
+    context = {
+        'm': model[0],
+        'anas':ana_file_list,
+    }
+    return render(request, 'analyses/add_ana.html', context)
+
+def ana_file_view(request,name):
+    context = {
+    }
+    return render(request, 'analyses/add_ana.html', context)
+
+def add_existing_ana(request,name,modelname):
+    model = BSM_Model.objects.get(name=modelname)
+    ana_file = ana_list.objects.get(ana_name=name)
+    value,created = used_analyses.objects.get_or_create(modelname=model,ana_name=ana_file)
+
+    ana_file_list = used_analyses.objects.all()
+    model = BSM_Model.objects.filter(name=modelname)
+
+    context = {
+        'm': model[0],
+        'anas': ana_file_list,
+    }
+    return render(request,'analyses/add_ana.html',context)
+
+def inside_ana(request,ana_name):
+    a = 1

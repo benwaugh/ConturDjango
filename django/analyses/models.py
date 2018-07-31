@@ -96,7 +96,12 @@ class Whitelist(models.Model):
 
 @python_2_unicode_compatible
 class BSM_Model(models.Model):
-    name = models.TextField(primary_key=True)
+    name = models.CharField(max_length=100,primary_key=True)
+    UFO_Link = models.TextField()
+    author = models.CharField(max_length=50)
+    date_downloaded = models.DateField()
+
+
     def __str__(self):
         return self.name
 
@@ -106,15 +111,34 @@ class BSM_Model(models.Model):
 
 
 @python_2_unicode_compatible
-class Used_analyses(models.Model):
-    modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='name', blank=False, null=False)
-    anaid = models.ForeignKey('Analysis', models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+class used_analyses(models.Model):
+    ana_name = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='ana', blank=False, null=False)
+    modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='model', blank=False, null=False)
+    #anaid = models.ForeignKey('Analysis', models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+
     def __str__(self):
-        return '%s %s' % (self.modelname, self.anaid)
+        return self.ana_name
 
     class Meta:
         db_table = 'used_analyses'
-        unique_together = (('modelname', 'anaid'),)
+        unique_together = (('modelname', 'ana_name'),)
+
+class ana_file(models.Model):
+    linked_ana = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='linked_ana', blank=False, null=False)
+    anaid = models.ForeignKey('Analysis', models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+
+    def __str__(self):
+        return '%s-%s' % (self.linked_ana, self.anaid)
+
+    class Meta:
+        db_table = 'ana_file'
+
+class ana_list(models.Model):
+    ana_name = models.CharField(max_length=50)
+    author = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.ana_name
 
 
 
@@ -331,13 +355,6 @@ class map_data(models.Model):
 class map_pickle(models.Model):
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_pickle', blank=False, null=False)
     pickle = PickledObjectField()
-
-
-class ufo_objects(models.Model):
-    name = models.CharField(max_length=100)
-    UFO_Link = models.TextField()
-    author = models.CharField(max_length=50)
-    date_downloaded = models.DateField()
 
 
 class dat_database(models.Model):

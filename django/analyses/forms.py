@@ -1,5 +1,5 @@
 from django import forms
-from .models import Document,Download,ufo_objects,runcard
+from .models import Document,Download,runcard, BSM_Model
 
 class DocumentForm(forms.ModelForm):
     class Meta:
@@ -13,6 +13,6 @@ class DownloadForm(forms.ModelForm):
 
 class UFOForm(forms.ModelForm):
     class Meta:
-        model = ufo_objects
+        model = BSM_Model
         fields = ('name','UFO_Link','author')
 

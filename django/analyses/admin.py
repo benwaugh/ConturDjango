@@ -5,14 +5,13 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 # Register your models here.
 from .models import Analysis, AnalysisPool,\
-                BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
+                BSM_Model, used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, results_position, results_analyses, \
                 scatter3_data,scatter2_data,scatter1_data,histo1_data,\
                 profile1_data,overflow_underflow_histo,overflow_underflow_profile,\
-                counter
+                counter, ana_file, ana_list
 
 # Register models with import-export instead of basic django functionality
-
 
 @admin.register(Analysis)
 class AnalysisAdmin(ImportExportModelAdmin):
@@ -26,8 +25,16 @@ class AnalysisPoolAdmin(ImportExportModelAdmin):
 class BSM_ModelAdmin(ImportExportModelAdmin):
     pass
 
-@admin.register(Used_analyses)
-class Used_analysesAdmin(ImportExportModelAdmin):
+@admin.register(used_analyses)
+class used_analysesAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(ana_file)
+class ana_fileAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(ana_list)
+class ana_listAdmin(ImportExportModelAdmin):
     pass
 
 @admin.register(Linked_keys)
