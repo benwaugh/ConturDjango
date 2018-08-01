@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mptt',
     'django_tables2',
+    'django_select2',
 ]
 
 MIDDLEWARE = [

@@ -61,7 +61,7 @@ tr:nth-child(even) {
                             </tr>
                     {% for m in ana %}
                         {% cycle '' '<tr>'%}
-                            <td><a href="{% url 'ana_file' m.ana_name %}">{{ m.ana_name }}</a></td>
+                            <td><a href="{% url 'inside_ana' m.ana_name %}">{{ m.ana_name }}</a></td>
                         {% cycle '' '</tr>' %}
                     {% endfor %}
                     </table>

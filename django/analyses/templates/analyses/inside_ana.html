@@ -27,7 +27,7 @@ tr:nth-child(even) {
         Contur Results and Data (CoDaR)
       </title>
       <link rel="shortcut icon" href="/favicon.ico">
-      <link rel="stylesheet" type="text/css" href="{% static 'corad_page.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'corad_data.css' %}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -43,25 +43,20 @@ tr:nth-child(even) {
     <script type="text/javascript" src="{% static 'doctools.js' %}"></script>
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
-        <div class="container">
-            <div class="toppane"><h1>BSM Model: {{mod.name}}</h1></div>
+      <div class="container">
+            <div class="toppane"><h1>{{n.ana_name}}</h1></div>
 
-            <div class="tleftpane"><h1><center>Details</center></h1>
-                {% if mod %}
-                    <h3>UFO Link:</h3> {{mod.UFO_Link}}
-                    <h3>Author:</h3> {{mod.author}}
-                    <h3>Date Loaded:</h3>  {{mod.date_downloaded}}
-                {% endif %}
-            </div>
-            <div class="tmiddlepane"><h1><center>Linked Ana Files</center></h1>
-                {% if ana %}
+            <div class="tmiddlepane"><h1><center>Analyses</center></h1>
+                {% if anas %}
                     <table>
                         <tr>
-                        <th>Name</th>
-                            </tr>
-                    {% for m in ana %}
+                            <th>Name</th>
+                            <th>Pool</th>
+                        </tr>
+                    {% for m in anas %}
                         {% cycle '' '<tr>'%}
-                            <td><a href="{% url 'ana_file' m.ana_name %}">{{ m.ana_name }}</a></td>
+                            <td><a href="{% url 'analysis' m.anaid %}">{{ m.anaid }}</a></td>
+                            <td><a href="{% url 'pools' m.anaid.pool %}">{{ m.anaid.pool }}</a></td>
                         {% cycle '' '</tr>' %}
                     {% endfor %}
                     </table>
@@ -70,12 +65,7 @@ tr:nth-child(even) {
                 {% endif %}
 
             </div>
-
-            <div class="trightpane"><h1><center>Operations</center></h1>
-                <center><a href="{% url 'dl_bsm' mod.name %}" class="button">Download Model</a></center>
-                <center><a href="{% url 'add_ana' mod.name %}" class="button">Link .ana to Model</a></center>
-            </div>
-        </div>
+      </div>
 
 
 

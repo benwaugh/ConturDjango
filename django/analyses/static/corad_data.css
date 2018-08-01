@@ -1,0 +1,30 @@
+body{
+    width: available;
+    height: available;
+}
+
+.container{
+    width: available;
+    height: available;
+}
+
+.toppane{
+    font-family: Arial, sans-serif;
+    width: 99%;
+    height: 100px;
+    border-collapse: collapse;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tmiddlepane{
+    font-family: Arial, sans-serif;
+    width: 100%;
+    height: available;
+    float: left;
+    background-color: MintCream;
+    border-collapse: collapse;
+    border-style: solid;
+    border-width: 1px;
+    overflow: scroll;
+}

@@ -30,7 +30,7 @@ from .models import Analysis, AnalysisPool,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
                 overflow_underflow_histo, contur_plots, ana_file, ana_list
 
-from .forms import DocumentForm, DownloadForm,UFOForm
+from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm
 
 
 #class export_resource(resources.ModelResource):
@@ -333,4 +333,41 @@ def add_existing_ana(request,name,modelname):
     return render(request,'analyses/add_ana.html',context)
 
 def inside_ana(request,ana_name):
-    a = 1
+    linked_ana = ana_list.objects.get(ana_name=ana_name)
+    ana_file_list = ana_file.objects.filter(linked_ana=linked_ana)
+    context = {
+        'anas':ana_file_list,
+        'n':linked_ana,
+    }
+    return render(request, 'analyses/inside_ana.html', context)
+
+def new_ana(request,name):
+    BSM_instance = BSM_Model.objects.get(name=name)
+    if request.method == 'POST':
+        form = AnalysesForm(request.POST, request.FILES)
+        ana_name = form['name'].value()
+        author = form['author'].value()
+
+        list_object,list_created = ana_list.objects.get_or_create(ana_name=ana_name,author=author)
+
+
+        for analyses in form['analyses']:
+            if 'checked' in analyses.tag():
+                analyses = analyses.choice_label
+                ana_object = Analysis.objects.get(anaid=analyses)
+
+                ana_object,ana_created = ana_file.objects.get_or_create(linked_ana=list_object,anaid=ana_object)
+
+        print(name)
+
+        used_analyses.objects.get_or_create(ana_name=list_object,modelname=BSM_instance)
+
+    else:
+        form = AnalysesForm()
+
+
+
+    return render(request, 'analyses/new_ana.html', {
+        'form': form,
+        'm':BSM_instance
+    })
