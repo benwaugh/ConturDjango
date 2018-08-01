@@ -22,6 +22,7 @@ from django.template import Template, Context
 from django.views.generic.base import TemplateView
 import os
 import zipfile
+from wsgiref.util import FileWrapper
 
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, used_analyses, Document, Keyword, Linked_keys,\
@@ -275,16 +276,6 @@ def create_record_and_dl(name,link,date,author):
     ufo_record.save()
     wget.download(link,out=directory)
 
-    sys.path.append(os.path.dirname(os.path.dirname(directory)))
-
-    for file in glob.glob(directory + "/*.tgz"):
-        print(file)
-        tar = tarfile.open(file)
-        tar.extractall("analyses/models/" + str(ufo_record.name) + "/")
-        tar.close()
-        print("here")
-
-
 def zipdir(path, ziph):
     for root, dirs, files in os.walk(path):
         print(dirs)
@@ -302,7 +293,14 @@ def download_html(request,id):
     return redirect(request.META['HTTP_REFERER'])
 
 def dl_bsm(request,name):
-    a = 1
+    for file in glob.glob("analyses/modelUFOs/" + name + "/*.tgz"):
+        try:
+            wrapper = FileWrapper(open(file, 'rb'))
+            response = HttpResponse(wrapper, content_type='application/force-download')
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+            return response
+        except Exception as e:
+            return None
 
 def add_ana(request,name):
     ana_file_list = ana_list.objects.all()
@@ -371,3 +369,24 @@ def new_ana(request,name):
         'form': form,
         'm':BSM_instance
     })
+
+def write_ana(request,name):
+    ana = ana_list.objects.filter(ana_name=name)
+    data = ana_file.objects.filter(linked_ana=ana[0]).values_list('anaid')
+
+
+    f = open("analyses/tmp/" + str(name) + ".ana","w+")
+    for analyses in data:
+        line = analyses[0]
+        f.write("insert Rivet:Analyses 0 " + line + "\n")
+    f.close()
+
+    try:
+        wrapper = FileWrapper(open("analyses/tmp/"  + str(name) + ".ana" , 'rb'))
+        response = HttpResponse(wrapper, content_type='application/force-download')
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename("analyses/tmp/" + str(name) + ".ana")
+        os.remove("analyses/tmp/" + str(name) + ".ana")
+        return response
+
+    except Exception as e:
+        return None

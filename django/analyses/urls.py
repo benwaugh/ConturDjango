@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^add_existing_ana/(?P<modelname>[_A-Za-z0-9]+)/(?P<name>[_A-Za-z0-9]+)/$', views.add_existing_ana, name='add_existing_ana'),
     url(r'^inside_ana/(?P<ana_name>[_A-Za-z0-9]+)/$', views.inside_ana, name='inside_ana'),
     url(r'^new_ana/(?P<name>[_A-Za-z0-9]+)/$', views.new_ana, name='new_ana'),
-
+    url(r'^write_ana/(?P<name>[_A-Za-z0-9]+)/$', views.write_ana, name='write_ana'),
 ]
