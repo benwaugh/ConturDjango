@@ -154,14 +154,7 @@ class Download(models.Model):
 
 @python_2_unicode_compatible
 class Document(models.Model):
-    UPLOAD_CHOICES = (
-    ('Analyses','Analyses'),
-    ('Analyses_Pool', 'Analyses Pool'),
-    ('BSM_Model','BSM Model'),
-    )
-    upload_type = models.CharField(max_length=20, choices=UPLOAD_CHOICES, default='Analyses')
-    upload_file = models.FileField(upload_to='analyses/temp/',default='')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+    a = 1
 
 
 

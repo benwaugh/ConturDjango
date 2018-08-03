@@ -111,13 +111,14 @@ tr:nth-child(even) {
 
 
             <div class="bleftpane"><h1><center>Runcards</center></h1>
-                {% if runcard_list %}
                 <center><a href="{% url 'export' %}" class="button">Create or Export Run Card</a></center>
+                {% if runcard_list %}
+
                     <table>
                         <tr>
                         <th>Name</th>
                                 <th>Author</th>
-                                <th>Runcard</th>
+                                <th>Model</th>
                             <th>Date</th>
                             </tr>
                     {% for r in runcard_list %}
@@ -134,7 +135,7 @@ tr:nth-child(even) {
                 {% endif %}
             </div>
             <div class="bmiddlepane"><h1><center>Analyses</center></h1>
-                <center><a href="{% url 'ufo_home' %}" class="button">Upload Analyses</a></center>
+                <center><a href="{% url 'upload' %}" class="button">Upload Analyses</a></center>
                 {% if analysis_list %}
                     <table>
                         <tr>
@@ -154,7 +155,7 @@ tr:nth-child(even) {
                 {% endif %}
             </div>
             <div class="brightpane"><h1><center>Analyses Pools</center></h1>
-                <center><a href="{% url 'ufo_home' %}" class="button">Upload Analyses</a></center>
+                    <center><a href="{% url 'pool_input' %}" class="button">New Pool</a></center>
                     {% if analysis_pools %}
                         <table>
                             <tr>

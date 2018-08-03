@@ -31,7 +31,7 @@ from .models import Analysis, AnalysisPool,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
                 overflow_underflow_histo, contur_plots, ana_file, ana_list
 
-from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm
+from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm
 
 
 #class export_resource(resources.ModelResource):
@@ -67,7 +67,14 @@ def model_form_download(request):
     answer = ''
     if request.method == 'POST':
         form = DownloadForm(request.POST, request.FILES)
-        answer = form['Model'].value()
+        runcard_name = form['runcard_name'].value()
+        modelname = form['modelname'].value()
+        BSM_instance = BSM_Model.objects.filter(name=modelname)[0]
+
+        param_card = form['param_card'].value()
+        author = form['author'].value()
+        runcard_object, runcard_created = runcard.objects.get_or_create(
+            runcard_name=runcard_name,modelname=BSM_instance,param_card=param_card,author=author)
     else:
         form = DownloadForm()
     return render(request, 'analyses/model_form_download.html', {
@@ -136,8 +143,19 @@ def model_form_upload(request):
     else:
         form = DocumentForm()
 
-    store_file_data()
     return render(request, 'analyses/model_form_upload.html', {
+        'form': form
+    })
+
+def pool_form(request):
+    if request.method == 'POST':
+        form = PoolForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = PoolForm()
+
+    return render(request, 'analyses/pool_form.html', {
         'form': form
     })
 
@@ -186,8 +204,12 @@ def model(request, name):
 
 def Runcard(request, runcard_name):
     r = get_object_or_404(runcard, pk=runcard_name)
+    m = BSM_Model.objects.filter(name=r.modelname)
+    anas = used_analyses.objects.filter(modelname__in=m)
     context = {
         'rc' : r,
+        'm':m[0],
+        'anas':anas
     }
     return render(request, 'analyses/runcard.html', context)
 

@@ -1,11 +1,16 @@
 from django import forms
-from .models import Document,Download,runcard, BSM_Model,Analysis
+from .models import Download,runcard, BSM_Model,Analysis,AnalysisPool
 
 
 class DocumentForm(forms.ModelForm):
     class Meta:
-        model = Document
-        fields = ('upload_file',)
+        model = Analysis
+        fields = ('anaid','lumi','pool',)
+
+class PoolForm(forms.ModelForm):
+    class Meta:
+        model = AnalysisPool
+        fields = ('pool',)
 
 class DownloadForm(forms.ModelForm):
     class Meta:
