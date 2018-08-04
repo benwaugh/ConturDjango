@@ -1,0 +1,166 @@
+<html>
+<head>
+<title>Contur Plots: Constraints On New Theories Using Rivet &ndash; CMS_2013_I1224539_WJET</title>
+<style>
+      html { font-family: sans-serif; }
+      img { border: 0; }
+      a { text-decoration: none; font-weight: bold; }
+    </style>
+            <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [["$","$"]]}
+        });
+        </script>
+        <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        </head>
+<body>
+<h3>CMS_2013_I1224539_WJET</h3>
+<p><a href="../index.html">Back to index</a></p>
+<p>
+  Measurements of the mass spectra of the jets in dijet and $W/Z$+jet events from proton--proton collisions at a centre-of-mass energy of 7 TeV using a data sample of integrated luminosity of 5 fb$^-1$. The jets are reconstructed using the both the anti-$k_T$ algorithm with $R=0.7$ (AK7) and the Cambridge-Aachen algorithm with $R=0.8$ (CA8) and $R=1.2$ (CA12) with several grooming techniques applied (ungroomed, filtered, pruned and trimmed). See the text of the paper for more details. For the dijet events the distributions are presented as a function of the mean Mass of the two leading jets in bins of the mean p_\perp of the two jets.
+</p>
+<div style="float:none; overflow:auto; width:100%">
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d52-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d52-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d52-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d52-x01-y01"><a href="CMS_2013_I1224539_WJET_d52-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d52-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d53-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d53-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d53-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d53-x01-y01"><a href="CMS_2013_I1224539_WJET_d53-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d53-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d54-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d54-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d54-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d54-x01-y01"><a href="CMS_2013_I1224539_WJET_d54-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d54-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d55-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d55-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d55-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d55-x01-y01"><a href="CMS_2013_I1224539_WJET_d55-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d55-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d56-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d56-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d56-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d56-x01-y01"><a href="CMS_2013_I1224539_WJET_d56-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d56-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d57-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d57-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d57-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d57-x01-y01"><a href="CMS_2013_I1224539_WJET_d57-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d57-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d58-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d58-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d58-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d58-x01-y01"><a href="CMS_2013_I1224539_WJET_d58-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d58-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d59-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d59-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d59-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d59-x01-y01"><a href="CMS_2013_I1224539_WJET_d59-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d59-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d60-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d60-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d60-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d60-x01-y01"><a href="CMS_2013_I1224539_WJET_d60-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d60-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d61-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d61-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d61-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d61-x01-y01"><a href="CMS_2013_I1224539_WJET_d61-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d61-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d62-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d62-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d62-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d62-x01-y01"><a href="CMS_2013_I1224539_WJET_d62-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d62-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d63-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d63-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d63-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d63-x01-y01"><a href="CMS_2013_I1224539_WJET_d63-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d63-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d64-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d64-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d64-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d64-x01-y01"><a href="CMS_2013_I1224539_WJET_d64-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d64-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d65-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d65-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d65-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d65-x01-y01"><a href="CMS_2013_I1224539_WJET_d65-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d65-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d66-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d66-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d66-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d66-x01-y01"><a href="CMS_2013_I1224539_WJET_d66-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d66-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d67-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d67-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d67-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d67-x01-y01"><a href="CMS_2013_I1224539_WJET_d67-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d67-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d68-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d68-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d68-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d68-x01-y01"><a href="CMS_2013_I1224539_WJET_d68-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d68-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d69-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d69-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d69-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d69-x01-y01"><a href="CMS_2013_I1224539_WJET_d69-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d69-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d70-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d70-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d70-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d70-x01-y01"><a href="CMS_2013_I1224539_WJET_d70-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d70-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d71-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d71-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d71-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d71-x01-y01"><a href="CMS_2013_I1224539_WJET_d71-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d71-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d72-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d72-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d72-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d72-x01-y01"><a href="CMS_2013_I1224539_WJET_d72-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d72-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d73-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d73-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d73-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d73-x01-y01"><a href="CMS_2013_I1224539_WJET_d73-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d73-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d74-x01-y01">&#9875;</a><a href="CMS_2013_I1224539_WJET_d74-x01-y01.dat">&#8984</a> CMS_2013_I1224539_WJET_d74-x01-y01:<br/>
+    <a name="CMS_2013_I1224539_WJET-CMS_2013_I1224539_WJET_d74-x01-y01"><a href="CMS_2013_I1224539_WJET_d74-x01-y01.pdf">
+      <img src="CMS_2013_I1224539_WJET_d74-x01-y01.png">
+    </a></a>
+  </div>
+</div>
+<div style="float:none"><p>Generated at Thursday, 26. July 2018 02:46PM</p>
+</body>
+</html></div>

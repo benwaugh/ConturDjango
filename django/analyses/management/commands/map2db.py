@@ -12,7 +12,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(CURRENT_DIR))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
-from analyses.models import map_data, runcard, results_header, map_header, map_pickle
+from analyses.models import runcard, results_header, map_header, map_pickle
 
 class file_discovery(object):
 
@@ -51,6 +51,9 @@ class store_data(object):
         for file_name in self.file_dict:
             print(file_name)
             self.file_id = file_name.split("/")[-1]
+            if str(self.file_id) == ".map":
+                self.file_id = "heatmap"
+
             with open(file_name, 'r+b') as myfile:
                 data = pickle.load(myfile)
                 print(data)
@@ -113,8 +116,14 @@ class db_upload(object):
 
 
 if __name__ == "__main__":
-    parser = ArgumentParser(description="Create Yoda File from Database")
-    parser.add_argument('--id', '-i')
+    parser = ArgumentParser(description="Upload Map Data to Database")
+    parser.add_argument('--directory', '-d')
+    parser.add_argument('--runcard', '-r')
     arguments = parser.parse_args()
+    files = file_discovery(arguments.directory)
+    map_list = files.file_dict
+    data = store_data(map_list)
+    map_dict = data.map_dict
+    db = db_upload(map_dict, arguments.runcard)
 
 

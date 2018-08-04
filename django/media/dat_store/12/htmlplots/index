@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>Contur Plots: Constraints On New Theories Using Rivet &ndash; ATLAS_2016_I1502620_Z_EL</title>
+<style>
+      html { font-family: sans-serif; }
+      img { border: 0; }
+      a { text-decoration: none; font-weight: bold; }
+    </style>
+            <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [["$","$"]]}
+        });
+        </script>
+        <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        </head>
+<body>
+<h3>ATLAS_2016_I1502620_Z_EL</h3>
+<p><a href="../index.html">Back to index</a></p>
+<p>
+  High-precision measurements by the ATLAS Collaboration are presented of inclusive $W^+\to\ell^+$, $W^-\to\ell^-$, $Z/\gamma^\ast\to\ell\ell$ ($\ell=e,\mu$) Drell-Yan production cross sections at the LHC. The data were collected in proton-proton collisions at $\sqrt{s}=7$ TeV with an integrated luminosity of 4.6 fb${}^{-1}$. Differential $W^+$ and $W^-$ cross sections are measured in a lepton pseudorapidity range $|\eta_\ell| &lt; 2.5$. Differential $Z/\gamma^\ast$ cross sections are measured as a function of the absolute dilepton rapidity, for $|y_{\ell\ell}| &lt; 3.6$, for three intervals of dilepton mass, $m_{\ell\ell}$, extending from 46 to 150 GeV. The integrated and differential electron- and muon-channel cross sections are combined and compared to theoretical predictions using recent sets of parton distribution functions. The data, together with the final inclusive $e^\pm p$ scattering cross-section data from H1 and ZEUS, are interpreted in a next-to-next-to-leading-order QCD analysis, and a new set of parton distribution functions, ATLAS-epWZ16, is obtained. The ratio of strange-to-light sea-quark densities in the proton is determined more accurately than in previous determinations based on collider data only, and is established to be close to unity in the sensitivity range of the data. A new measurement of the CKM matrix element $|V_{cs}|$ is also provided. N.B.: Use ATLAS_2016_I1502620_Z_EL and ATLAS_2016_I1502620_Z_MU to specify the decay channel directly.
+</p>
+<div style="float:none; overflow:auto; width:100%">
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d11-x01-y01">&#9875;</a><a href="ATLAS_2016_I1502620_Z_EL_d11-x01-y01.dat">&#8984</a> ATLAS_2016_I1502620_Z_EL_d11-x01-y01:<br/>
+    <a name="ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d11-x01-y01"><a href="ATLAS_2016_I1502620_Z_EL_d11-x01-y01.pdf">
+      <img src="ATLAS_2016_I1502620_Z_EL_d11-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d12-x01-y01">&#9875;</a><a href="ATLAS_2016_I1502620_Z_EL_d12-x01-y01.dat">&#8984</a> ATLAS_2016_I1502620_Z_EL_d12-x01-y01:<br/>
+    <a name="ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d12-x01-y01"><a href="ATLAS_2016_I1502620_Z_EL_d12-x01-y01.pdf">
+      <img src="ATLAS_2016_I1502620_Z_EL_d12-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d13-x01-y01">&#9875;</a><a href="ATLAS_2016_I1502620_Z_EL_d13-x01-y01.dat">&#8984</a> ATLAS_2016_I1502620_Z_EL_d13-x01-y01:<br/>
+    <a name="ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d13-x01-y01"><a href="ATLAS_2016_I1502620_Z_EL_d13-x01-y01.pdf">
+      <img src="ATLAS_2016_I1502620_Z_EL_d13-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d14-x01-y01">&#9875;</a><a href="ATLAS_2016_I1502620_Z_EL_d14-x01-y01.dat">&#8984</a> ATLAS_2016_I1502620_Z_EL_d14-x01-y01:<br/>
+    <a name="ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d14-x01-y01"><a href="ATLAS_2016_I1502620_Z_EL_d14-x01-y01.pdf">
+      <img src="ATLAS_2016_I1502620_Z_EL_d14-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d15-x01-y01">&#9875;</a><a href="ATLAS_2016_I1502620_Z_EL_d15-x01-y01.dat">&#8984</a> ATLAS_2016_I1502620_Z_EL_d15-x01-y01:<br/>
+    <a name="ATLAS_2016_I1502620_Z_EL-ATLAS_2016_I1502620_Z_EL_d15-x01-y01"><a href="ATLAS_2016_I1502620_Z_EL_d15-x01-y01.pdf">
+      <img src="ATLAS_2016_I1502620_Z_EL_d15-x01-y01.png">
+    </a></a>
+  </div>
+</div>
+<div style="float:none"><p>Generated at Thursday, 26. July 2018 02:46PM</p>
+</body>
+</html></div>

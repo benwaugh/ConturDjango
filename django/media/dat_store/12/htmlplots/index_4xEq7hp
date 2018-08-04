@@ -1,0 +1,46 @@
+<html>
+<head>
+<title>Contur Plots: Constraints On New Theories Using Rivet &ndash; ATLAS_2014_I1288706</title>
+<style>
+      html { font-family: sans-serif; }
+      img { border: 0; }
+      a { text-decoration: none; font-weight: bold; }
+    </style>
+            <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [["$","$"]]}
+        });
+        </script>
+        <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        </head>
+<body>
+<h3>ATLAS_2014_I1288706</h3>
+<p><a href="../index.html">Back to index</a></p>
+<p>
+  Measurements of the differential cross section for the process $Z/\gamma^\ast \rightarrow l$ $(l = e, \mu)$ as a function of dilepton invariant mass in pp collisions at $\sqrt{s} = 7$ TeV. The measurement is performed in the $e$ and $\mu$ channels for invariant masses between 26 GeV and 66 GeV in the fiducial region $p_\text{T}^\text{leading} &gt; 15$ GeV, $p_\text{T}^\text{subleading} &gt; 12$ GeV, $|\eta| &lt; 2.4$ using an integrated luminosity of 1.6 $\text{fb}^{-1}$. The analysis is extended to invariant masses as low as 12 GeV in the muon channel within a fiducal region of $p_\text{T}^\text{leading} &gt; 9$ GeV, $p_\text{T}^\text{subleading} &gt; 6$ GeV, $|\eta| &lt; 2.4$ with 35 $\text{pb}^{-1}$.
+</p>
+<div style="float:none; overflow:auto; width:100%">
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2014_I1288706-ATLAS_2014_I1288706_d01-x01-y01">&#9875;</a><a href="ATLAS_2014_I1288706_d01-x01-y01.dat">&#8984</a> ATLAS_2014_I1288706_d01-x01-y01:<br/>
+    <a name="ATLAS_2014_I1288706-ATLAS_2014_I1288706_d01-x01-y01"><a href="ATLAS_2014_I1288706_d01-x01-y01.pdf">
+      <img src="ATLAS_2014_I1288706_d01-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2014_I1288706-ATLAS_2014_I1288706_d02-x01-y01">&#9875;</a><a href="ATLAS_2014_I1288706_d02-x01-y01.dat">&#8984</a> ATLAS_2014_I1288706_d02-x01-y01:<br/>
+    <a name="ATLAS_2014_I1288706-ATLAS_2014_I1288706_d02-x01-y01"><a href="ATLAS_2014_I1288706_d02-x01-y01.pdf">
+      <img src="ATLAS_2014_I1288706_d02-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2014_I1288706-ATLAS_2014_I1288706_d02-x01-y02">&#9875;</a><a href="ATLAS_2014_I1288706_d02-x01-y02.dat">&#8984</a> ATLAS_2014_I1288706_d02-x01-y02:<br/>
+    <a name="ATLAS_2014_I1288706-ATLAS_2014_I1288706_d02-x01-y02"><a href="ATLAS_2014_I1288706_d02-x01-y02.pdf">
+      <img src="ATLAS_2014_I1288706_d02-x01-y02.png">
+    </a></a>
+  </div>
+</div>
+<div style="float:none"><p>Generated at Thursday, 26. July 2018 02:46PM</p>
+</body>
+</html></div>

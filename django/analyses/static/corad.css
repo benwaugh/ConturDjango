@@ -31,23 +31,10 @@ body{
     overflow: scroll;
 }
 
-.tmiddlepane{
-    font-family: Arial, sans-serif;
-    width: 33%;
-    min-width: 350px;
-    height: 400px;
-    min-height: 400px;
-    float: left;
-    background-color: MintCream;
-    border-collapse: collapse;
-    border-style: solid;
-    border-width: 1px;
-    overflow: scroll;
-}
 
 .trightpane{
     font-family: Arial, sans-serif;
-    width: 33%;
+    width: 66%;
     min-width: 350px;
     height: 400px;
     min-height: 400px;

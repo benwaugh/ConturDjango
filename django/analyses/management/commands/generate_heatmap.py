@@ -27,7 +27,7 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(CURRENT_DIR))))
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
-from analyses.models import map_data, runcard, results_header,map_header,map_pickle
+from analyses.models import runcard, results_header,map_header,map_pickle
 
 pgf_with_rc_fonts = {"pgf.texsystem": "pdflatex"}
 matplotlib.rcParams.update(pgf_with_rc_fonts)

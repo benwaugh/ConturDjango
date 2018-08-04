@@ -1,4 +1,7 @@
-# -*- coding: utf-8 -*-
+# Admin.py: This contains the admin classes for each model.
+# Admin classes allow records to be added at app/admin
+# ImportExportModelAdmin is used instead of vanilla admin class: This allows for multiple uploads/downloads for admin
+
 from __future__ import unicode_literals
 
 from django.contrib import admin
@@ -11,7 +14,7 @@ from .models import Analysis, AnalysisPool,\
                 profile1_data,overflow_underflow_histo,overflow_underflow_profile,\
                 counter, ana_file, ana_list
 
-# Register models with import-export instead of basic django functionality
+
 
 @admin.register(Analysis)
 class AnalysisAdmin(ImportExportModelAdmin):

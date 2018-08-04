@@ -64,38 +64,17 @@ tr:nth-child(even) {
                     <p>No model scans are available.</p>
                 {% endif %}
             </div>
-            <div class="tmiddlepane"><h1><center>Histogram Results [Single]</center></h1>
-
-                    {% if histo_list %}
-                        <table>
-                            <tr>
-                        <th>Name</th>
-                                <th>Model</th>
-                                <th>Creator</th>
-                            </tr>
-                        {% for n in histo_list %}
-                            {% cycle '' '<tr>'%}
-                                <td><a href="{% url 'results' n.name %}">{{ n.name}}</a></td>
-                                <td>{{n.runcard.modelname}}</td>
-                                <td>{{n.author}}</td>
-                            {% cycle '' '</tr>' %}
-                        {% endfor %}
-                        </table>
-                    {% else %}
-                        <p>No results are available.</p>
-                    {% endif %}
-            </div>
 
             <div class="trightpane"><h1><center>Heatmaps Results [Batch]</center></h1>
 
-                    {% if heatmap_list %}
+                    {% if results_list %}
                         <table>
                             <tr>
                         <th>Name</th>
                                 <th>Model</th>
                                 <th>Creator</th>
                             </tr>
-                        {% for n in heatmap_list %}
+                        {% for n in results_list %}
                             {% cycle '' '<tr>'%}
                                 <td><a href="{% url 'results' n.name %}">{{ n.name}}</a></td>
                                 <td>{{n.runcard.modelname}}</td>

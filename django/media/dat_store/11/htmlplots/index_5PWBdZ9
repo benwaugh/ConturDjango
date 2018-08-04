@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Contur Plots: Constraints On New Theories Using Rivet &ndash; ATLAS_2013_I1244522</title>
+<style>
+      html { font-family: sans-serif; }
+      img { border: 0; }
+      a { text-decoration: none; font-weight: bold; }
+    </style>
+            <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [["$","$"]]}
+        });
+        </script>
+        <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        </head>
+<body>
+<h3>ATLAS_2013_I1244522</h3>
+<p><a href="../index.html">Back to index</a></p>
+<p>
+  Measurements of isolated photon plus jet production in $pp$ collisions at a centre-of-mass energy of 7 TeV with the  ATLAS detector at the LHC using an integrated luminosity of $37 \text{pb}^{-1}$. Differential cross sections are presented as functions of photon transverse energy, jet transverse momentum and jet rapidity. In addition, the differential cross sections as functions of the difference between the azimuthal angles of the photon and the jet, the photon-jet invariant mass as well as the scattering angle in the photon-jet centre-of-mass frame have been measured.
+</p>
+<div style="float:none; overflow:auto; width:100%">
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d01-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d01-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d01-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d01-x01-y01"><a href="ATLAS_2013_I1244522_d01-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d01-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d02-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d02-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d02-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d02-x01-y01"><a href="ATLAS_2013_I1244522_d02-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d02-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d03-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d03-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d03-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d03-x01-y01"><a href="ATLAS_2013_I1244522_d03-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d03-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d04-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d04-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d04-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d04-x01-y01"><a href="ATLAS_2013_I1244522_d04-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d04-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d05-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d05-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d05-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d05-x01-y01"><a href="ATLAS_2013_I1244522_d05-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d05-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d06-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d06-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d06-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d06-x01-y01"><a href="ATLAS_2013_I1244522_d06-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d06-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#ATLAS_2013_I1244522-ATLAS_2013_I1244522_d07-x01-y01">&#9875;</a><a href="ATLAS_2013_I1244522_d07-x01-y01.dat">&#8984</a> ATLAS_2013_I1244522_d07-x01-y01:<br/>
+    <a name="ATLAS_2013_I1244522-ATLAS_2013_I1244522_d07-x01-y01"><a href="ATLAS_2013_I1244522_d07-x01-y01.pdf">
+      <img src="ATLAS_2013_I1244522_d07-x01-y01.png">
+    </a></a>
+  </div>
+</div>
+<div style="float:none"><p>Generated at Thursday, 26. July 2018 02:46PM</p>
+</body>
+</html></div>

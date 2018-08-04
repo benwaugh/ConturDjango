@@ -13,7 +13,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
 from analyses.models import Analysis, AnalysisPool,\
-                BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
+                BSM_Model, used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, results_analyses, results_position,\
                 overflow_underflow_histo, profile1_data, histo1_data, scatter1_data,\
                 scatter2_data, scatter3_data, overflow_underflow_profile, counter
@@ -32,7 +32,7 @@ class file_discovery(object):
         self.identify_relevent()
 
     def get_files(self):
-        print(self.dir_path)
+        #print(self.dir_path)
         for filename in glob.iglob(self.dir_path + '/**/*.yoda', recursive=True):
             self.yoda_list.append(filename)
 
@@ -164,7 +164,7 @@ class db_upload(object):
 
 
     def upload_positions(self,position,header):
-        print(header)
+        #(header)
         upload_pos, created_position = \
             results_position.objects.get_or_create(name=str(position),parent=header)
 
@@ -221,7 +221,7 @@ class db_upload(object):
     def upload_data(self,upload_info,select_dict):
         datas = []
         self.i += 1
-        print(self.i)
+        #print(self.i)
 
         for key in select_dict:
             if len(key.split("\t")) > 2:
@@ -281,7 +281,7 @@ class db_upload(object):
 
         if select_dict['Type'] == 'Scatter2D':
             for item_list in datas[0]:
-                print(item_list)
+                #print(item_list)
                 upload_scatter, created_scatter = scatter2_data.objects.get_or_create(
                     parent=upload_info,
                     xval=item_list[0],

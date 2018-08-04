@@ -29,7 +29,7 @@ from .models import Analysis, AnalysisPool,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo, contur_plots, ana_file, ana_list
+                overflow_underflow_histo, histo_header, ana_file, ana_list
 
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm
 
@@ -166,16 +166,14 @@ def index(request):
     keywords_list = Keyword.objects.order_by('key_word')
     runcard_list = runcard.objects.order_by('runcard_name')
     #results_list = results_header.objects.order_by('name')
-    histo_list = results_header.objects.filter(type="Histogram").order_by('name')
-    heatmap_list = results_header.objects.filter(type="Heatmap").order_by('name')
+    results_list = results_header.objects.order_by('name')
     context = {
         'analysis_pools' : analysis_pools,
         'analysis_list' : analysis_list,
         'models_list' : models_list,
         'keywords_list': keywords_list,
         'runcard_list':runcard_list,
-        'histo_list':histo_list,
-        'heatmap_list': heatmap_list,
+        'results_list':results_list,
     }
     return render(request, 'analyses/index.html',context)
 
@@ -227,7 +225,7 @@ def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
-    plots = contur_plots.objects.filter(results_object=n)
+    plots = histo_header.objects.filter(results_object=n)
     context = {
         'res' : n,
         'mh':map_h,
@@ -269,8 +267,10 @@ def ana_data(request, id):
     return render(request, 'analyses/ana_data.html', context)
 
 def heatmap_display(request,analyses):
-    file = get_object_or_404(map_header, pk=analyses)
-    data = map_pickle.objects.filter(parent=file.tree_id).values_list('pickle',flat=True)
+    file = map_header.objects.get(analyses=analyses)
+
+    data = map_pickle.objects.filter(parent=file.id).values_list('pickle',flat=True)
+    print(data)
     from .management.commands.generate_heatmap import gen_heatmap
     gen_heatmap(data)
     return redirect(request.META['HTTP_REFERER'])

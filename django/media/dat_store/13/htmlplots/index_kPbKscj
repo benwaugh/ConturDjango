@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Contur Plots: Constraints On New Theories Using Rivet &ndash; CMS_2015_I1310737</title>
+<style>
+      html { font-family: sans-serif; }
+      img { border: 0; }
+      a { text-decoration: none; font-weight: bold; }
+    </style>
+            <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          tex2jax: {inlineMath: [["$","$"]]}
+        });
+        </script>
+        <script type="text/javascript"
+          src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        </head>
+<body>
+<h3>CMS_2015_I1310737</h3>
+<p><a href="../index.html">Back to index</a></p>
+<p>
+  Measurements of differential cross sections are presented for the production of a Z boson and at least one hadronic jet in proton-proton collisions at $\sqrt{s}=7$ TeV, recorded by the CMS detector, using a data sample corresponding to an integrated luminosity of 4.9 $\text{fb}^{-1}$. The jet multiplicity distribution is measured for up to six jets. The differential cross sections are measured as a function of jet transverse momentum and pseudorapidity for the four highest transverse momentum jets. The distribution of the scalar sum of jet transverse momenta is also measured as a function of the jet multiplicity. The measurements are compared with theoretical predictions at leading and next-to-leading order in perturbative QCD.
+Cuts: First two leading electrons or muons with $p_T &gt; 20$ GeV and $|\eta| &lt; 2.4$ Dilepton invariant mass in the [71,111] GeV range Jets $p_T &gt; 30$ GeV and $|\eta| &lt; 2.4$ $\Delta{R}($lepton,jet$) &gt; 0.5$
+</p>
+<div style="float:none; overflow:auto; width:100%">
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d01-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d01-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d01-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d01-x01-y01"><a href="CMS_2015_I1310737_d01-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d01-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d02-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d02-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d02-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d02-x01-y01"><a href="CMS_2015_I1310737_d02-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d02-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d03-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d03-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d03-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d03-x01-y01"><a href="CMS_2015_I1310737_d03-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d03-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d04-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d04-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d04-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d04-x01-y01"><a href="CMS_2015_I1310737_d04-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d04-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d05-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d05-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d05-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d05-x01-y01"><a href="CMS_2015_I1310737_d05-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d05-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d06-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d06-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d06-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d06-x01-y01"><a href="CMS_2015_I1310737_d06-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d06-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d07-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d07-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d07-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d07-x01-y01"><a href="CMS_2015_I1310737_d07-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d07-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d08-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d08-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d08-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d08-x01-y01"><a href="CMS_2015_I1310737_d08-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d08-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d09-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d09-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d09-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d09-x01-y01"><a href="CMS_2015_I1310737_d09-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d09-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d10-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d10-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d10-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d10-x01-y01"><a href="CMS_2015_I1310737_d10-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d10-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d11-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d11-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d11-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d11-x01-y01"><a href="CMS_2015_I1310737_d11-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d11-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d12-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d12-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d12-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d12-x01-y01"><a href="CMS_2015_I1310737_d12-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d12-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d13-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d13-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d13-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d13-x01-y01"><a href="CMS_2015_I1310737_d13-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d13-x01-y01.png">
+    </a></a>
+  </div>
+  <div style="float:left; font-size:smaller; font-weight:bold;">
+    <a href="#CMS_2015_I1310737-CMS_2015_I1310737_d14-x01-y01">&#9875;</a><a href="CMS_2015_I1310737_d14-x01-y01.dat">&#8984</a> CMS_2015_I1310737_d14-x01-y01:<br/>
+    <a name="CMS_2015_I1310737-CMS_2015_I1310737_d14-x01-y01"><a href="CMS_2015_I1310737_d14-x01-y01.pdf">
+      <img src="CMS_2015_I1310737_d14-x01-y01.png">
+    </a></a>
+  </div>
+</div>
+<div style="float:none"><p>Generated at Thursday, 26. July 2018 02:46PM</p>
+</body>
+</html></div>
