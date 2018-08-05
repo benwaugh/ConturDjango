@@ -453,7 +453,19 @@ class results_header(MPTTModel):
 
        Parameters:
        author (str): Creator of results object
+       name (str): name of the results object
+       runcard ('runcard'): The linked runcard
+                            [This is a foreign key link to the 'BSM_Model' field]
+       mc_ver ('str'): Monte Carlo generator version
+       contur_ver ('str'): Contur Version
+       parent ('str'): Blank field, top level has no parent
+       type ('str'): Describes if plot is Histogram or Heatmap (unused field)
 
+       Returns:
+           name
+
+        db_table:
+            analyses_results_header
 
    """
     author = models.CharField(max_length=50, default="Contur User")
@@ -469,6 +481,27 @@ class results_header(MPTTModel):
 
 
 class results_position(MPTTModel):
+    """
+       Contains definition of results_position MPTTmodel:
+            This shows the position in parameter space (i.e. the two parameters used and their values)
+
+
+       results_position is parent to:
+            - results Analyses
+
+       Parameters:
+       ID (int): [Primary Key]
+       name (str): Position (also name of yoda file)
+       parent ('results_header'): results header parent to this position
+                        [This is a tree foreign key link to the 'results_header' field]
+
+       Returns:
+            name
+
+       db_table:
+            analyses_results_position
+
+   """
     name = models.CharField(max_length=50,unique=False)
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=False, blank=True, related_name='position')
 
@@ -478,7 +511,51 @@ class results_position(MPTTModel):
 
 
 class results_analyses(MPTTModel):
+    """
+       Contains definition of results_analyses MPTTmodel:
+            This shows the analyses that the results come from
 
+
+       results_position is parent to:
+            - Scatter data (1D,2D,3D) : 3 Models
+            - Histogram data (1D) : 1 Model
+            - Profile data (1D) : 1 Model
+            - Overflow Underflow Tables (Histo and Profile): 2 Models
+            - Counter data: 1 Model
+
+
+
+       This model represents all header data within yoda files. Since some data is blank for yoda entries, and some has
+       the fields missing altogether, a blank field is used to represent a blank entry, and a null field is used to
+       represent a missing field.
+
+
+       Parameters:
+       ID (int): [Primary Key]
+       name (str): Name of analyses (can be directly linked to analyses model, but seperated for now)
+       parent ('results_position'): results position parent to this analyses
+                        [This is a tree foreign key link to the 'results_position' field]
+       xyd (str): Pattern position (i.e. x02-y01-d07)
+       Path (str): Path to image when created
+       Title (str): Title of plot
+       Type (str): Type of plot (i.e. Histo1D, Scatter2D)
+       XLabel (str): Label of X axis on plot
+       YLabel (str): Label of Y axis on plot
+       ScaledBy (str): Scaling on plot
+       PolyMarker (str): Characters to represent plotting instructions to Yoda
+       ErrorBars (str): Error bar details
+       LineColor (str): Colour of lines
+       yodamerge_scale (str): scaling factor
+       mean (float): mean of data
+       area (float): area of plot
+
+       Returns:
+            name
+
+       db_table:
+            analyses_results_analysis
+
+    """
     #name = models.ForeignKey('Analysis',models.DO_NOTHING, db_column='anaid', blank=False, null=False)
     name = models.CharField(max_length=50,null=False,blank=False)
     parent = TreeForeignKey('results_position',on_delete=models.CASCADE, null=True, blank=True, related_name='analyses')
@@ -498,6 +575,21 @@ class results_analyses(MPTTModel):
 
 
 class scatter3_data(models.Model):
+    """
+       Contains definition of scatter3_data model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+       Float values from YODA data:
+       xval,xerr-,xerr+,yval,yerr-,yerr+,zval,zerr-,zerr+
+
+       db_table:
+            analyses_scatter3_data
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
@@ -510,6 +602,21 @@ class scatter3_data(models.Model):
     zerr_p = models.FloatField(null=True)
 
 class scatter2_data(models.Model):
+    """
+       Contains definition of scatter2_data model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+       Float values from YODA data:
+       xval,xerr-,xerr+,yval,yerr-,yerr+
+
+       db_table:
+            analyses_scatter2_data
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
@@ -520,6 +627,21 @@ class scatter2_data(models.Model):
 
 
 class scatter1_data(models.Model):
+    """
+       Contains definition of scatter1_data model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+       Float values from YODA data:
+       xval,xerr-,xerr+
+
+       db_table:
+            analyses_scatter1_data
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
@@ -528,6 +650,24 @@ class scatter1_data(models.Model):
 
 
 class histo1_data(models.Model):
+    """
+       Contains definition of histo1_data model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+
+       Float values from YODA data:
+       xlow,xhigh,sumw,sumw2,sumwx,sumwx2
+       Integer values from YODA data:
+       numEntries
+
+       db_table:
+            analyses_histo1_data
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xlow = models.FloatField(null=True)
     xhigh = models.FloatField(null=True)
@@ -539,6 +679,24 @@ class histo1_data(models.Model):
 
 
 class profile1_data(models.Model):
+    """
+       Contains definition of profile1_data model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+
+       Float values from YODA data:
+       xlow,xhigh,sumw,sumw2,sumwx,sumwx2,sumwy,sumwy2
+       Integer values from YODA data:
+       numEntries
+
+       db_table:
+            analyses_profile1_data
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     xlow = models.FloatField(null=True)
     xhigh = models.FloatField(null=True)
@@ -552,6 +710,26 @@ class profile1_data(models.Model):
 
 
 class overflow_underflow_profile(models.Model):
+    """
+       Contains definition of overflow_underflow_profile model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+
+       String values from YODA data:
+       row_type (e.g. Total, Overflow, Underflow)
+       Float values from YODA data:
+       sumw,sumw2,sumwx,sumwx2,sumwy,sumwy2
+       Integer values from YODA data:
+       numEntries
+
+       db_table:
+            analyses_overflow_underflow_profile
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
     sumw = models.FloatField(null=True)
@@ -564,6 +742,26 @@ class overflow_underflow_profile(models.Model):
 
 
 class overflow_underflow_histo(models.Model):
+    """
+       Contains definition of overflow_underflow_histo model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+
+       String values from YODA data:
+       row_type (e.g. Total, Overflow, Underflow)
+       Float values from YODA data:
+       sumw,sumw2,sumwx,sumwx2
+       Integer values from YODA data:
+       numEntries
+
+       db_table:
+            analyses_overflow_underflow_histo
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
     sumw = models.FloatField(null=True)
@@ -574,6 +772,24 @@ class overflow_underflow_histo(models.Model):
 
 
 class counter(models.Model):
+    """
+       Contains definition of counter model:
+
+       Child of results_analyses record
+
+       Parameters:
+       parent ('results_analyses'): results analyses parent to this data
+                        [This is a tree foreign key link to the 'results_analyses' field]
+
+       Float values from YODA data:
+       sumw,sumw2
+       Integer values from YODA data:
+       numEntries
+
+       db_table:
+            analyses_counter
+
+    """
     parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
@@ -581,67 +797,258 @@ class counter(models.Model):
 
 
 class map_header(MPTTModel):
+    """
+       Contains definition of map_header MPTTmodel:
+            This is the header of all .map file data for results
+
+
+       map_header is parent to:
+            - map_pickle
+
+       Parameters:
+       ID (int): [Primary Key]
+       name (str): Position (also name of yoda file)
+       parent ('results_header'): results header parent to this map header
+                        [This is a tree foreign key link to the 'results_header' field]
+       analyses (str): name of .map file
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_map_header
+
+    """
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='map')
     analyses = models.CharField(max_length=50)
 
 
-#class map_data(models.Model):
-#    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
-#    model_position = models.IntegerField(null=True)
-#    meas = models.FloatField(null=True)
-#    bg = models.FloatField(null=True)
-#   sErr = models.FloatField(null=True)
-#    measErr = models.FloatField(null=True)
-#    s = models.FloatField(null=True)
-#    bgErr = models.FloatField(null=True)
-#    kev = models.FloatField(null=True)
-#    isRatio = models.BooleanField()
-
-
 class map_pickle(models.Model):
+    """
+       Contains definition of map_pickle model:
+            This is the header of all .map file data for results
+
+
+       map_pickle is child of map_header
+
+       Parameters:
+       ID (int): [Primary Key]
+       parent ('results_header'): results header parent to this map header
+                        [This is a foreign key link to the 'results_header' field]
+       pickle (PickleObject): Field to store pickle object in database
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_map_header
+
+    """
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
     pickle = PickledObjectField()
 
 def get_dat_path(instance, filename):
+    """
+       Function to dynamical set path of dat FileField
+
+       Parameters:
+           instance: instance of FileField model
+           filename (str): name of File
+
+
+       Returns:
+            (str) Path to plots folder
+
+    """
     return "dat_store/" + str(instance.parent.id) + "/plots/"
 
 def get_sum_path(instance, filename):
+    """
+       Function to dynamical set path of summary text FileField
+
+       Parameters:
+           instance: instance of FileField model
+           filename (str): name of File
+
+
+       Returns:
+            (str) Path to ANALYSIS folder
+
+    """
     return "dat_store/" + str(instance.parent.id) + "/ANALYSIS/"
 
 class dat_database(models.Model):
+    """
+       Contains definition of dat_database model:
+            This is the header of all dat file data for results
+
+
+       dat_database is linked to:
+       - summary_text model
+       - dat_files model
+
+       Parameters:
+       ID (int): [Primary Key]
+       parent ('results_header'): results header parent to this map header
+                        [This is a foreign key link to the 'results_header' field]
+       uploaded (DateTime): time created
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_dat_database
+
+    """
     results_object = models.ForeignKey('results_header',models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
     uploaded = models.DateField()
 
 class summary_text(models.Model):
+    """
+       Contains definition of summary_text model:
+            Contains model to store summary.txt file
+
+       Parameters:
+       ID (int): [Primary Key]
+       parent ('dat_database'): dat header parent to this summary_text model
+                        [This is a foreign key link to the 'dat_database' field]
+       summary_store (FileField): Summary.txt file
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_summary_text
+
+    """
     parent = models.ForeignKey('dat_database',models.DO_NOTHING, db_column='dat_database',
                                        blank=False, null=False)
     summary_store = models.FileField(upload_to=get_sum_path)
 
 class dat_files(models.Model):
+    """
+       Contains definition of dat_files model:
+            Contains model to store .dat files
+
+
+       Parameters:
+       ID (int): [Primary Key]
+       name (str): name of .dat file
+       parent ('dat_database'): dat header parent to this summary_text model
+                        [This is a foreign key link to the 'dat_database' field]
+       dat_store (FileField): .dat file
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_dat_files
+
+    """
     name = models.TextField()
     parent = models.ForeignKey('dat_database',models.DO_NOTHING, db_column='dat_database',
                                        blank=False, null=False)
     dat_store = models.FileField(upload_to=get_dat_path)
 
 def get_histo_path(instance, filename):
+    """
+      Function to dynamical set path of histogram FileField
+
+      Parameters:
+          instance: instance of FileField model
+          filename (str): name of File
+
+
+      Returns:
+           (str) Path to htmlplots folder
+
+   """
     return "dat_store/" + str(instance.results_object.name) + "/htmlplots/"
 
 class histo_header(models.Model):
+    """
+       Contains definition of histo_header model:
+            Header for histogram data
+
+
+       Parameters:
+       ID (int): [Primary Key]
+       parent ('results_header'): results_header of histogram header
+                        [This is a foreign key link to the 'results_header' field]
+       uploaded (DateTime): Time of creation
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_histo_header
+
+    """
     results_object = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
     uploaded = models.FileField(upload_to=get_histo_path)
 
 def get_data_path(instance,filename):
+    """
+      Function to dynamical set path of histogram data FileField and ImageField
+
+      Parameters:
+          instance: instance of FileField/ImageField model
+          filename (str): name of File
+
+
+      Returns:
+           (str) Path to htmlplots folder
+
+   """
     return "dat_store/" + str(instance.parent.id) + "/htmlplots/" + str(instance.position)
 
 class histo_data(models.Model):
+    """
+       Contains definition of histo_data model:
+            Contains all histogram pdfs and htmls
+
+       Parameters:
+       ID (int): [Primary Key]
+
+       parent ('histo_header'): dat header parent to this summary_text model
+                        [This is a foreign key link to the 'histo_header' field]
+       position (str): Analyses and pattern of data
+       dat_store (FileField): html or pdf file
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_histo_data
+
+    """
     parent = models.ForeignKey('histo_header', models.DO_NOTHING, db_column='histo_header',
                                        blank=False, null=False)
     position = models.CharField(max_length=100)
     dat_store = models.FileField(upload_to=get_data_path)
 
 class histo_images(models.Model):
+    """
+       Contains definition of histo_images model:
+            Contains all histogram pngs
+
+       Parameters:
+       ID (int): [Primary Key]
+
+       parent ('histo_header'): dat header parent to this summary_text model
+                        [This is a foreign key link to the 'histo_header' field]
+       position (str): Analyses and pattern of data
+       dat_store (ImageField): png file
+
+       Returns:
+            ID
+
+       db_table:
+            analyses_histo_data
+
+    """
     parent = models.ForeignKey('histo_header', models.DO_NOTHING, db_column='histo_header',
                                        blank=False, null=False)
     position = models.CharField(max_length=100)
