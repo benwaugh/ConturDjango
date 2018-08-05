@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+
+# Views.py: Contains the 'Views' part of the model view template pattern, where functions define what is shown to users
+# in templates
+# Excluding a few complementary functions, most functions in this file define which data to display to html files as
+# they are rendered
+
 from __future__ import unicode_literals
 
 from django.shortcuts import get_object_or_404, render, redirect
@@ -11,7 +17,6 @@ import glob, os, sys
 import pandas as pd
 import json
 import matplotlib
-matplotlib.use('Agg')
 from matplotlib import pyplot as plt
 import numpy as np
 import mpld3
@@ -23,37 +28,14 @@ from django.views.generic.base import TemplateView
 import os
 import zipfile
 from wsgiref.util import FileWrapper
-
 from .models import Analysis, AnalysisPool,\
                 BSM_Model, used_analyses, Document, Keyword, Linked_keys,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
                 overflow_underflow_histo, histo_header, ana_file, ana_list
-
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm
-
-
-#class export_resource(resources.ModelResource):
-#    class Meta:
-#        model = Used_analyses
-#        fields = ('anaid',)
-
-#class Used_resource(resources.ModelResource):
-#    class Meta:
-#        model = Used_analyses
-
-class Ana_resource(resources.ModelResource):
-    class Meta:
-        model = Analysis
-
-class Pool_resource(resources.ModelResource):
-    class Meta:
-        model = AnalysisPool
-
-class BSM_resource(resources.ModelResource):
-    class Meta:
-        model = BSM_Model
+matplotlib.use('Agg')
 
 def retrieve_file_data(ana_file):
     a = 1
@@ -93,7 +75,6 @@ def upload_keywords(request):
                     upload_kw,create_kw = Keyword.objects.get_or_create(key_word=str(keywords).replace(" ","_"))
                     upload_linked,created_linked = Linked_keys.objects.get_or_create(anaid=upload_ana,key_word=upload_kw)
     return redirect('index')
-
 
 def store_file_data():
     try:
@@ -136,6 +117,25 @@ def store_file_data():
         os.rmdir("analyses/temp")
 
 def model_form_upload(request):
+    """
+        Purpose:
+            Links document form to model_form_upload template
+            This produces the form required to upload a new analysis into the system
+
+        Parameters:
+            Web request -> Comes from 'New Analysis' link.
+            Has no data specific arguments
+
+        Operations:
+            Saves new analysis to database through form
+
+        Context:
+            No Specific Context
+
+        Returns:
+            Renders Analysis Upload form
+
+    """
     if request.method == 'POST':
         form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
@@ -148,6 +148,25 @@ def model_form_upload(request):
     })
 
 def pool_form(request):
+    """
+        Purpose:
+            Links pool form to pool_form template
+            This produces the form required to upload a new analysis pool into the system
+
+        Parameters:
+            Web request -> Comes from 'New Pool' link.
+            Has no data specific arguments
+
+        Operations:
+            Saves new pool to database through form
+
+        Context:
+            No Specific Context
+
+        Returns:
+            Renders Pool Upload form
+
+    """
     if request.method == 'POST':
         form = PoolForm(request.POST, request.FILES)
         if form.is_valid():
@@ -160,12 +179,33 @@ def pool_form(request):
     })
 
 def index(request):
+    """
+        Purpose:
+            Renders 'homepage' (index) of CoRaD, containing many different sections of information.
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            Has no data specific arguments
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Loads all Analysis Pools
+            Loads all Analyses
+            Loads all Models
+            Loads all Keywords
+            Loads all Runcards
+            Loads all Results
+
+        Returns:
+            Renders Index template with context
+    """
     analysis_pools = AnalysisPool.objects.order_by('pool')
     analysis_list = Analysis.objects.order_by('anaid')
     models_list = BSM_Model.objects.order_by('name')
     keywords_list = Keyword.objects.order_by('key_word')
     runcard_list = runcard.objects.order_by('runcard_name')
-    #results_list = results_header.objects.order_by('name')
     results_list = results_header.objects.order_by('name')
     context = {
         'analysis_pools' : analysis_pools,
@@ -178,6 +218,23 @@ def index(request):
     return render(request, 'analyses/index.html',context)
 
 def pool(request, pool):
+    """
+        Purpose:
+            Renders page showing data for a specific pool
+
+        Parameters:
+            Web request -> Activated by clicking on a specific pool in index list.
+            Pool -> Pool name string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get Pool object matching input pool name
+
+        Returns:
+            Renders Pool template with corresponding pool data
+    """
     p = get_object_or_404(AnalysisPool, pk=pool)
     context = {
         'pool' : p,
@@ -185,6 +242,23 @@ def pool(request, pool):
     return render(request, 'analyses/pool.html', context)
 
 def analysis(request, anaid):
+    """
+        Purpose:
+            Renders page showing data for analysis
+
+        Parameters:
+            Web request -> Activated by clicking on a specific analysis in index list.
+            anaid -> anaid name string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get Analysis object matching input anaid name
+
+        Returns:
+            Renders analysis template with corresponding analysis data
+    """
     a = get_object_or_404(Analysis, pk=anaid)
     context = {
         'ana' : a,
@@ -192,6 +266,24 @@ def analysis(request, anaid):
     return render(request, 'analyses/analysis.html', context)
 
 def model(request, name):
+    """
+        Purpose:
+            Renders page showing data for model
+
+        Parameters:
+            Web request -> Activated by clicking on a specific model in index list.
+            name -> model name string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get model object matching input model name
+            Get all analysis linked to model
+
+        Returns:
+            Renders model template with corresponding model and analysis data
+    """
     m = get_object_or_404(BSM_Model, pk=name)
     linked_ana = used_analyses.objects.filter(modelname=m)
     context = {
@@ -201,6 +293,25 @@ def model(request, name):
     return render(request, 'analyses/model.html', context)
 
 def Runcard(request, runcard_name):
+    """
+        Purpose:
+            Renders page showing data for runcard
+
+        Parameters:
+            Web request -> Activated by clicking on a specific runcard in index list.
+            runcard_name -> runcard name string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get runcard object matching input runcard name
+            Get model linked to runcard
+            Get analyses linked to model
+
+        Returns:
+            Renders runcard template with corresponding runcard, model and analysis data
+    """
     r = get_object_or_404(runcard, pk=runcard_name)
     m = BSM_Model.objects.filter(name=r.modelname)
     anas = used_analyses.objects.filter(modelname__in=m)
@@ -215,6 +326,23 @@ def blacklists(request, anaid):
     return HttpResponse("You're looking at blacklists for %s." % anaid)
 
 def keywords_list(request, key_word):
+    """
+        Purpose:
+            Renders page showing keyword
+
+        Parameters:
+            Web request -> Activated by clicking on a specific keyword in list.
+            key_word -> keyword string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get keyword object matching input keyword name
+
+        Returns:
+            Renders key_word template
+    """
     k = get_object_or_404(Keyword, pk=key_word)
     context = {
         'key' : k,
@@ -222,6 +350,26 @@ def keywords_list(request, key_word):
     return render(request, 'analyses/key_word.html', context)
 
 def results(request, name):
+    """
+        Purpose:
+            Renders page showing data for results
+
+        Parameters:
+            Web request -> Activated by clicking on a specific results in index list.
+            name -> results name string taken from link that has been clicked on
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get results object matching input results name
+            Get map headers whose parent is results object
+            Get yoda files whose parent is results object
+            Get histogram data whose parent is results object
+
+        Returns:
+            Renders results template with corresponding results and plot data
+    """
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
@@ -235,6 +383,25 @@ def results(request, name):
     return render(request, 'analyses/results.html', context)
 
 def positions(request, id):
+    """
+        Purpose:
+            Renders page showing data for specific results position (combination of parameters)
+            (For example mY_100_mX_300 is a position)
+
+        Parameters:
+            Web request -> Activated by clicking on a specific results in positions list in results header template.
+            id -> unique id of positon
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get results position object with corresponding ID
+            Get list of analyses and patterns that results position is the parent of
+
+        Returns:
+            Renders positions template with corresponding contained analyses patterns
+    """
     y = get_object_or_404(results_position,pk=id)
     analyses_list = results_analyses.objects.filter(parent=id)
     context = {
@@ -244,6 +411,30 @@ def positions(request, id):
     return render(request, 'analyses/positions.html', context)
 
 def ana_data(request, id):
+    """
+        Purpose:
+            Renders page showing all YODA data for an analysis and pattern
+
+        Parameters:
+            Web request -> Activated by clicking on a specific analysis and patter in results section.
+            id -> unique id of analysis and pattern combination
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get results analysis/pattern object with corresponding ID
+            Get child data from object using ID:
+                - Counter table
+                - 1d,2d,3d scatter data
+                - 1d histogram data
+                - 1d profile data
+                - Overflow/Underflow data for profile and histogram
+
+        Returns:
+            Renders YODA analysis data template containing each data set that is a child of analysis/pattern object
+
+    """
     details = get_object_or_404(results_analyses,pk=id)
     counter_list = counter.objects.filter(parent=id)
     scatter1 = scatter1_data.objects.filter(parent=id)
@@ -267,15 +458,52 @@ def ana_data(request, id):
     return render(request, 'analyses/ana_data.html', context)
 
 def heatmap_display(request,analyses):
+    """
+        Purpose:
+            Opens new tab that plots heatmap from database
+
+        Parameters:
+            Web request -> Activated by clicking on create heatmap link in results page
+            analyses -> .map file name to plot
+
+        Operations:
+            Loads pickle from map database that matches corresponding parent id
+            Calls gen_heatmap python script from commands folder with pickle as argument
+            This uses Bokeh to plot the data in a new table with an interactive tools
+
+        Context:
+            No specific context
+
+        Returns:
+            Refreshes current page
+
+    """
     file = map_header.objects.get(analyses=analyses)
 
     data = map_pickle.objects.filter(parent=file.id).values_list('pickle',flat=True)
-    print(data)
     from .management.commands.generate_heatmap import gen_heatmap
     gen_heatmap(data)
     return redirect(request.META['HTTP_REFERER'])
 
 def ufo_home(request):
+    """
+        Purpose:
+            Create new model using UFO file
+            This function creates a new record and downloads the corresponding UFO file from FeynRules
+
+        Parameters:
+            Web request -> Activated by clicking on new model link.
+
+        Operations:
+            Read data from input form and call create_record_and_dl function
+
+        Context:
+            No specific context.
+
+        Returns:
+            Renders form and ufo creation template
+
+    """
     answer = ''
     if request.method == 'POST':
         form = UFOForm(request.POST, request.FILES)
@@ -291,6 +519,28 @@ def ufo_home(request):
     })
 
 def create_record_and_dl(name,link,date,author):
+    """
+        Purpose:
+            Creates new model record from data recieved from ufo_home view, and download model to internal files
+
+        Parameters:
+            name (str): name of BSM model
+            link (str): Link to raw data download of FeynRules Model
+            date (DateTime): time of creation of model
+            author (str): name of creator of new model
+
+        Operations:
+            Create new directory for zipped UFO file
+            Create new record in BSM model database with input parameters
+            Download file directly from FeynRules into new internal directory
+
+        Context:
+            No specific context.
+
+        Returns:
+            None
+
+    """
     directory = "analyses/modelUFOs/" + name + "/"
     if not os.path.exists(directory):
         os.makedirs(directory)
@@ -299,12 +549,48 @@ def create_record_and_dl(name,link,date,author):
     wget.download(link,out=directory)
 
 def zipdir(path, ziph):
+    """
+        Purpose:
+            Zip existing directory
+
+        Parameters:
+            Path (str): Path to directory to be zipped
+            ziph (ZippedFile): Zip file object to be created
+
+        Operations:
+            Zip all contained files into folder
+
+        Context:
+            No specific context.
+
+        Returns:
+            None
+
+    """
     for root, dirs, files in os.walk(path):
         print(dirs)
         for file in files:
             ziph.write(os.path.join(root, file))
 
 def download_html(request,id):
+    """
+        Purpose:
+            Downloads directory containing HTML files as zip
+
+        Parameters:
+            Web request -> Activated by clicking on export plots link
+            id -> results objects unique id
+
+        Operations:
+            Zips file using zipdir function
+
+        Context:
+            No specific context
+
+        Returns:
+            Refreshes current page
+
+    """
     zipf = zipfile.ZipFile(str(id) + '.zip', 'w', zipfile.ZIP_DEFLATED)
     CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
     sys.path.append(os.path.dirname(os.path.dirname(CURRENT_DIR)))
@@ -315,6 +601,26 @@ def download_html(request,id):
     return redirect(request.META['HTTP_REFERER'])
 
 def dl_bsm(request,name):
+    """
+        Purpose:
+            Downloads Model files from internal data files
+
+        Parameters:
+            Web request -> Activated by clicking on export BSM model link
+            name -> BSM model name
+
+        Operations:
+            Searches for folder matching BSM model name in directory
+            Creates http file wrapper
+            Presents download to user
+
+        Context:
+            No specific context
+
+        Returns:
+            Requests Download to user in standard format
+
+    """
     for file in glob.glob("analyses/modelUFOs/" + name + "/*.tgz"):
         try:
             wrapper = FileWrapper(open(file, 'rb'))
@@ -325,6 +631,25 @@ def dl_bsm(request,name):
             return None
 
 def add_ana(request,name):
+    """
+        Purpose:
+            Loads screen to add new ana files to a model
+
+        Parameters:
+            Web request -> Activated by clicking on add new ana link
+            name -> name of BSM model
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get all existing ana files
+            Get data for current model
+
+        Returns:
+            Renders add ana template linked to active model page
+
+    """
     ana_file_list = ana_list.objects.all()
     model = BSM_Model.objects.filter(name=name)
     context = {
@@ -339,6 +664,26 @@ def ana_file_view(request,name):
     return render(request, 'analyses/add_ana.html', context)
 
 def add_existing_ana(request,name,modelname):
+    """
+        Purpose:
+            Link an existing .ana file to a new model
+
+        Parameters:
+            Web request -> Activated by clicking on add existing .ana link
+            name -> name of ana_fime
+            modelname -> name of active model
+
+        Operations:
+            Create new record in used analyses table with current ana file and model
+
+        Context:
+            Get all ana files
+            Get active model
+
+        Returns:
+            Renders add ana page with new data added
+
+    """
     model = BSM_Model.objects.get(name=modelname)
     ana_file = ana_list.objects.get(ana_name=name)
     value,created = used_analyses.objects.get_or_create(modelname=model,ana_name=ana_file)
@@ -353,6 +698,25 @@ def add_existing_ana(request,name,modelname):
     return render(request,'analyses/add_ana.html',context)
 
 def inside_ana(request,ana_name):
+    """
+        Purpose:
+            Get information related to a specific ana file
+
+        Parameters:
+            Web request -> Activated by clicking on embedded ana file link
+            ana_name -> name of .ana file
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Get .ana file object corresponding to click
+            Get all analyses linked to .ana file object
+
+        Returns:
+            Renders inside_ana template with analyses and .ana data
+
+    """
     linked_ana = ana_list.objects.get(ana_name=ana_name)
     ana_file_list = ana_file.objects.filter(linked_ana=linked_ana)
     context = {
@@ -362,6 +726,29 @@ def inside_ana(request,ana_name):
     return render(request, 'analyses/inside_ana.html', context)
 
 def new_ana(request,name):
+    """
+        Purpose:
+            Create new ana file by selecting multiple analyses from list
+
+        Parameters:
+            Web request -> Activated by clicking on create and link new ana link
+            name -> name of BSM model
+
+        Operations:
+            Load Analyses form
+            Display all Analyses to user
+            Determine which Analyses are ticked by user
+            For each ticked Analyses, add new record that matches Analyses to new .ana file
+            Link new .ana file to active model
+
+        Context:
+            Form
+            Get data for current model
+
+        Returns:
+            re-renders new_ana with updated data
+
+    """
     BSM_instance = BSM_Model.objects.get(name=name)
     if request.method == 'POST':
         form = AnalysesForm(request.POST, request.FILES)
@@ -370,15 +757,12 @@ def new_ana(request,name):
 
         list_object,list_created = ana_list.objects.get_or_create(ana_name=ana_name,author=author)
 
-
         for analyses in form['analyses']:
             if 'checked' in analyses.tag():
                 analyses = analyses.choice_label
                 ana_object = Analysis.objects.get(anaid=analyses)
 
                 ana_object,ana_created = ana_file.objects.get_or_create(linked_ana=list_object,anaid=ana_object)
-
-        print(name)
 
         used_analyses.objects.get_or_create(ana_name=list_object,modelname=BSM_instance)
 
@@ -393,6 +777,27 @@ def new_ana(request,name):
     })
 
 def write_ana(request,name):
+    """
+        Purpose:
+            Write .ana file from database and download
+
+        Parameters:
+            Web request -> Activated by clicking on download .ana link
+            name -> name of .ana file
+
+        Operations:
+            Find all linked analyses to active .ana file
+            Create temporary text file with analyses entered in correct format
+            Create wrapper and present to user for download
+            Delete temporary file
+
+        Context:
+            No Specific Context
+
+        Returns:
+            Refreshes current page
+
+    """
     ana = ana_list.objects.filter(ana_name=name)
     data = ana_file.objects.filter(linked_ana=ana[0]).values_list('anaid')
 
