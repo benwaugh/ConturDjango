@@ -23,13 +23,18 @@ tr:nth-child(even) {
 }
 </style>
 </head>
+<script src="{% static 'sorttable.js' %}"></script>
+<script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+<script type="text/javascript" src="{% static 'underscore.js' %}"></script>
+<script type="text/javascript" src="{% static 'doctools.js' %}"></script>
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <body>
       <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
       <title>
         Results Data
       </title>
       <link rel="shortcut icon" href="/favicon.ico">
-      <link rel="stylesheet" type="text/css" href="{% static 'corad_page.css' %}">
+      <link rel="stylesheet" type="text/css" href="{% static 'corad_result.css' %}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
@@ -40,11 +45,6 @@ tr:nth-child(even) {
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
-    <script type="text/javascript" src="{% static 'underscore.js' %}"></script>
-    <script type="text/javascript" src="{% static 'doctools.js' %}"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
         <div class="container">
             <div class="toppane"><h1>Results Object: {{res.name}}</h1></div>
 
@@ -63,7 +63,7 @@ tr:nth-child(even) {
 
             </ul>
             </div>
-            <div class="tmiddlepane"><h1><center>Yoda Data</center></h1>
+            <div class="trightpane"><h1><center>Grid Data</center></h1>
                 {% if mh %}
                         {% for m in mh %}
                             <centre><a href="{% url 'produce_heatmap' m.analyses %}"
@@ -71,13 +71,17 @@ tr:nth-child(even) {
                         {% endfor %}
                     {% endif %}
                 {% if yoda_list %}
-                        <table>
+                        <table class="sortable">
                             <tr>
                                 <th>Yoda Name</th>
+                                <th>{{p1}}</th>
+                                <th>{{p2}}</th>
                             </tr>
                         {% for y in yoda_list %}
                             {% cycle '' '<tr>'%}
                                     <td><a href="{% url 'positions' y.id %}">{{ y.name }}</a></td>
+                                    <td>{{y.param1s}}</td>
+                                    <td>{{y.param2s}}</td>
                             {% cycle '' '</tr>' %}
                         {% endfor %}
                         </table>
@@ -87,19 +91,6 @@ tr:nth-child(even) {
 
             </div>
 
-            <div class="trightpane"><h1><center>Linked Histograms</center></h1>
-            {% if plots %}
-                <ul>
-                    {% for y in plots %}
-                    {% cycle '' '<tr>'%}
-                        <td><a href="{% url 'html_render' y.id%}">{{ y.id }}</a></td>
-                    {% cycle '' '</tr>' %}
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p>No histogram data to display.</p>
-            {% endif %}
-            </div>
         </div>
 
 
