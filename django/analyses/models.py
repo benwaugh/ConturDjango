@@ -253,7 +253,7 @@ class used_analyses(models.Model):
             used_analyses
 
     """
-    ana_name = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='ana', blank=False, null=False)
+    ana_name = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='ana_name', blank=False, null=False)
     modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='model', blank=False, null=False)
 
     def __str__(self):
@@ -278,7 +278,7 @@ class ana_file(models.Model):
                                         [This is a foreign key link to the 'Analysis' field]
 
         Returns:
-            linked_ana anaid
+            linked_ana-anaid
 
         db_table:
             ana_file
@@ -474,10 +474,11 @@ class results_header(MPTTModel):
     mc_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='results')
-    type = models.CharField(max_length=200, choices=(('Histogram','Histogram'),('Heatmap','Heatmap')))
     class MPTTMeta:
         order_insertion_by = ['name']
 
+    def __str__(self):
+        return self.name
 
 
 class results_position(MPTTModel):
@@ -508,7 +509,8 @@ class results_position(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
-
+    def __str__(self):
+        return self.name
 
 class results_analyses(MPTTModel):
     """
@@ -573,6 +575,8 @@ class results_analyses(MPTTModel):
     mean = models.FloatField(default=0,null=True)
     area = models.FloatField(default=0,null=True)
 
+    def __str__(self):
+        return self.name
 
 class scatter3_data(models.Model):
     """
@@ -822,6 +826,9 @@ class map_header(MPTTModel):
     parent = TreeForeignKey('results_header', on_delete=models.CASCADE, null=True, blank=True, related_name='map')
     analyses = models.CharField(max_length=50)
 
+    def __str__(self):
+        return self.analyses
+
 
 class map_pickle(models.Model):
     """
@@ -846,6 +853,10 @@ class map_pickle(models.Model):
     """
     parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
     pickle = PickledObjectField()
+
+    def __str__(self):
+        return self._check_id_field
+
 
 def get_dat_path(instance, filename):
     """
@@ -889,8 +900,8 @@ class dat_database(models.Model):
 
        Parameters:
        ID (int): [Primary Key]
-       parent ('results_header'): results header parent to this map header
-                        [This is a foreign key link to the 'results_header' field]
+       parent ('results_position'): results position parent to this map header
+                        [This is a foreign key link to the 'results_position' field]
        uploaded (DateTime): time created
 
        Returns:
@@ -900,9 +911,12 @@ class dat_database(models.Model):
             analyses_dat_database
 
     """
-    results_object = models.ForeignKey('results_header',models.DO_NOTHING, db_column='results_header',
+    results_object = models.ForeignKey('results_position',models.DO_NOTHING, db_column='results_position',
                                        blank=False, null=False)
     uploaded = models.DateField()
+
+    def __str__(self):
+        return self._check_id_field
 
 class summary_text(models.Model):
     """
@@ -926,6 +940,9 @@ class summary_text(models.Model):
                                        blank=False, null=False)
     summary_store = models.FileField(upload_to=get_sum_path)
 
+    def __str__(self):
+        return self._check_id_field
+
 class dat_files(models.Model):
     """
        Contains definition of dat_files model:
@@ -946,10 +963,14 @@ class dat_files(models.Model):
             analyses_dat_files
 
     """
+
     name = models.TextField()
     parent = models.ForeignKey('dat_database',models.DO_NOTHING, db_column='dat_database',
                                        blank=False, null=False)
     dat_store = models.FileField(upload_to=get_dat_path)
+
+    def __str__(self):
+        return self._check_id_field
 
 def get_histo_path(instance, filename):
     """
@@ -964,7 +985,7 @@ def get_histo_path(instance, filename):
            (str) Path to htmlplots folder
 
    """
-    return "dat_store/" + str(instance.results_object.name) + "/htmlplots/"
+    return "dat_store/" + str(instance.id) + "/htmlplots/index.html"
 
 class histo_header(models.Model):
     """
@@ -975,7 +996,7 @@ class histo_header(models.Model):
        Parameters:
        ID (int): [Primary Key]
        parent ('results_header'): results_header of histogram header
-                        [This is a foreign key link to the 'results_header' field]
+                        [This is a foreign key link to the 'results_position' field]
        uploaded (DateTime): Time of creation
 
        Returns:
@@ -985,9 +1006,12 @@ class histo_header(models.Model):
             analyses_histo_header
 
     """
-    results_object = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+    results_object = models.ForeignKey('results_position', models.DO_NOTHING, db_column='results_header',
                                        blank=False, null=False)
     uploaded = models.FileField(upload_to=get_histo_path)
+
+    def __str__(self):
+        return self._check_id_field
 
 def get_data_path(instance,filename):
     """
@@ -1002,7 +1026,15 @@ def get_data_path(instance,filename):
            (str) Path to htmlplots folder
 
    """
-    return "dat_store/" + str(instance.parent.id) + "/htmlplots/" + str(instance.position)
+    if "index" not in filename:
+        analysis_folder = str(instance.position.split(".")[0]).split("_")
+        folder = ""
+        for i in range(len(analysis_folder)-1):
+            folder = folder + "_" + analysis_folder[i]
+        return "dat_store/" + str(instance.parent.id) + "/htmlplots/" + folder[1:] + "/" + filename
+    else:
+        folder = instance.position
+        return "dat_store/" + str(instance.parent.id) + "/htmlplots/" + folder + "/" + filename
 
 class histo_data(models.Model):
     """
@@ -1029,6 +1061,9 @@ class histo_data(models.Model):
     position = models.CharField(max_length=100)
     dat_store = models.FileField(upload_to=get_data_path)
 
+    def __str__(self):
+        return self._check_id_field
+
 class histo_images(models.Model):
     """
        Contains definition of histo_images model:
@@ -1053,3 +1088,6 @@ class histo_images(models.Model):
                                        blank=False, null=False)
     position = models.CharField(max_length=100)
     image = models.ImageField(upload_to=get_data_path)
+
+    def __str__(self):
+        return self._check_id_field

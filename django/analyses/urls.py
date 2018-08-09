@@ -1,5 +1,7 @@
 from django.conf.urls import url
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from . import views
 
 urlpatterns = [
@@ -75,4 +77,10 @@ urlpatterns = [
     # Pool input URL loads form to create a new analysis pool
     url(r'^pool_input', views.pool_form, name='pool_input'),
 
+    # Render histo URL to render histogram image when link is clicked on results page
+    url(r'^render_histo/(?P<id>[_A-Za-z0-9]+)/$', views.render_histo,name='render_histo')
+
 ]
+
+urlpatterns += staticfiles_urlpatterns()
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

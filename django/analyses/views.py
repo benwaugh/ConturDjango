@@ -16,6 +16,7 @@ from django.core.files.storage import FileSystemStorage
 import glob, os, sys
 import pandas as pd
 import json
+
 import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
@@ -33,9 +34,9 @@ from .models import Analysis, AnalysisPool,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo, histo_header, ana_file, ana_list
+                overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm
-matplotlib.use('Agg')
+
 
 def retrieve_file_data(ana_file):
     a = 1
@@ -365,7 +366,8 @@ def results(request, name):
             Get results object matching input results name
             Get map headers whose parent is results object
             Get yoda files whose parent is results object
-            Get histogram data whose parent is results object
+            Names of parameters
+            Parameters for each record
 
         Returns:
             Renders results template with corresponding results and plot data
@@ -373,12 +375,25 @@ def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
-    plots = histo_header.objects.filter(results_object=n)
+    print(yoda_list[0].name)
+    #try:
+    param1 = str(yoda_list[0].name).split('_')[0]
+    param2 = str(yoda_list[0].name).split('_')[2]
+    for i in range(0,len(yoda_list)):
+        try:
+            yoda_list[i].param1s=str(yoda_list[i].name).split('_')[1]
+            yoda_list[i].param2s =str(yoda_list[i].name).split('_')[3]
+        except(IndexError):
+            yoda_list[i].param1s = ""
+            yoda_list[i].param2s = ""
+
+
     context = {
         'res' : n,
         'mh':map_h,
         'yoda_list':yoda_list,
-        'plots':plots
+        'p1':param1,
+        'p2':param2,
     }
     return render(request, 'analyses/results.html', context)
 
@@ -404,9 +419,20 @@ def positions(request, id):
     """
     y = get_object_or_404(results_position,pk=id)
     analyses_list = results_analyses.objects.filter(parent=id)
+    histo_head = histo_header.objects.filter(results_object=y)
+    histo_list = histo_images.objects.filter(parent__in=histo_head)
+    for i in range(0,len(histo_list)):
+        data = histo_list[i].position.split(".")[0]
+        histo_list[i].pattern = data.split("_")[-1]
+        analysis = ""
+        for j in range(0,len(data.split("_"))-1):
+            analysis = analysis + "_" + data.split("_")[j]
+        histo_list[i].analysis = analysis[1:]
+
     context = {
         'y':y,
         'ana_list':analyses_list,
+        'hl':histo_list
     }
     return render(request, 'analyses/positions.html', context)
 
@@ -817,3 +843,29 @@ def write_ana(request,name):
 
     except Exception as e:
         return None
+
+def render_histo(request,id):
+    """
+        Purpose:
+         Render png image of histogram to interface
+
+        Parameters:
+         Web request -> Activated by clicking on histogram link
+         id -> id of histogram
+
+        Operations:
+            Find image from ID and render
+
+        Context:
+            Image location in media
+
+        Returns:
+            Loads image in new page
+
+    """
+    image = histo_images.objects.filter(id=id)
+
+    context = {
+        'image':image[0]
+    }
+    return render(request, 'analyses/histo_image.html', context)
