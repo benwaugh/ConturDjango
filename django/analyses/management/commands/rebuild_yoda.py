@@ -14,7 +14,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
 from analyses.models import Analysis, AnalysisPool,\
-                BSM_Model, Used_analyses, Document, Keyword, Linked_keys,\
+                BSM_Model, Document, Keyword, Linked_keys,\
                 runcard, results_header, results_analyses, results_position,\
                 overflow_underflow_histo, profile1_data, histo1_data, scatter1_data,\
                 scatter2_data, scatter3_data, overflow_underflow_profile, counter
@@ -38,7 +38,6 @@ class generate_dict(object):
         #print(item.Type)
         end = "END YODA_" + str(item.Type).upper() + "_V2" + "\n"
         if "Counter" in item.Type:
-            print("here")
             name = "BEGIN YODA_COUNTER_V2 /_EVTCOUNT"
         elif "Scatter1D" in item.Type:
             name = "BEGIN YODA_SCATTER1D_V2 /_XSEC"
@@ -195,7 +194,7 @@ class write_yoda(object):
 
         with open(name + ".yoda", "w") as text_file:
             text_file.write(reversed_string)
-            print("file written")
+            #print("file written")
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Rebuild Yoda files from database")

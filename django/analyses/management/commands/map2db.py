@@ -14,6 +14,7 @@ django.setup()
 
 from analyses.models import runcard, results_header, map_header, map_pickle
 
+
 class file_discovery(object):
 
     def __init__(self, directory):
@@ -27,9 +28,7 @@ class file_discovery(object):
         self.identify_relevent()
 
     def get_files(self):
-        print(self.dir_path)
-        for filename in glob.iglob(self.dir_path + '/**/.map', recursive=True):
-            print(filename)
+        for filename in glob.iglob(self.dir_path + '/*.map', recursive=True):
             self.map_list.append(filename)
 
     def identify_relevent(self):
@@ -49,30 +48,29 @@ class store_data(object):
 
     def read_map(self):
         for file_name in self.file_dict:
-            print(file_name)
             self.file_id = file_name.split("/")[-1]
             if str(self.file_id) == ".map":
                 self.file_id = "heatmap"
 
             with open(file_name, 'r+b') as myfile:
                 data = pickle.load(myfile)
-                print(data)
                 self.map_dict[self.file_id] = data
 
 
 class db_upload(object):
 
-    def __init__(self,map_dict,rc_name):
+    def __init__(self,map_dict,rc_name,results_name):
         self.map_dict = map_dict
         self.i = 0
         self.runcard = rc_name
+        self.results_name = results_name
         self.upload()
+
 
 
     def upload(self):
         header = self.upload_header()
         for item in self.map_dict:
-
             self.upload_map_position(item,header)
 
 
@@ -83,7 +81,7 @@ class db_upload(object):
             print(runcard.objects.all())
         else:
             runcard_object,runcard_created = runcard.objects.get_or_create(runcard_name=str(self.runcard))
-            results_object = input("Please enter a name for the results object: ")
+            results_object = self.results_name
 
             upload_header, created_header =\
                 results_header.objects.get_or_create(
@@ -102,7 +100,7 @@ class db_upload(object):
             map_header.objects.get_or_create(analyses=str(item), parent=header)
 
         upload_pos.save()
-        print("Uploaded")
+        #print("Uploaded")
         self.upload_map_data(upload_pos, self.map_dict[item], item)
 
 
@@ -119,11 +117,12 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Map Data to Database")
     parser.add_argument('--directory', '-d')
     parser.add_argument('--runcard', '-r')
+    parser.add_argument('--results','-o')
     arguments = parser.parse_args()
     files = file_discovery(arguments.directory)
     map_list = files.file_dict
     data = store_data(map_list)
     map_dict = data.map_dict
-    db = db_upload(map_dict, arguments.runcard)
+    db = db_upload(map_dict, arguments.runcard,arguments.results)
 
 

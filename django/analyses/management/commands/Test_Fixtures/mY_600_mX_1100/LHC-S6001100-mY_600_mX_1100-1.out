@@ -1,0 +1,414 @@
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+>>>> Toolkit for HEP Event Generation - ThePEG d62cc40b1b9f () <<<<<<<<<<<<<<<
+>>>> Fri Jun 29 12:59:38 2018                                             <<<<
+<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+>> Herwig 531f110868d4 () / ThePEG d62cc40b1b9f ()
+
+==============================================================================
+Statistics for event handler 'EventHandler':
+                                       generated    number of    Cross-section
+                                          events     attempts             (nb)
+==============================================================================
+Total (from attempted events): including vetoed events           0.263(1)e+00
+==============================================================================
+Total (from generated events):             7500         7500     0.263(1)e+00
+Events carry unit weights.
+==============================================================================
+Per matrix element breakdown:
+MEbbarg2Y1bbar                                13           13       0.5(1)e-03
+MEcbarg2Y1cbar                                 8            8       0.3(1)e-03
+MEsbarg2Y1sbar                                24           24       0.8(2)e-03
+MEubarg2Y1ubar                                33           33       1.2(2)e-03
+MEdbarg2Y1dbar                                33           33       1.2(2)e-03
+MEdubar2Y1W-                                   6            6      0.21(9)e-03
+MEddbar2Y1g                                  892          892        31(1)e-03
+MEddbar2Y1gamma                                1            1       40(40)e-06
+MEddbar2Y1Z0                                   4            4      0.14(7)e-03
+MEddbar2Y1Y1                                   0            0                0
+MEdg2Y1d                                     121          121       4.2(4)e-03
+MEuubar2Y1g                                 1334         1334        47(1)e-03
+MEuubar2Y1gamma                               25           25       0.9(2)e-03
+MEuubar2Y1Z0                                   6            6      0.21(9)e-03
+MEuubar2Y1Y1                                   0            0                0
+MEudbar2Y1W+                                  18           18       0.6(1)e-03
+MEug2Y1u                                     345          345      12.1(6)e-03
+MEscbar2Y1W-                                   1            1       40(40)e-06
+MEssbar2Y1g                                   51           51       1.8(2)e-03
+MEssbar2Y1gamma                                0            0                0
+MEssbar2Y1Z0                                   0            0                0
+MEssbar2Y1Y1                                   0            0                0
+MEsg2Y1s                                      23           23       0.8(2)e-03
+MEccbar2Y1g                                   28           28      0.98(2)e-03
+MEccbar2Y1gamma                                2            2       70(50)e-06
+MEccbar2Y1Z0                                   0            0                0
+MEccbar2Y1Y1                                   0            0                0
+MEcsbar2Y1W+                                   0            0                0
+MEcg2Y1c                                       8            8       0.3(1)e-03
+MEbbbar2Y1g                                    8            8       0.3(1)e-03
+MEbbbar2Y1gamma                                0            0                0
+MEbbbar2Y1Z0                                   0            0                0
+MEbbbar2Y1H                                    0            0                0
+MEbbbar2Y1Y1                                   0            0                0
+MEbg2Y1b                                       9            9       0.3(1)e-03
+MEbbbar2Y12XmXm                                0            0                0
+MEbbbar2Y12ttbar                               7            7      0.25(9)e-03
+MEbbbar2Y12bbbar                               3            3      0.11(6)e-03
+MEbbbar2Y12ssbar                               4            4      0.14(7)e-03
+MEbbbar2Y12ccbar                               2            2       70(50)e-06
+MEbbbar2Y12ddbar                               7            7      0.25(9)e-03
+MEbbbar2Y12uubar                               7            7      0.25(9)e-03
+MEssbar2Y12XmXm                                0            0                0
+MEssbar2Y12ttbar                              18           18       0.6(1)e-03
+MEssbar2Y12bbbar                              25           25       0.9(2)e-03
+MEssbar2Y12ssbar                              24           24       0.8(2)e-03
+MEssbar2Y12ccbar                              19           19       0.7(2)e-03
+MEssbar2Y12ddbar                              23           23       0.8(2)e-03
+MEssbar2Y12uubar                              26           26       0.9(2)e-03
+MEccbar2Y12XmXm                                0            0                0
+MEccbar2Y12ttbar                               9            9       0.3(1)e-03
+MEccbar2Y12bbbar                              15           15       0.5(1)e-03
+MEccbar2Y12ssbar                              12           12       0.4(1)e-03
+MEccbar2Y12ccbar                              15           15       0.5(1)e-03
+MEccbar2Y12ddbar                               7            7      0.25(9)e-03
+MEccbar2Y12uubar                              11           11       0.4(1)e-03
+MEddbar2Y12XmXm                                0            0                0
+MEddbar2Y12ttbar                             215          215       7.5(5)e-03
+MEddbar2Y12bbbar                             274          274       9.6(6)e-03
+MEddbar2Y12ssbar                             305          305      10.7(6)e-03
+MEddbar2Y12ccbar                             262          262       9.2(6)e-03
+MEddbar2Y12ddbar                             289          289      10.1(6)e-03
+MEddbar2Y12uubar                             302          302      10.6(6)e-03
+MEuubar2Y12XmXm                                0            0                0
+MEuubar2Y12ttbar                             373          373      13.1(7)e-03
+MEuubar2Y12bbbar                             441          441      15.5(7)e-03
+MEuubar2Y12ssbar                             474          474      16.6(7)e-03
+MEuubar2Y12ccbar                             465          465      16.3(7)e-03
+MEuubar2Y12ddbar                             437          437      15.3(7)e-03
+MEuubar2Y12uubar                             436          436      15.3(7)e-03
+==============================================================================
+Per parton extractor breakdown:
+PPExtractor                                 7500         7500     0.263(1)e+00
+==============================================================================
+Per incoming partons breakdown:
+d dbar                                      1291         1291        45(1)e-03
+d ubar                                         5            5      0.18(8)e-03
+d g                                           55           55       1.9(3)e-03
+dbar d                                      1253         1253        44(1)e-03
+dbar u                                         8            8       0.3(1)e-03
+dbar g                                        18           18       0.6(1)e-03
+ubar d                                         1            1       40(40)e-06
+ubar u                                      2024         2024        71(1)e-03
+ubar g                                        15           15       0.5(1)e-03
+u dbar                                        10           10       0.4(1)e-03
+u ubar                                      1967         1967        69(1)e-03
+u g                                          169          169       5.9(5)e-03
+c cbar                                        43           43       1.5(2)e-03
+c sbar                                         0            0                0
+c g                                            4            4      0.14(7)e-03
+cbar c                                        56           56       2.0(3)e-03
+cbar s                                         1            1       40(40)e-06
+cbar g                                         4            4      0.14(7)e-03
+sbar c                                         0            0                0
+sbar s                                        96           96       3.4(3)e-03
+sbar g                                        14           14       0.5(1)e-03
+s cbar                                         0            0                0
+s sbar                                        90           90       3.2(3)e-03
+s g                                           13           13       0.5(1)e-03
+b bbar                                        17           17       0.6(1)e-03
+b g                                            4            4      0.14(7)e-03
+bbar b                                        21           21       0.7(2)e-03
+bbar g                                         8            8       0.3(1)e-03
+g d                                           66           66       2.3(3)e-03
+g dbar                                        15           15       0.5(1)e-03
+g ubar                                        18           18       0.6(1)e-03
+g u                                          176          176       6.2(5)e-03
+g c                                            4            4      0.14(7)e-03
+g cbar                                         4            4      0.14(7)e-03
+g sbar                                        10           10       0.4(1)e-03
+g s                                           10           10       0.4(1)e-03
+g b                                            5            5      0.18(8)e-03
+g bbar                                         5            5      0.18(8)e-03
+==============================================================================
+Detailed breakdown:
+(PPExtractor) bbar b (MEbbbar2Y1g b,bbar->Y1,g) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) bbar b (MEbbbar2Y1gamma b,bbar->Y1,gamma) 
+                                               0            0                0
+(PPExtractor) bbar b (MEbbbar2Y1Z0 b,bbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) bbar b (MEbbbar2Y1H b,bbar->Y1,H) 
+                                               0            0                0
+(PPExtractor) bbar b (MEbbbar2Y1Y1 b,bbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) bbar b (MEbbbar2Y12XmXm b,bbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) bbar b (MEbbbar2Y12ttbar b,bbar->t,tbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) bbar b (MEbbbar2Y12bbbar b,bbar->b,bbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) bbar b (MEbbbar2Y12ssbar b,bbar->s,sbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) bbar b (MEbbbar2Y12ccbar b,bbar->c,cbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) bbar b (MEbbbar2Y12ddbar b,bbar->d,dbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) bbar b (MEbbbar2Y12uubar b,bbar->u,ubar) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) bbar g (MEbbarg2Y1bbar bbar,g->Y1,bbar) 
+                                               8            8       0.3(1)e-03
+(PPExtractor) cbar s (MEscbar2Y1W- s,cbar->Y1,W-) 
+                                               1            1       40(40)e-06
+(PPExtractor) cbar c (MEccbar2Y1g c,cbar->Y1,g) 
+                                              13           13       0.5(1)e-03
+(PPExtractor) cbar c (MEccbar2Y1gamma c,cbar->Y1,gamma) 
+                                               1            1       40(40)e-06
+(PPExtractor) cbar c (MEccbar2Y1Z0 c,cbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) cbar c (MEccbar2Y1Y1 c,cbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) cbar c (MEccbar2Y12XmXm c,cbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) cbar c (MEccbar2Y12ttbar c,cbar->t,tbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) cbar c (MEccbar2Y12bbbar c,cbar->b,bbar) 
+                                              10           10       0.4(1)e-03
+(PPExtractor) cbar c (MEccbar2Y12ssbar c,cbar->s,sbar) 
+                                               7            7      0.25(9)e-03
+(PPExtractor) cbar c (MEccbar2Y12ccbar c,cbar->c,cbar) 
+                                               9            9       0.3(1)e-03
+(PPExtractor) cbar c (MEccbar2Y12ddbar c,cbar->d,dbar) 
+                                               6            6      0.21(9)e-03
+(PPExtractor) cbar c (MEccbar2Y12uubar c,cbar->u,ubar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) cbar g (MEcbarg2Y1cbar cbar,g->Y1,cbar) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) sbar s (MEssbar2Y1g s,sbar->Y1,g) 
+                                              27           27       0.9(2)e-03
+(PPExtractor) sbar s (MEssbar2Y1gamma s,sbar->Y1,gamma) 
+                                               0            0                0
+(PPExtractor) sbar s (MEssbar2Y1Z0 s,sbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) sbar s (MEssbar2Y1Y1 s,sbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) sbar s (MEssbar2Y12XmXm s,sbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) sbar s (MEssbar2Y12ttbar s,sbar->t,tbar) 
+                                               9            9       0.3(1)e-03
+(PPExtractor) sbar s (MEssbar2Y12bbbar s,sbar->b,bbar) 
+                                              13           13       0.5(1)e-03
+(PPExtractor) sbar s (MEssbar2Y12ssbar s,sbar->s,sbar) 
+                                              15           15       0.5(1)e-03
+(PPExtractor) sbar s (MEssbar2Y12ccbar s,sbar->c,cbar) 
+                                               8            8       0.3(1)e-03
+(PPExtractor) sbar s (MEssbar2Y12ddbar s,sbar->d,dbar) 
+                                              11           11       0.4(1)e-03
+(PPExtractor) sbar s (MEssbar2Y12uubar s,sbar->u,ubar) 
+                                              13           13       0.5(1)e-03
+(PPExtractor) sbar c (MEcsbar2Y1W+ c,sbar->Y1,W+) 
+                                               0            0                0
+(PPExtractor) sbar g (MEsbarg2Y1sbar sbar,g->Y1,sbar) 
+                                              14           14       0.5(1)e-03
+(PPExtractor) ubar d (MEdubar2Y1W- d,ubar->Y1,W-) 
+                                               1            1       40(40)e-06
+(PPExtractor) ubar u (MEuubar2Y1g u,ubar->Y1,g) 
+                                             688          688      24.1(9)e-03
+(PPExtractor) ubar u (MEuubar2Y1gamma u,ubar->Y1,gamma) 
+                                              15           15       0.5(1)e-03
+(PPExtractor) ubar u (MEuubar2Y1Z0 u,ubar->Y1,Z0) 
+                                               2            2       70(50)e-06
+(PPExtractor) ubar u (MEuubar2Y1Y1 u,ubar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) ubar u (MEuubar2Y12XmXm u,ubar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) ubar u (MEuubar2Y12ttbar u,ubar->t,tbar) 
+                                             185          185       6.5(5)e-03
+(PPExtractor) ubar u (MEuubar2Y12bbbar u,ubar->b,bbar) 
+                                             227          227       8.0(5)e-03
+(PPExtractor) ubar u (MEuubar2Y12ssbar u,ubar->s,sbar) 
+                                             226          226       7.9(5)e-03
+(PPExtractor) ubar u (MEuubar2Y12ccbar u,ubar->c,cbar) 
+                                             244          244       8.6(5)e-03
+(PPExtractor) ubar u (MEuubar2Y12ddbar u,ubar->d,dbar) 
+                                             226          226       7.9(5)e-03
+(PPExtractor) ubar u (MEuubar2Y12uubar u,ubar->u,ubar) 
+                                             211          211       7.4(5)e-03
+(PPExtractor) ubar g (MEubarg2Y1ubar ubar,g->Y1,ubar) 
+                                              15           15       0.5(1)e-03
+(PPExtractor) dbar d (MEddbar2Y1g d,dbar->Y1,g) 
+                                             451          451      15.8(7)e-03
+(PPExtractor) dbar d (MEddbar2Y1gamma d,dbar->Y1,gamma) 
+                                               0            0                0
+(PPExtractor) dbar d (MEddbar2Y1Z0 d,dbar->Y1,Z0) 
+                                               2            2       70(50)e-06
+(PPExtractor) dbar d (MEddbar2Y1Y1 d,dbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) dbar d (MEddbar2Y12XmXm d,dbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) dbar d (MEddbar2Y12ttbar d,dbar->t,tbar) 
+                                              99           99       3.5(3)e-03
+(PPExtractor) dbar d (MEddbar2Y12bbbar d,dbar->b,bbar) 
+                                             134          134       4.7(4)e-03
+(PPExtractor) dbar d (MEddbar2Y12ssbar d,dbar->s,sbar) 
+                                             160          160       5.6(4)e-03
+(PPExtractor) dbar d (MEddbar2Y12ccbar d,dbar->c,cbar) 
+                                             117          117       4.1(4)e-03
+(PPExtractor) dbar d (MEddbar2Y12ddbar d,dbar->d,dbar) 
+                                             145          145       5.1(4)e-03
+(PPExtractor) dbar d (MEddbar2Y12uubar d,dbar->u,ubar) 
+                                             145          145       5.1(4)e-03
+(PPExtractor) dbar u (MEudbar2Y1W+ u,dbar->Y1,W+) 
+                                               8            8       0.3(1)e-03
+(PPExtractor) dbar g (MEdbarg2Y1dbar dbar,g->Y1,dbar) 
+                                              18           18       0.6(1)e-03
+(PPExtractor) d ubar (MEdubar2Y1W- d,ubar->Y1,W-) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) d dbar (MEddbar2Y1g d,dbar->Y1,g) 
+                                             441          441      15.5(7)e-03
+(PPExtractor) d dbar (MEddbar2Y1gamma d,dbar->Y1,gamma) 
+                                               1            1       40(40)e-06
+(PPExtractor) d dbar (MEddbar2Y1Z0 d,dbar->Y1,Z0) 
+                                               2            2       70(50)e-06
+(PPExtractor) d dbar (MEddbar2Y1Y1 d,dbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) d dbar (MEddbar2Y12XmXm d,dbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) d dbar (MEddbar2Y12ttbar d,dbar->t,tbar) 
+                                             116          116       4.1(4)e-03
+(PPExtractor) d dbar (MEddbar2Y12bbbar d,dbar->b,bbar) 
+                                             140          140       4.9(4)e-03
+(PPExtractor) d dbar (MEddbar2Y12ssbar d,dbar->s,sbar) 
+                                             145          145       5.1(4)e-03
+(PPExtractor) d dbar (MEddbar2Y12ccbar d,dbar->c,cbar) 
+                                             145          145       5.1(4)e-03
+(PPExtractor) d dbar (MEddbar2Y12ddbar d,dbar->d,dbar) 
+                                             144          144       5.0(4)e-03
+(PPExtractor) d dbar (MEddbar2Y12uubar d,dbar->u,ubar) 
+                                             157          157       5.5(4)e-03
+(PPExtractor) d g (MEdg2Y1d d,g->Y1,d) 
+                                              55           55       1.9(3)e-03
+(PPExtractor) u ubar (MEuubar2Y1g u,ubar->Y1,g) 
+                                             646          646      22.6(9)e-03
+(PPExtractor) u ubar (MEuubar2Y1gamma u,ubar->Y1,gamma) 
+                                              10           10       0.4(1)e-03
+(PPExtractor) u ubar (MEuubar2Y1Z0 u,ubar->Y1,Z0) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) u ubar (MEuubar2Y1Y1 u,ubar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) u ubar (MEuubar2Y12XmXm u,ubar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) u ubar (MEuubar2Y12ttbar u,ubar->t,tbar) 
+                                             188          188       6.6(5)e-03
+(PPExtractor) u ubar (MEuubar2Y12bbbar u,ubar->b,bbar) 
+                                             214          214       7.5(5)e-03
+(PPExtractor) u ubar (MEuubar2Y12ssbar u,ubar->s,sbar) 
+                                             248          248       8.7(5)e-03
+(PPExtractor) u ubar (MEuubar2Y12ccbar u,ubar->c,cbar) 
+                                             221          221       7.7(5)e-03
+(PPExtractor) u ubar (MEuubar2Y12ddbar u,ubar->d,dbar) 
+                                             211          211       7.4(5)e-03
+(PPExtractor) u ubar (MEuubar2Y12uubar u,ubar->u,ubar) 
+                                             225          225       7.9(5)e-03
+(PPExtractor) u dbar (MEudbar2Y1W+ u,dbar->Y1,W+) 
+                                              10           10       0.4(1)e-03
+(PPExtractor) u g (MEug2Y1u u,g->Y1,u) 
+                                             169          169       5.9(5)e-03
+(PPExtractor) s cbar (MEscbar2Y1W- s,cbar->Y1,W-) 
+                                               0            0                0
+(PPExtractor) s sbar (MEssbar2Y1g s,sbar->Y1,g) 
+                                              24           24       0.8(2)e-03
+(PPExtractor) s sbar (MEssbar2Y1gamma s,sbar->Y1,gamma) 
+                                               0            0                0
+(PPExtractor) s sbar (MEssbar2Y1Z0 s,sbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) s sbar (MEssbar2Y1Y1 s,sbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) s sbar (MEssbar2Y12XmXm s,sbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) s sbar (MEssbar2Y12ttbar s,sbar->t,tbar) 
+                                               9            9       0.3(1)e-03
+(PPExtractor) s sbar (MEssbar2Y12bbbar s,sbar->b,bbar) 
+                                              12           12       0.4(1)e-03
+(PPExtractor) s sbar (MEssbar2Y12ssbar s,sbar->s,sbar) 
+                                               9            9       0.3(1)e-03
+(PPExtractor) s sbar (MEssbar2Y12ccbar s,sbar->c,cbar) 
+                                              11           11       0.4(1)e-03
+(PPExtractor) s sbar (MEssbar2Y12ddbar s,sbar->d,dbar) 
+                                              12           12       0.4(1)e-03
+(PPExtractor) s sbar (MEssbar2Y12uubar s,sbar->u,ubar) 
+                                              13           13       0.5(1)e-03
+(PPExtractor) s g (MEsg2Y1s s,g->Y1,s) 
+                                              13           13       0.5(1)e-03
+(PPExtractor) c cbar (MEccbar2Y1g c,cbar->Y1,g) 
+                                              15           15       0.5(1)e-03
+(PPExtractor) c cbar (MEccbar2Y1gamma c,cbar->Y1,gamma) 
+                                               1            1       40(40)e-06
+(PPExtractor) c cbar (MEccbar2Y1Z0 c,cbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) c cbar (MEccbar2Y1Y1 c,cbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) c cbar (MEccbar2Y12XmXm c,cbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) c cbar (MEccbar2Y12ttbar c,cbar->t,tbar) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) c cbar (MEccbar2Y12bbbar c,cbar->b,bbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) c cbar (MEccbar2Y12ssbar c,cbar->s,sbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) c cbar (MEccbar2Y12ccbar c,cbar->c,cbar) 
+                                               6            6      0.21(9)e-03
+(PPExtractor) c cbar (MEccbar2Y12ddbar c,cbar->d,dbar) 
+                                               1            1       40(40)e-06
+(PPExtractor) c cbar (MEccbar2Y12uubar c,cbar->u,ubar) 
+                                               6            6      0.21(9)e-03
+(PPExtractor) c sbar (MEcsbar2Y1W+ c,sbar->Y1,W+) 
+                                               0            0                0
+(PPExtractor) c g (MEcg2Y1c c,g->Y1,c) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) b bbar (MEbbbar2Y1g b,bbar->Y1,g) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) b bbar (MEbbbar2Y1gamma b,bbar->Y1,gamma) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y1Z0 b,bbar->Y1,Z0) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y1H b,bbar->Y1,H) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y1Y1 b,bbar->Y1,Y1) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y12XmXm b,bbar->Xm,Xm) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y12ttbar b,bbar->t,tbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) b bbar (MEbbbar2Y12bbbar b,bbar->b,bbar) 
+                                               1            1       40(40)e-06
+(PPExtractor) b bbar (MEbbbar2Y12ssbar b,bbar->s,sbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) b bbar (MEbbbar2Y12ccbar b,bbar->c,cbar) 
+                                               0            0                0
+(PPExtractor) b bbar (MEbbbar2Y12ddbar b,bbar->d,dbar) 
+                                               2            2       70(50)e-06
+(PPExtractor) b bbar (MEbbbar2Y12uubar b,bbar->u,ubar) 
+                                               3            3      0.11(6)e-03
+(PPExtractor) b g (MEbg2Y1b b,g->Y1,b) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) g bbar (MEbbarg2Y1bbar bbar,g->Y1,bbar) 
+                                               5            5      0.18(8)e-03
+(PPExtractor) g cbar (MEcbarg2Y1cbar cbar,g->Y1,cbar) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) g sbar (MEsbarg2Y1sbar sbar,g->Y1,sbar) 
+                                              10           10       0.4(1)e-03
+(PPExtractor) g ubar (MEubarg2Y1ubar ubar,g->Y1,ubar) 
+                                              18           18       0.6(1)e-03
+(PPExtractor) g dbar (MEdbarg2Y1dbar dbar,g->Y1,dbar) 
+                                              15           15       0.5(1)e-03
+(PPExtractor) g d (MEdg2Y1d d,g->Y1,d) 
+                                              66           66       2.3(3)e-03
+(PPExtractor) g u (MEug2Y1u u,g->Y1,u) 
+                                             176          176       6.2(5)e-03
+(PPExtractor) g s (MEsg2Y1s s,g->Y1,s) 
+                                              10           10       0.4(1)e-03
+(PPExtractor) g c (MEcg2Y1c c,g->Y1,c) 
+                                               4            4      0.14(7)e-03
+(PPExtractor) g b (MEbg2Y1b b,g->Y1,b) 
+                                               5            5      0.18(8)e-03
+==============================================================================

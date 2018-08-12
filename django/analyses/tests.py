@@ -1,6 +1,13 @@
-# -*- coding: utf-8 -*-
+# -*- cofding: utf-8 -*-
 from __future__ import unicode_literals
 from . import models
+from . import views
+from . import forms
+from .management.commands.dat2db import file_discovery
+from .management.commands.dat2db import html_discovery
+from .management.commands import map2db
+from .management.commands import yoda2db
+from .management.commands import rebuild_yoda
 
 from django.test import TestCase
 from django.core.exceptions import ValidationError
@@ -8,6 +15,8 @@ import pickle
 import os
 from django.core.files import File
 from PIL import Image, ImageDraw
+from django.urls import reverse
+
 
 
 class Test_Models(TestCase):
@@ -23,7 +32,7 @@ class Test_Models(TestCase):
         self.assertEqual(instance.__str__(), instance.pool)
 
     # Tests for Analysis Model
-    def create_Analyses(self,pool, anaid="only a test", lumi=10):
+    def create_Analyses(self,pool, anaid="only_a_test", lumi=10):
         return models.Analysis.objects.create(anaid=anaid, lumi=lumi, pool=pool)
 
     def test_Analyses_creation(self):
@@ -125,7 +134,7 @@ class Test_Models(TestCase):
 
 
     # Tests for BSM_Model Model
-    def create_BSM(self, date,name="Test_BSM",ufolink="TestLink",author="Test_Author"):
+    def create_BSM(self, date,name="Test_Fixtures",ufolink="TestLink",author="Test_Author"):
         self.bsm = models.BSM_Model.objects.create(name=name,UFO_Link=ufolink,author=author,date_downloaded=date)
         return self.bsm
 
@@ -629,3 +638,746 @@ class Test_Models(TestCase):
         self.assertTrue(isinstance(self.hi_instance, models.histo_images))
         # Check that instance has correct contents
         self.assertEqual(self.hi_instance.__str__(), self.hi_instance._check_id_field)
+
+class Test_Views(TestCase):
+
+    # This section tests the Views, Templates and URLs by testing that pages defined by URLs
+    # correctly load with the correct data
+
+    def test_Pools_view(self):
+        models = Test_Models()
+
+        # Create model
+        pool = models.create_Pool()
+
+        # Load URL
+        url = reverse("pools",args=[pool.pool])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(pool.pool.encode('utf-8'), resp.content)
+
+    def test_Pools_view404(self):
+        models = Test_Models()
+
+        # Create model
+        pool = models.create_Pool()
+
+        # Load URL
+        url = reverse("pools",args=["NOT_A_REAL_ARGUMENT"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+
+
+    def test_Analyses_view(self):
+        models = Test_Models()
+
+        # Create model
+        pool = models.create_Pool()
+        analysis = models.create_Analyses(pool)
+
+        # Load URL
+        url = reverse("analysis",args=[analysis.anaid])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(analysis.anaid.encode('utf-8'), resp.content)
+
+    def test_Analyses_view404(self):
+        models = Test_Models()
+
+        # Create model
+        pool = models.create_Pool()
+        analysis = models.create_Analyses(pool)
+
+        # Load URL
+        url = reverse("analysis",args=["NOT_A_REAL_ARGUMENT"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+
+    def test_Index_view(self):
+        # Load URL
+        url = reverse("index")
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+    def test_Model_view(self):
+        models = Test_Models()
+        bsm = models.create_BSM("1995-08-08")
+
+        # Load URL
+        url = reverse("model", args=[bsm.name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(bsm.name.encode('utf-8'), resp.content)
+
+    def test_Model_view404(self):
+        models = Test_Models()
+
+        # Load URL
+        url = reverse("model",args=["NOT_A_REAL_ARGUMENT"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+
+    def test_Runcard_view(self):
+        models = Test_Models()
+        bsm = models.create_BSM("1995-08-08")
+        runcard = models.create_Runcard(bsm)
+
+        # Load URL
+        url = reverse("runcard", args=[runcard.runcard_name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(runcard.runcard_name.encode('utf-8'), resp.content)
+
+    def test_Runcard_view404(self):
+        models = Test_Models()
+
+        # Load URL
+        url = reverse("runcard",args=["NOT_A_REAL_ARGUMENT"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+    def test_Results_view(self):
+        models = Test_Models()
+
+        model = models.create_BSM("1995-08-08")
+        runcard = models.create_Runcard(model)
+        results = models.create_Results_header(runcard)
+
+        models.create_map_header(results)
+        models.create_Results_position(results)
+
+        # Load URL
+        url = reverse("results", args=[results.name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(results.name.encode('utf-8'), resp.content)
+
+    def test_Results_view404(self):
+        # Load URL
+        url = reverse("results", args=["NOT_A_REAL_ARGUMENT"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+    def test_Positions_view(self):
+        models = Test_Models()
+
+        model = models.create_BSM("1995-08-08")
+        runcard = models.create_Runcard(model)
+        results = models.create_Results_header(runcard)
+        position = models.create_Results_position(results)
+
+        # Load URL
+        url = reverse("positions", args=[position.id])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(position.name.encode('utf-8'), resp.content)
+
+    def test_Positions_view404(self):
+        # Load URL with id that doesnt exist
+        url = reverse("positions", args=[101010101010101010])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+    def test_ana_data_view(self):
+        models = Test_Models()
+
+        model = models.create_BSM("1995-08-08")
+        runcard = models.create_Runcard(model)
+        results = models.create_Results_header(runcard)
+        position = models.create_Results_position(results)
+        data = models.create_Results_analyses(position)
+
+        # Load URL
+        url = reverse("ana_data", args=[data.id])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        string_content = "analyses"
+        self.assertIn(string_content.encode('utf-8'), resp.content)
+
+    def test_ana_data_view404(self):
+        # Load URL with id that doesnt exist
+        url = reverse("ana_data", args=[101010101010101010])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+    def test_ufo_home_view(self):
+        models = Test_Models()
+
+        # Load URL
+        url = reverse("ufo_home")
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        string_content = "name"
+        self.assertIn(string_content.encode('utf-8'), resp.content)
+
+    def test_dl_bsm_view(self):
+        models = Test_Models()
+        model = models.create_BSM("1995-08-08")
+
+        # Load URL
+        url = reverse("dl_bsm",args=[model.name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+
+    def test_dl_bsm_view_fail(self):
+        models = Test_Models()
+
+        # Load URL
+        url = reverse("dl_bsm",args=["Not_a_model"])
+
+        # response should load None, throwing value error
+        with self.assertRaises(ValueError):
+            resp = self.client.get(url)
+
+
+    def test_add_ana_view(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+
+        # Load URL
+        url = reverse("add_ana",args=[model.name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(model.name.encode('utf-8'), resp.content)
+
+    def test_add_ana_view404(self):
+        models = Test_Models()
+
+        # Load URL
+        url = reverse("add_ana",args=["Not_Model_Name"])
+        resp = self.client.get(url)
+
+        # Assert that URL Throws 404
+        self.assertEqual(resp.status_code, 404)
+
+
+    def test_add_existing_ana_view(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("add_existing_ana", args=[model.name,ana_list.ana_name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(model.name.encode('utf-8'), resp.content)
+
+    def test_add_existing_ana_view404_1(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("add_existing_ana", args=["NOT_MODEL",ana_list.ana_name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 404)
+
+    def test_add_existing_ana_view404_2(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("add_existing_ana", args=[model.name, "Not_Ana_List"])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 404)
+
+    def test_inside_ana_view(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("inside_ana", args=[ana_list.ana_name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        self.assertIn(ana_list.ana_name.encode('utf-8'), resp.content)
+
+    def test_inside_ana_view404(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("inside_ana", args=["Not_ana_File"])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 404)
+
+    def test_new_ana_view(self):
+        models = Test_Models()
+
+        # Create model
+        model = models.create_BSM("1995-08-08")
+
+        # Load URL
+        url = reverse("new_ana", args=[model.name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert that content is correct
+        string_content = "name"
+        self.assertIn(string_content.encode('utf-8'), resp.content)
+
+    def test_write_ana_view(self):
+        models = Test_Models()
+
+        # Create model
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("write_ana", args=[ana_list.ana_name])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+    def test_write_ana_view404(self):
+        models = Test_Models()
+
+        # Create model
+        ana_list = models.create_ana_list()
+
+        # Load URL
+        url = reverse("write_ana", args=["Not_an_ana"])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 404)
+
+    def test_render_histo_view(self):
+        models = Test_Models()
+
+        # Create histo image for test
+        model = models.create_BSM("1995-08-08")
+        runcard = models.create_Runcard(model)
+        results_header = models.create_Results_header(runcard)
+        rp = models.create_Results_position(results_header)
+        hh = models.create_histo_header(rp, "1995-08-08")
+
+        img = Image.new('RGB', (60, 30), color='red')
+        img.save('image_test.png')
+
+        file = File(open("image_test.png", mode="rb"))
+
+        image = models.create_histo_images(hh, file)
+        hist_id = image.id
+        os.remove('image_test.png')
+
+        url = reverse("render_histo", args=[hist_id])
+        resp = self.client.get(url)
+
+        # Assert that URL Loads Correctly
+        self.assertEqual(resp.status_code, 200)
+
+        # Assert image on page
+        string_content = ".png"
+        self.assertIn(string_content.encode('utf-8'), resp.content)
+
+class Test_Forms(TestCase):
+
+    # This section tests the forms in the project
+
+    # Document Form Tests
+
+    def test_DocumentForm(self):
+        # Define form data
+        form_data = {'anaid': 'test',
+                     'lumi':100,
+                     'pool':'ATLAS_7_JETS'}
+        # Create form and assert it is valid
+        form = forms.DocumentForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_DocumentForm_fails1(self):
+        # Define form data
+        form_data = {'anaid': 'test',
+                     'lumi':'string',
+                     'pool':'ATLAS_7_JETS'}
+        # Create form and assert it is not valid
+        form = forms.DocumentForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_DocumentForm_fails2(self):
+        # Define form data
+        form_data = {'anaid': 'test',
+                     'lumi':'string',
+                     'pool':100}
+        # Create form and assert it is not valid
+        form = forms.DocumentForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_DocumentForm_fails3(self):
+        # Define form data
+        form_data = {'not_a_field': 'test',
+                     'lumi':'string',
+                     'pool':100}
+        # Create form and assert it is not valid
+        form = forms.DocumentForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    # Pool Form Tests
+
+    def test_PoolForm_1(self):
+        # Define form data
+        form_data = {'pool': 'pool_name'}
+        # Create form and assert it is valid
+        form = forms.PoolForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_PoolForm_2(self):
+        # Define form data
+        form_data = {'pool': 123}
+        # Create form and assert it is valid
+        form = forms.PoolForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_PoolForm_fails2(self):
+        # Define form data
+        form_data = {'pool': 'pool_name'}
+        # Create form and assert it is valid
+        form = forms.PoolForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    # Download Form Tests
+
+    def test_DownloadForm_1(self):
+        models = Test_Models()
+        # Define form data
+        model = models.create_BSM("1995-08-08")
+        form_data = {'runcard_name': 'runcard',
+                     'modelname': model,
+                     'param_card': 'test',
+                     'author':'author_name'}
+        # Create form and assert it is valid
+        form = forms.DownloadForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_DownloadForm_2(self):
+        models = Test_Models()
+        # Define form data
+        model = models.create_BSM("1995-08-08")
+
+        # Define parameter card with a lot of text
+        parameter_card = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut'  \
+                         'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco' \
+                         'laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in' \
+                         'voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat' \
+                         'non proident, sunt in culpa qui officia deserunt mollit anim id est laborum'
+
+        form_data = {'runcard_name': 'runcard',
+                     'modelname': model,
+                     'param_card': parameter_card,
+                     'author':'author_name'}
+        # Create form and assert it is valid
+        form = forms.DownloadForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_DownloadForm_fails1(self):
+        models = Test_Models()
+        # Define form data
+        model = models.create_BSM("1995-08-08")
+        form_data = {'runcard_name': 'runcard',
+                     'modelname': 'not_linked_to_a_model',
+                     'param_card': 'test',
+                     'author':'author_name'}
+        # Create form and assert it is not valid
+        form = forms.DownloadForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_DownloadForm_fails2(self):
+        models = Test_Models()
+        # Define form data
+        model = models.create_BSM("1995-08-08")
+        form_data = {'not_a_field': 'runcard',
+                     'modelname': 'not_linked_to_a_model',
+                     'param_card': 'test',
+                     'author':'author_name'}
+        # Create form and assert it is not valid
+        form = forms.DownloadForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    # UFO Form Tests
+
+    def test_UFOForm_1(self):
+        # Define form data
+        form_data = {'name': 'test_name',
+                     'UFO_Link': 'www.example_link.com',
+                     'author': 'test_author'}
+        # Create form and assert it is valid
+        form = forms.UFOForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_UFOForm_2(self):
+        # Define form data
+        form_data = {'name': 'test_name',
+                     'UFO_Link':'',
+                     'author': 'test_author'}
+        # Create form and assert it is valid
+        form = forms.UFOForm(form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_UFOForm_fails_1(self):
+        # Define form data
+        form_data = {'not_a_field': 'test_name',
+                     'UFO_Link': 'www.example_link.com',
+                     'author': 'test_author'}
+        # Create form and assert it is valid
+        form = forms.UFOForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_UFOForm_fails_2(self):
+        # Define form data
+        form_data = {'not_a_field': 'test_name',
+                     'UFO_Link': 1,
+                     'author': 'test_author'}
+        # Create form and assert it is valid
+        form = forms.UFOForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    # Analyses Form Tests
+
+    def test_AnalysesForm(self):
+        # Define form data
+        form_data = {'name': 'test_name',
+                     'author': 'test_author'}
+        # Create form and assert it is valid
+        form = forms.AnalysesForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_AnalysesForm_fails1(self):
+        # Define form data
+        form_data = {'not_a_field': 'test_name',
+                     'author': 'test_author',
+                     'analyses':'test_analyses'}
+        # Create form and assert it is not valid
+        form = forms.AnalysesForm(form_data)
+        self.assertFalse(form.is_valid())
+
+    def test_AnalysesForm_fails2(self):
+        # Define form data
+        form_data = {'not_a_field': 'test_name',
+                     'author': 'test_author',
+                     'analyses':1}
+        # Create form and assert it is not valid
+        form = forms.AnalysesForm(form_data)
+        self.assertFalse(form.is_valid())
+
+class Test_Commands(TestCase):
+
+    # This section tests the code in management/commands. This is the code used to upload data to the database and to
+    # Generate heatmaps.
+
+
+    # Tests for dat2db
+
+    def test_file_discovery(self):
+        # Load Sample Data and Run dat2db code
+        models.results_header.objects.create(name="Test_Results_Header")
+        results_obj = models.results_header.objects.filter(name="Test_Results_Header").values_list('name')
+        for root, dirs, files in os.walk("analyses/management/commands/Test_Fixtures/", topdown=False):
+            for name in dirs:
+                if "ANALYSIS" in name:
+                   position = root.split("/")[-1]
+                   files = file_discovery("/Test_Fixtures/" + position, results_obj, position)
+
+        # Assert that database records exist
+        assert(len(models.dat_database.objects.all()) > 0)
+        assert(len(models.results_header.objects.all()) > 0)
+        assert(len(models.dat_files.objects.all()) > 0)
+        assert(len(models.summary_text.objects.all()) > 0)
+
+    def test_html_discovery(self):
+        # Load Sample Data and Run dat2db code
+        models.results_header.objects.create(name="Test_Results_Header")
+        results_obj = models.results_header.objects.filter(name="Test_Results_Header").values_list('name')
+        for root, dirs, files in os.walk("analyses/management/commands/Test_Fixtures/", topdown=False):
+            for name in dirs:
+                if "contur-plots" in name:
+                   position = root.split("/")[-1]
+                   files = html_discovery("/Test_Fixtures/" + position + "/contur-plots/", results_obj, position)
+
+        # Assert that database records exist
+        assert(len(models.results_header.objects.all()) > 0)
+        assert(len(models.histo_header.objects.all()) > 0)
+        assert(len(models.histo_data.objects.all()) > 0)
+        assert(len(models.histo_images.objects.all()) > 0)
+
+    # Tests for map2db
+
+    def test_map2db(self):
+
+        creators = Test_Models()
+
+        # Create runcard for test
+        model = creators.create_BSM("1995-08-08")
+        Runcard = creators.create_Runcard(model)
+        models.results_header.objects.create(name="Test_Results_Header")
+        results_obj = models.results_header.objects.filter(name="Test_Results_Header").values_list('name')
+
+        # Load sample data and Run map2db code
+        files = map2db.file_discovery("Test_Fixtures/")
+        map_list = files.file_dict
+        data = map2db.store_data(map_list)
+        map_dict = data.map_dict
+        db = map2db.db_upload(map_dict, Runcard.runcard_name,results_obj)
+
+        # Assert that database records exist
+        assert (len(models.results_header.objects.all()) > 0)
+        assert (len(models.map_header.objects.all()) > 0)
+        assert (len(models.map_pickle.objects.all()) > 0)
+
+    # Tests for yoda2db
+
+    def test_yoda2db(self):
+
+        creators = Test_Models()
+        # Create runcard for test
+        model = creators.create_BSM("1995-08-08")
+        Runcard = creators.create_Runcard(model)
+        models.results_header.objects.create(name="Test_Results_Header")
+        results_obj = models.results_header.objects.filter(name="Test_Results_Header").values_list('name')
+
+
+        files = yoda2db.file_discovery("Test_Fixtures_Yoda/")
+        yoda_list = files.file_dict
+        data = yoda2db.store_data(yoda_list)
+        ret_dict = data.yoda_dict
+        db = yoda2db.db_upload(ret_dict, Runcard.runcard_name,results_obj)
+
+        # Assert that database records exist
+        assert (len(models.results_header.objects.all()) > 0)
+        assert (len(models.results_position.objects.all()) > 0)
+        assert (len(models.results_analyses.objects.all()) > 0)
+
+    # Tests for rebuild_yoda
+
+    def test_rebuild_yoda(self):
+        # Upload Yoda
+
+        creators = Test_Models()
+
+        # Create runcard for test
+        model = creators.create_BSM("1995-08-08")
+        Runcard = creators.create_Runcard(model)
+        models.results_header.objects.create(name="Test_Results_Header")
+        results_obj = models.results_header.objects.filter(name="Test_Results_Header").values_list('name')
+
+        # Upload Yoda Data for Test
+        files = yoda2db.file_discovery("Test_Fixtures_Yoda/")
+        yoda_list = files.file_dict
+        data = yoda2db.store_data(yoda_list)
+        ret_dict = data.yoda_dict
+        db = yoda2db.db_upload(ret_dict, Runcard.runcard_name, results_obj)
+
+        created = models.results_position.objects.all()[0]
+        created_id = created.id
+
+        # Write Test YODA file
+        yoda_create = rebuild_yoda.generate_dict(created_id)
+        data_dict = yoda_create.data_dict
+        file_name = yoda_create.parent
+        rebuild_yoda.write_yoda(data_dict, file_name[0][0])
+
+        cwd = os.getcwd()
+
+        files = os.listdir(cwd)
+        assert("mY_2600_mX_1600.yoda" in files)
+        os.remove("mY_2600_mX_1600.yoda")
+
+    # Generate Heatmap is tested as part of views, since it is directly linked to a view.
+
+
+
+
+
+
+
+
+
+

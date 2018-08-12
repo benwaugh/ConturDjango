@@ -130,10 +130,11 @@ class store_data(object):
 
 class db_upload(object):
 
-    def __init__(self,yoda_dict,rc_name):
+    def __init__(self,yoda_dict,rc_name,results_name):
         self.yoda_dict = yoda_dict
         self.i = 0
         self.runcard = rc_name
+        self.results_name =results_name
         self.upload()
 
 
@@ -149,7 +150,7 @@ class db_upload(object):
             print(runcard.objects.all())
         else:
             runcard_object,runcard_created = runcard.objects.get_or_create(runcard_name=str(self.runcard))
-            results_object = input("Please enter a name for the results object: ")
+            results_object = self.results_name
 
             upload_header, created_header =\
                 results_header.objects.get_or_create(
@@ -160,6 +161,7 @@ class db_upload(object):
                     parent=None)
 
             upload_header.save()
+
             return upload_header
 
 
@@ -333,12 +335,13 @@ if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Yoda Data to Database")
     parser.add_argument('--directory', '-d')
     parser.add_argument('--runcard', '-r')
+    parser.add_argument('--results', '-o')
     arguments = parser.parse_args()
 
     files = file_discovery(arguments.directory)
     yoda_list = files.file_dict
     data = store_data(yoda_list)
     ret_dict = data.yoda_dict
-    db = db_upload(ret_dict, arguments.runcard)
+    db = db_upload(ret_dict, arguments.runcard,arguments.results)
 
     print(str(len(ret_dict)) + " Yoda Files Uploaded to Database")

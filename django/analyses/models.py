@@ -218,7 +218,7 @@ class BSM_Model(models.Model):
 
     """
     name = models.CharField(max_length=100,primary_key=True)
-    UFO_Link = models.TextField()
+    UFO_Link = models.TextField(blank=True)
     author = models.CharField(max_length=50)
     date_downloaded = models.DateField()
 

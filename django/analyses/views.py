@@ -16,7 +16,7 @@ from django.core.files.storage import FileSystemStorage
 import glob, os, sys
 import pandas as pd
 import json
-
+from django.http import Http404
 import matplotlib
 from matplotlib import pyplot as plt
 import numpy as np
@@ -375,17 +375,21 @@ def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
-    print(yoda_list[0].name)
-    #try:
-    param1 = str(yoda_list[0].name).split('_')[0]
-    param2 = str(yoda_list[0].name).split('_')[2]
+
+    try:
+        param1 = str(yoda_list[0].name).split('_')[0]
+        param2 = str(yoda_list[0].name).split('_')[2]
+    except(IndexError):
+        param1 = "param1"
+        param2 = "param2"
+
     for i in range(0,len(yoda_list)):
         try:
-            yoda_list[i].param1s=str(yoda_list[i].name).split('_')[1]
-            yoda_list[i].param2s =str(yoda_list[i].name).split('_')[3]
+                yoda_list[i].param1s=str(yoda_list[i].name).split('_')[1]
+                yoda_list[i].param2s =str(yoda_list[i].name).split('_')[3]
         except(IndexError):
-            yoda_list[i].param1s = ""
-            yoda_list[i].param2s = ""
+                yoda_list[i].param1s = ""
+                yoda_list[i].param2s = ""
 
 
     context = {
@@ -505,7 +509,6 @@ def heatmap_display(request,analyses):
 
     """
     file = map_header.objects.get(analyses=analyses)
-
     data = map_pickle.objects.filter(parent=file.id).values_list('pickle',flat=True)
     from .management.commands.generate_heatmap import gen_heatmap
     gen_heatmap(data)
@@ -678,6 +681,12 @@ def add_ana(request,name):
     """
     ana_file_list = ana_list.objects.all()
     model = BSM_Model.objects.filter(name=name)
+
+    try:
+        model[0]
+    except(IndexError):
+        raise Http404()
+
     context = {
         'm': model[0],
         'anas':ana_file_list,
@@ -696,7 +705,7 @@ def add_existing_ana(request,name,modelname):
 
         Parameters:
             Web request -> Activated by clicking on add existing .ana link
-            name -> name of ana_fime
+            name -> name of ana_file
             modelname -> name of active model
 
         Operations:
@@ -710,12 +719,20 @@ def add_existing_ana(request,name,modelname):
             Renders add ana page with new data added
 
     """
-    model = BSM_Model.objects.get(name=modelname)
-    ana_file = ana_list.objects.get(ana_name=name)
-    value,created = used_analyses.objects.get_or_create(modelname=model,ana_name=ana_file)
+    try:
+        model = BSM_Model.objects.get(name=modelname)
+        ana_file = ana_list.objects.get(ana_name=name)
+        value,created = used_analyses.objects.get_or_create(modelname=model,ana_name=ana_file)
 
-    ana_file_list = used_analyses.objects.all()
-    model = BSM_Model.objects.filter(name=modelname)
+        ana_file_list = used_analyses.objects.all()
+        model = BSM_Model.objects.filter(name=modelname)
+    except:
+        raise Http404()
+
+    try:
+        model[0]
+    except(IndexError):
+        raise Http404()
 
     context = {
         'm': model[0],
@@ -743,8 +760,11 @@ def inside_ana(request,ana_name):
             Renders inside_ana template with analyses and .ana data
 
     """
-    linked_ana = ana_list.objects.get(ana_name=ana_name)
-    ana_file_list = ana_file.objects.filter(linked_ana=linked_ana)
+    try:
+        linked_ana = ana_list.objects.get(ana_name=ana_name)
+        ana_file_list = ana_file.objects.filter(linked_ana=linked_ana)
+    except:
+        raise Http404()
     context = {
         'anas':ana_file_list,
         'n':linked_ana,
@@ -824,25 +844,28 @@ def write_ana(request,name):
             Refreshes current page
 
     """
-    ana = ana_list.objects.filter(ana_name=name)
-    data = ana_file.objects.filter(linked_ana=ana[0]).values_list('anaid')
-
-
-    f = open("analyses/tmp/" + str(name) + ".ana","w+")
-    for analyses in data:
-        line = analyses[0]
-        f.write("insert Rivet:Analyses 0 " + line + "\n")
-    f.close()
-
     try:
-        wrapper = FileWrapper(open("analyses/tmp/"  + str(name) + ".ana" , 'rb'))
-        response = HttpResponse(wrapper, content_type='application/force-download')
-        response['Content-Disposition'] = 'inline; filename=' + os.path.basename("analyses/tmp/" + str(name) + ".ana")
-        os.remove("analyses/tmp/" + str(name) + ".ana")
-        return response
+        ana = ana_list.objects.filter(ana_name=name)
+        data = ana_file.objects.filter(linked_ana=ana[0]).values_list('anaid')
 
-    except Exception as e:
-        return None
+        f = open("analyses/tmp/" + str(name) + ".ana","w+")
+        for analyses in data:
+            line = analyses[0]
+            f.write("insert Rivet:Analyses 0 " + line + "\n")
+        f.close()
+
+        try:
+            wrapper = FileWrapper(open("analyses/tmp/"  + str(name) + ".ana" , 'rb'))
+            response = HttpResponse(wrapper, content_type='application/force-download')
+            response['Content-Disposition'] = 'inline; filename=' + os.path.basename("analyses/tmp/" + str(name) + ".ana")
+            os.remove("analyses/tmp/" + str(name) + ".ana")
+            return response
+
+        except Exception as e:
+            return None
+
+    except:
+        raise Http404()
 
 def render_histo(request,id):
     """
