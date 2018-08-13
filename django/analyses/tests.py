@@ -18,7 +18,6 @@ from PIL import Image, ImageDraw
 from django.urls import reverse
 
 
-
 class Test_Models(TestCase):
 
     # Tests for Pools
