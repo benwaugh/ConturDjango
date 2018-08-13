@@ -17,7 +17,6 @@ from django.core.files import File
 from PIL import Image, ImageDraw
 from django.urls import reverse
 
-
 class Test_Models(TestCase):
 
     # Tests for Pools
@@ -1304,7 +1303,7 @@ class Test_Commands(TestCase):
         map_list = files.file_dict
         data = map2db.store_data(map_list)
         map_dict = data.map_dict
-        db = map2db.db_upload(map_dict, Runcard.runcard_name,results_obj)
+        db = map2db.db_upload(map_dict,results_obj)
 
         # Assert that database records exist
         assert (len(models.results_header.objects.all()) > 0)
@@ -1327,7 +1326,7 @@ class Test_Commands(TestCase):
         yoda_list = files.file_dict
         data = yoda2db.store_data(yoda_list)
         ret_dict = data.yoda_dict
-        db = yoda2db.db_upload(ret_dict, Runcard.runcard_name,results_obj)
+        db = yoda2db.db_upload(ret_dict,results_obj)
 
         # Assert that database records exist
         assert (len(models.results_header.objects.all()) > 0)
@@ -1352,7 +1351,7 @@ class Test_Commands(TestCase):
         yoda_list = files.file_dict
         data = yoda2db.store_data(yoda_list)
         ret_dict = data.yoda_dict
-        db = yoda2db.db_upload(ret_dict, Runcard.runcard_name, results_obj)
+        db = yoda2db.db_upload(ret_dict, results_obj)
 
         created = models.results_position.objects.all()[0]
         created_id = created.id

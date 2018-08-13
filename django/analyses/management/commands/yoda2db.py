@@ -17,12 +17,17 @@ from analyses.models import Analysis, AnalysisPool,\
                 runcard, results_header, results_analyses, results_position,\
                 overflow_underflow_histo, profile1_data, histo1_data, scatter1_data,\
                 scatter2_data, scatter3_data, overflow_underflow_profile, counter
-
+from .exceptions import NotFoundInDatabase
 
 class file_discovery(object):
+    """
+        This class searches the directory for yoda files and adds them to a dictionary
 
+        Inputs:
+            Directory to search in
+    """
     def __init__(self, directory):
-
+        # Create class objects
         self.yoda_list = []
         self.dir_path = os.path.dirname(os.path.realpath(__file__)) + "/" + directory
         self.lhcyoda_count = 0
@@ -32,11 +37,16 @@ class file_discovery(object):
         self.identify_relevent()
 
     def get_files(self):
-        #print(self.dir_path)
+        # Search for yoda files in sub directories
         for filename in glob.iglob(self.dir_path + '/**/*.yoda', recursive=True):
             self.yoda_list.append(filename)
+        # Search for yoda files in directory
+        for filename in glob.iglob(self.dir_path + '/*.yoda', recursive=True):
+            self.yoda_list.append(filename)
+
 
     def identify_relevent(self):
+        # Identify which yoda files are relevent (i.e. do not take an LHC yoda from every folder)
         for item in self.yoda_list:
             address = item.split('/')
             name = address[-1]
@@ -48,19 +58,33 @@ class file_discovery(object):
 
 
 class store_data(object):
+    """
+        This class reads the yoda files and stores it in a dictionary
 
+        Inputs:
+            File dictionary from FileDiscovery
+    """
     def __init__(self,file_dict):
+        # Create class objects
         self.file_dict = file_dict
         self.yoda_dict = dict()
         self.entry = 0
         self.read_yoda()
 
     def read_yoda(self):
+        # Read yoda data from files and assign to relevent areas of the dictionary
+
         for file_name in self.file_dict:
+
+            # open relevent data from file
             self.file_id = file_name.split("/")[-1].replace(".yoda","")
             self.yoda_dict[self.file_id] = dict()
             file = open(file_name, 'r')
+
+            # Split each section of data by 'BEGIN '
             split = file.read().split("BEGIN ")
+
+            # For each data section store data such as type, analyses, pattern, etc..
             for item in split:
                 title = item.split('\n')[0].split('/')
                 self.yoda_dict[self.file_id][self.entry] = dict()
@@ -74,25 +98,42 @@ class store_data(object):
 
                 lines = item.split('\n')
 
+                # If the section contains a data table, call read_data function to load in to dict
                 if len(lines) > 1:
                     self.read_data(lines,item)
                     self.entry += 1
 
     def read_data(self,lines,item):
+        # reads data tables and their metadata in yoda files and adds to dictionary
+
+        # For each line of data in yoda table
         for line in lines:
+            # Read the different information about the table (i.e. XLabel,YLabel, Path, etc..)
             self.read_headers(line)
+
+        # Split into tables by hash
         for section in item.split('#'):
+            # Split into individual lines
             line_split = section.split('\n')
+
+            # If line has two values only, it is mean or area data.
             if len(line_split) == 2:
                 header = line_split[0].split(':')[0].strip()
                 value = line_split[0].split(':')[1].strip()
                 self.yoda_dict[self.file_id][self.entry][header] = value
             else:
+                # If line has more that two values when split, it is a line of data from table
+
+                # Take first row as table headers
                 table_headers = line_split[0]
+
+                # Calculate amount of data in row
                 width = len(table_headers.split('\t'))
                 if width > 1:
                     i = 0
+                    # Initialise empty array to store array data
                     array = [x[:] for x in [[None] * width ] * len(line_split)]
+                    # For value in line of data, add to position in array
                     for line in line_split:
                         if i > 0:
                             listed = line.split('\t')
@@ -108,12 +149,19 @@ class store_data(object):
                     for row in array:
                         if None not in row:
                             new_array.append(row)
+
+                    # Add all of data table to dictionary
                     self.yoda_dict[self.file_id][self.entry][table_headers] = new_array
 
 
 
 
     def read_headers(self,line):
+        # This determines which table parameters are present, which are blank and which have values, and then adds
+        # them to the dictionary
+
+        # For each table parameter, search if parameter exists. If parameter exists, add parameter and value (even if
+        # Value is blank) to dictionary. If it does not exist then add null field to dictionary
         for header in ['Path', 'Title', 'Type', 'XLabel', 'YLabel', 'ScaledBy', \
                         'PolyMarker', 'ErrorBars', 'LineColor', 'yodamerge_scale']:
                 if header in line:
@@ -129,55 +177,62 @@ class store_data(object):
 
 
 class db_upload(object):
+    """
+    This class takes the yoda dictionary created in read_data and uploads it to the correct areas of the database
 
-    def __init__(self,yoda_dict,rc_name,results_name):
+    Inputs:
+        yoda_dict created in read_data
+        name of results object
+
+    """
+
+    def __init__(self,yoda_dict,results_name):
+        # Create class objects
         self.yoda_dict = yoda_dict
         self.i = 0
-        self.runcard = rc_name
-        self.results_name =results_name
+        self.results_name = results_name
         self.upload()
 
 
     def upload(self):
+        # Create header in database
         header = self.upload_header()
+        # Create position object as child of header for each point in parameter space (e.g. mY_100_mX_100)
         for item in self.yoda_dict:
             self.upload_positions(item,header)
 
     def upload_header(self):
-        db = runcard.objects.filter(runcard_name=str(self.runcard))
+        # Find input results header in database
+        db = results_header.objects.filter(name__in=self.results_name)
+
+        # If results header does not exist, throw custom error, otherwise retrieve object.
         if len(db) == 0:
-            print("Runcard Not Found. Please select a runcard from the following list:")
-            print(runcard.objects.all())
+            print("Error: Enter Exisiting Results Object")
+            raise (NotFoundInDatabase)
         else:
-            runcard_object,runcard_created = runcard.objects.get_or_create(runcard_name=str(self.runcard))
-            results_object = self.results_name
-
-            upload_header, created_header =\
-                results_header.objects.get_or_create(
-                    name=str(results_object),
-                    runcard=runcard_object,
-                    mc_ver="0.0.0",
-                    contur_ver="0.0.0",
-                    parent=None)
-
-            upload_header.save()
-
-            return upload_header
+            results_object, created = results_header.objects.get_or_create(name__in=self.results_name)
+            results_object.save()
+            return results_object
 
 
     def upload_positions(self,position,header):
-        #(header)
+        # Create results position object for point in parameter space as child of results header.
         upload_pos, created_position = \
             results_position.objects.get_or_create(name=str(position),parent=header)
 
         upload_pos.save()
+        # Call function to upload data from yoda dictionary for current position in parameter space
         self.upload_details(upload_pos,self.yoda_dict[position],position)
 
     def upload_details(self,upload_position,child_dict,position):
-        for record in child_dict:
+        # This opens the data in the yoda dictionary for a specific positon, and uploads it to the correct area of the
+        # database
 
+        # Loop over every item in the dictionary for a point in parameter space
+        for record in child_dict:
             select_dict = child_dict[record]
 
+            # Find pattern, mean and area items seperately, since these function different to the other header parameters
             if 'dxy' not in select_dict:
                 dxy = None
             else:
@@ -193,11 +248,13 @@ class db_upload(object):
             else:
                 area = float("nan")
 
+            # Loop over every possible table parameter and add upload to database for all -> upload none if not in dict
             for term in ['Path', 'Title', 'Type', 'XLabel', 'YLabel', 'ScaledBy', \
              'PolyMarker', 'ErrorBars', 'LineColor', 'yodamerge_scale']:
                 if term not in select_dict:
                     select_dict[term] = None
 
+            # Create results_analyses records with data from dictionary
             upload_info, created_info = \
                 results_analyses.objects.get_or_create(
                     name=select_dict['Analysis'],
@@ -218,17 +275,21 @@ class db_upload(object):
                     )
             upload_info.save()
 
+            # Call function to upload actual table data
             self.upload_data(upload_info,select_dict)
 
     def upload_data(self,upload_info,select_dict):
+        # This function uploads the data from the tables into the correct data tables in the database
         datas = []
         self.i += 1
-        #print(self.i)
 
+        # Loop over every table for selected analyses and pattern in
         for key in select_dict:
             if len(key.split("\t")) > 2:
                 datas.append(select_dict[key])
 
+
+        # If data is 1D histogram data, upload overflow and underflow data and histogram data to database
         if select_dict['Type'] == 'Histo1D':
             for item_list in datas[0]:
                     upload_ou,created_ou = overflow_underflow_histo.objects.get_or_create(
@@ -252,6 +313,7 @@ class db_upload(object):
                         numEntries=item_list[6])
                     upload_hist.save()
 
+        # If data is 1D profile data, upload overflow and underflow data and profile data to database
         if select_dict['Type'] == 'Profile1D':
             for item_list in datas[0]:
                 upload_ou, created_ou = overflow_underflow_profile.objects.get_or_create(
@@ -280,7 +342,7 @@ class db_upload(object):
                     numEntries=item_list[8])
                 upload_prof.save()
 
-
+        # If data is 2D scatter data upload to 2D scatter table
         if select_dict['Type'] == 'Scatter2D':
             for item_list in datas[0]:
                 #print(item_list)
@@ -294,6 +356,7 @@ class db_upload(object):
                     yerr_p =item_list[5])
                 upload_scatter.save()
 
+        # If data is 1D scatter data upload to 1D scatter table
         if select_dict['Type'] == 'Scatter1D':
             for item_list in datas[0]:
                 upload_scatter, created_scatter = scatter1_data.objects.get_or_create(
@@ -303,6 +366,8 @@ class db_upload(object):
                     xerr_p=item_list[2])
                 upload_scatter.save()
 
+        # If data is 3D scatter data upload to 3D scatter table (does not currently exist but built in incase it is
+        # required in the future)
         if select_dict['Type'] == 'Scatter3D':
             for item_list in datas[0]:
                 upload_scatter, created_scatter = scatter3_data.objects.get_or_create(
@@ -318,6 +383,7 @@ class db_upload(object):
                     zerr_p=item_list[8])
                 upload_scatter.save()
 
+        # If data is event counter, upload to counter table
         if select_dict['Type'] == 'Counter':
             for item_list in datas[0]:
                 upload_counter, created_counter = counter.objects.get_or_create(
@@ -333,15 +399,24 @@ class db_upload(object):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Yoda Data to Database")
-    parser.add_argument('--directory', '-d')
-    parser.add_argument('--runcard', '-r')
-    parser.add_argument('--results', '-o')
+    parser.add_argument('--directory', '-d',help='Directory to search in to find the specified data')
+    parser.add_argument('--results','-o',help='Corresponding results object')
     arguments = parser.parse_args()
 
+
+    # Find Yoda files in specified directory
     files = file_discovery(arguments.directory)
+
+    # Retrieve created file dictionary
     yoda_list = files.file_dict
+
+    # Upload all yoda data to dictionary
     data = store_data(yoda_list)
+
+    # Retrieve created yoda dictionary
     ret_dict = data.yoda_dict
-    db = db_upload(ret_dict, arguments.runcard,arguments.results)
+
+    # Upload dictionary data to database
+    db = db_upload(ret_dict,arguments.results)
 
     print(str(len(ret_dict)) + " Yoda Files Uploaded to Database")

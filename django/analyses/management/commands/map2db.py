@@ -13,12 +13,19 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
 from analyses.models import runcard, results_header, map_header, map_pickle
-
+from .exceptions import NotFoundInDatabase
 
 class file_discovery(object):
 
-    def __init__(self, directory):
+    """
+        This class searches for the required .map file in the specified directory
 
+        Inputs:
+            Directory to search in
+    """
+
+    def __init__(self, directory):
+        # Create class objects
         self.map_list = []
         self.dir_path = os.path.dirname(os.path.realpath(__file__)) + "/" + directory
         self.map_count = 0
@@ -28,10 +35,16 @@ class file_discovery(object):
         self.identify_relevent()
 
     def get_files(self):
+        """
+            Searches for .map files and adds them to a list
+        """
         for filename in glob.iglob(self.dir_path + '/*.map', recursive=True):
             self.map_list.append(filename)
 
     def identify_relevent(self):
+        """
+            Identifies names of files and adds them to a file dictionary
+        """
         for item in self.map_list:
             address = item.split('/')
             name = address[-1]
@@ -39,14 +52,26 @@ class file_discovery(object):
 
 
 class store_data(object):
+    """
+        This class creates reads in the files identified in FileDiscovery and creates a dictionary of the filename and
+        data
+
+        Inputs:
+            File_dict from FileDiscovery
+    """
+
 
     def __init__(self,file_dict):
+        # Create class objects
         self.file_dict = file_dict
         self.map_dict = dict()
         self.entry = 0
         self.read_map()
 
     def read_map(self):
+        """
+            Opens pickled files, decodes data and saves to dictionary
+        """
         for file_name in self.file_dict:
             self.file_id = file_name.split("/")[-1]
             if str(self.file_id) == ".map":
@@ -58,53 +83,59 @@ class store_data(object):
 
 
 class db_upload(object):
+    """
+        This class takes the dictionary created in the store_data class and uploads it to the database
 
-    def __init__(self,map_dict,rc_name,results_name):
+        Inputs:
+            map_dict: Dictionary created in store_data
+            results_name: Name of results object
+    """
+
+
+    def __init__(self,map_dict,results_name):
+        # Create class objects
         self.map_dict = map_dict
         self.i = 0
-        self.runcard = rc_name
         self.results_name = results_name
         self.upload()
 
-
-
     def upload(self):
+        # Create map header
         header = self.upload_header()
         for item in self.map_dict:
             self.upload_map_position(item,header)
 
 
     def upload_header(self):
-        db = runcard.objects.filter(runcard_name=str(self.runcard))
-        if len(db) == 0:
-            print("Runcard Not Found. Please select a runcard from the following list:")
-            print(runcard.objects.all())
+        # Create map header record in database using results name
+        db = results_header.objects.filter(name__in=self.results_name)
+
+        if len(db)==0:
+            print("Error: Enter Exisiting Results Object")
+            raise (NotFoundInDatabase)
         else:
-            runcard_object,runcard_created = runcard.objects.get_or_create(runcard_name=str(self.runcard))
-            results_object = self.results_name
+            results_object, created = results_header.objects.get_or_create(name__in=self.results_name)
 
-            upload_header, created_header =\
-                results_header.objects.get_or_create(
-                    name=str(results_object),
-                    runcard=runcard_object,
-                    mc_ver="0.0.0",
-                    contur_ver="0.0.0",
-                    parent=None)
+        res_head = results_header.objects.get(
+            name=str(results_object))
 
-            upload_header.save()
+        res_head.save()
 
-            return upload_header
+        return res_head
 
     def upload_map_position(self,item,header):
+        # Retrieve map header
         upload_pos, created_position = \
             map_header.objects.get_or_create(analyses=str(item), parent=header)
 
         upload_pos.save()
-        #print("Uploaded")
+
+        # Upload data from dictionary
         self.upload_map_data(upload_pos, self.map_dict[item], item)
 
 
     def upload_map_data(self,header,select_dict,item):
+        # Create object in database and upload pickle data
         upload_object, created_object = \
                             map_pickle.objects.get_or_create(
                                 parent=header,
@@ -115,14 +146,23 @@ class db_upload(object):
 
 if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Map Data to Database")
-    parser.add_argument('--directory', '-d')
-    parser.add_argument('--runcard', '-r')
-    parser.add_argument('--results','-o')
+    parser.add_argument('--directory', '-d',help='Directory to search in to find the specified data')
+    parser.add_argument('--results','-o',help='Corresponding results object')
     arguments = parser.parse_args()
+
+    # Run file discovery to find relevent files
     files = file_discovery(arguments.directory)
+
+    # Get out resulting file dictionary
     map_list = files.file_dict
+
+    # Open and depickle map data into dictionary
     data = store_data(map_list)
+
+    # Get out created dictionary
     map_dict = data.map_dict
-    db = db_upload(map_dict, arguments.runcard,arguments.results)
+
+    # Upload data from dictionary to database, linked to results header
+    db = db_upload(map_dict,arguments.results)
 
 
