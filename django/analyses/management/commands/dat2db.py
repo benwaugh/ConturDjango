@@ -23,7 +23,7 @@ django.setup()
 # Import required models from analyses
 from analyses.models import dat_database,results_header, histo_header,histo_data,histo_images, dat_files,summary_text, \
                             results_position
-from .exceptions import NotFoundInDatabase
+from analyses.management.commands.exceptions import NotFoundInDatabase
 
 
 

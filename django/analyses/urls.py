@@ -78,7 +78,11 @@ urlpatterns = [
     url(r'^pool_input', views.pool_form, name='pool_input'),
 
     # Render histo URL to render histogram image when link is clicked on results page
-    url(r'^render_histo/(?P<id>[_A-Za-z0-9]+)/$', views.render_histo,name='render_histo')
+    url(r'^render_histo/(?P<id>[_A-Za-z0-9]+)/$', views.render_histo,name='render_histo'),
+
+
+
+
 
 ]
 

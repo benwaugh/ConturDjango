@@ -23,6 +23,9 @@ class generate_dict(object):
     """
         This class retrieves all yoda data from the database that is associated to a specific position and adds it to
         a dictionary
+
+        Input:
+            id of data to export
     """
 
     def __init__(self,id):
@@ -234,7 +237,6 @@ class write_yoda(object):
         string_split = string.split("\n")
         for line in string_split:
             line_new = line.rstrip()
-            #print(line_new)
             new_string = new_string + line_new + "\n"
 
         reversed_string = ""

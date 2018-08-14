@@ -498,11 +498,12 @@ def heatmap_display(request,analyses):
 
         Operations:
             Loads pickle from map database that matches corresponding parent id
-            Calls gen_heatmap python script from commands folder with pickle as argument
-            This uses Bokeh to plot the data in a new table with an interactive tools
+            Calls gen_heatmap (from generate heatmap) python script from commands folder with pickle as argument
+            Calls get_heatmap (from histo_view) to get histogram data
+            This uses Bokeh to plot the heatmap, and render a table with contributing histogram data
 
         Context:
-            No specific context
+            Items: Contains contributing histograms to areas of plots, with data on name, exclusion, and pattern and image data
 
         Returns:
             Refreshes current page
@@ -510,9 +511,52 @@ def heatmap_display(request,analyses):
     """
     file = map_header.objects.get(analyses=analyses)
     data = map_pickle.objects.filter(parent=file.id).values_list('pickle',flat=True)
-    from .management.commands.generate_heatmap import gen_heatmap
-    gen_heatmap(data)
-    return redirect(request.META['HTTP_REFERER'])
+
+    header = file.parent
+
+    # Create data structures for use in HTML
+    class plots_obj:
+        def __init__(self):
+            self.plot = ""
+            self.pattern = ""
+
+    class datum:
+        def __init__(self):
+            self.name = ""
+            self.cl = 0
+            self.plots = []
+
+        def __str__(self):
+            return self.name
+
+    from .management.commands.generate_heatmap import gen_heatmap as gh
+    from .management.commands.histo_view import gen_heatmap as hv
+    gh(data,header)
+    plot_list, parameter_table, cls,analyses_table = hv(data,header)
+
+
+    items = []
+
+    for i in range(0,len(plot_list)):
+        item = datum()
+        item.cl = cls[i]
+        item.name = parameter_table[i]
+
+        plots_list = []
+        for j in range(0,len(plot_list[i])):
+            plots_input = plots_obj()
+            plots_input.plot = plot_list[i][j]
+            plots_input.pattern = analyses_table[i][j]
+            plots_list.append(plots_input)
+
+        item.plots = plots_list
+        items.append(item)
+
+
+    context = {
+        'items': items,
+    }
+    return render(request, 'analyses/cls_view.html', context)
 
 def ufo_home(request):
     """
@@ -892,3 +936,4 @@ def render_histo(request,id):
         'image':image[0]
     }
     return render(request, 'analyses/histo_image.html', context)
+
