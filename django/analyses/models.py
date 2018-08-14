@@ -1091,3 +1091,57 @@ class histo_images(models.Model):
 
     def __str__(self):
         return self._check_id_field
+
+
+class attached_files(models.Model):
+    """
+           Contains definition of attached_files model:
+                Contains all extra files linked to positions
+
+           Parameters:
+           name ('str'): [Primary Key]
+
+           position ('results_header'): related results header
+                            [This is a foreign key link to the 'analyses_header' field]
+           file (str): FileField
+
+           Returns:
+                name
+
+           db_table:
+                analyses_attached_file
+    """
+    name = models.CharField(primary_key=True,max_length=100)
+    parent = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+                               blank=False, null=False)
+    file = models.FileField()
+
+    def __str__(self):
+        return self.name
+
+
+class attached_papers(models.Model):
+    """
+           Contains definition of attached_files model:
+                Contains all extra files linked to positions
+
+           Parameters:
+
+           name ('str'): [Primary Key]
+           position ('results_header'): related results header
+                            [This is a foreign key link to the 'analyses_header' field]
+           file (str): FileField
+
+           Returns:
+                name
+
+           db_table:
+                analyses_attached_file
+    """
+    name = models.CharField(primary_key=True,max_length=100)
+    parent = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+                               blank=False, null=False)
+    file = models.FileField()
+
+    def __str__(self):
+        return self.name

@@ -34,8 +34,10 @@ from .models import Analysis, AnalysisPool,\
                 runcard, results_header, map_header, map_pickle, results_position,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
-                overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images
-from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm
+                overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images,\
+                attached_papers,attached_files
+
+from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm
 
 
 def retrieve_file_data(ana_file):
@@ -375,6 +377,8 @@ def results(request, name):
     n = get_object_or_404(results_header, pk=name)
     map_h = map_header.objects.filter(parent=n)
     yoda_list = results_position.objects.filter(parent=n)
+    papers = attached_papers.objects.filter(parent=n)
+    files = attached_files.objects.filter(parent=n)
 
     try:
         param1 = str(yoda_list[0].name).split('_')[0]
@@ -392,12 +396,15 @@ def results(request, name):
                 yoda_list[i].param2s = ""
 
 
+
     context = {
         'res' : n,
         'mh':map_h,
         'yoda_list':yoda_list,
         'p1':param1,
         'p2':param2,
+        'papers':papers,
+        'files':files,
     }
     return render(request, 'analyses/results.html', context)
 
@@ -937,3 +944,84 @@ def render_histo(request,id):
     }
     return render(request, 'analyses/histo_image.html', context)
 
+def create_file(request,name):
+    """
+            Purpose:
+                Uploads file to system linked to results header
+
+            Parameters:
+                Web request -> Comes from 'Add new file' link.
+                Has no data specific arguments
+
+            Operations:
+                Saves new file to database through form
+
+            Context:
+                No Specific Context
+
+            Returns:
+                Renders File Upload form
+
+        """
+    res_head = results_header.objects.get(name=name)
+
+    if request.method == 'POST':
+        form = FilesForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form['file'].value()
+            name = form['name'].value()
+            attached_files.objects.create(file=file,name=name,parent=res_head)
+    else:
+        form = FilesForm()
+
+    return render(request, 'analyses/file_upload.html', {
+        'form': form
+    })
+
+def create_paper(request,name):
+    """
+            Purpose:
+                Uploads paper to system linked to results header
+
+            Parameters:
+                Web request -> Comes from 'Add new file' link.
+                Has no data specific arguments
+
+            Operations:
+                Saves new file to database through form
+
+            Context:
+                No Specific Context
+
+            Returns:
+                Renders File Upload form
+
+        """
+    res_head = results_header.objects.get(name=name)
+    if request.method == 'POST':
+        form = PaperForm(request.POST, request.FILES)
+        if form.is_valid():
+            file = form['file'].value()
+            name = form['name'].value()
+            attached_papers.objects.create(file=file, name=name, parent=res_head)
+    else:
+        form = PaperForm()
+
+    return render(request, 'analyses/file_upload.html', {
+        'form': form
+    })
+
+def download_att_file(request,name):
+    file = attached_files.objects.get(name=name)
+    file_path = os.getcwd() + "/media/" + str(file.file)
+
+    if "pdf" in file_path:
+        content = 'application/pdf'
+    else:
+        content = 'text/plain'
+
+    with open(file_path, 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type=content)
+        response['Content-Disposition'] = 'attachment; filename=' + str(file.file)
+        return response
+    raise Http404

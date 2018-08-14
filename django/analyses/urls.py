@@ -80,9 +80,14 @@ urlpatterns = [
     # Render histo URL to render histogram image when link is clicked on results page
     url(r'^render_histo/(?P<id>[_A-Za-z0-9]+)/$', views.render_histo,name='render_histo'),
 
+    # Upload new file attached to results header
+    url(r'^create_file/(?P<name>[_A-Za-z0-9]+)/$', views.create_file,name='create_file'),
 
+    # Upload new paper attached to results header
+    url(r'^create_paper/(?P<name>[_A-Za-z0-9]+)/$', views.create_paper,name='create_paper'),
 
-
+    # Download file by click
+    url(r'^download_att_file/(?P<name>[_A-Za-z0-9]+)/$',views.download_att_file,name='download_att_file')
 
 ]
 

@@ -46,7 +46,8 @@ tr:nth-child(even) {
       };
     </script>
         <div class="container">
-            <div class="toppane"><h1>Results Object: {{res.name}}</h1></div>
+            <div class="toppane"><h1>Results Object: {{res.name}}</h1>
+            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
 
             <div class="tleftpane"><h1><center>Runcard Details</center></h1>
                 	<ul>
@@ -60,6 +61,31 @@ tr:nth-child(even) {
               Contur Version: <a>{{ res.contur_ver }}</a>
 					</li>
 					<p></p>
+                        <h1><center>Attached Papers</center></h1>
+
+                        <h3><center><a href="{% url 'create_paper' res.name %}"
+                                       class="button">Add new file</a></center></h3>
+                        {% if papers %}
+                            {% for paper in papers %}
+                                <li><a href="{% url 'download_att_file' paper.name %}">{{paper.name}}</a></li>
+                            {% endfor %}
+                        {% else %}
+                        <p>No linked papers to display.</p>
+                        {% endif %}
+
+                        <h1><center>Attached Files</center></h1>
+
+                        <h3><center><a href="{% url 'create_file' res.name %}"
+                                       class="button">Add new file</a></center></h3>
+
+                        {% if files %}
+                            {% for file in files %}
+                                <li><a href="{% url 'download_att_file' file.name %}">{{file.name}}</a></li>
+                            {% endfor %}
+                        {% else %}
+                        <p>No linked files to display.</p>
+
+                        {% endif %}
 
             </ul>
             </div>

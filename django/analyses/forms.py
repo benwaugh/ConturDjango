@@ -1,5 +1,5 @@
 from django import forms
-from .models import Download,runcard, BSM_Model,Analysis,AnalysisPool
+from .models import Download,runcard, BSM_Model,Analysis,AnalysisPool,attached_files,attached_papers
 
 
 class DocumentForm(forms.ModelForm):
@@ -31,3 +31,13 @@ class AnalysesForm(forms.Form):
     name = forms.CharField()
     author = forms.CharField()
     analyses = forms.MultipleChoiceField(widget=forms.CheckboxSelectMultiple,choices=opts)
+
+class PaperForm(forms.ModelForm):
+    class Meta:
+        model = attached_papers
+        fields = ('name','file',)
+
+class FilesForm(forms.ModelForm):
+    class Meta:
+        model = attached_files
+        fields = ('name','file',)
