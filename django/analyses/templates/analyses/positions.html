@@ -50,6 +50,11 @@ tr:nth-child(even) {
             <p><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></p>
                 </div>
             <div class="tleftpane"><h1><center>YODA Data</center></h1>
+                <center>
+                        <form action="{% url 'rebuild_yoda' y.id%}">
+                            <input type="submit" value="Export Yoda" />
+                        </form>
+                </center>
                 <ul>
                         {% if ana_list %}
                             <table class="sortable">

@@ -58,6 +58,8 @@ tr:nth-child(even) {
             {% endif %}
                 </div>
             <div class="tmiddlepane"><h1><center>Parameter Card</center></h1>
+                <h3><center><a href="{% url 'runcard_export' rc.runcard_name %}">Export Runcard</a></center></h3>
+
             {{rc.param_card}}
             </div>
             <div class="trightpane"><h1><center>Ana Files</center></h1>

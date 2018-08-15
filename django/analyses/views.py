@@ -37,6 +37,8 @@ from .models import Analysis, AnalysisPool,\
                 overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images,\
                 attached_papers,attached_files
 from django.db.models import  Q
+import shutil
+from io import BytesIO
 
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm
 
@@ -1113,3 +1115,133 @@ def querying(request):
         'results_list': results_list,
     }
     return render(request, 'analyses/index.html', context)
+
+def runcard_export(request,name):
+    """
+        Purpose:
+            Creates param_card.dat file and prompts user to download it
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            name -> the (unique) name of the runcard
+
+        Operations:
+            Write file using parameter data
+
+        Context:
+            No specific context
+
+        Returns:
+            Content
+    """
+
+    rc = runcard.objects.get(runcard_name=name)
+    param_data = str(rc.param_card)
+    with open('analyses/tmp/param_card.dat', 'w+') as f:
+        f.write(param_data)
+    f.close()
+
+
+    with open("analyses/tmp/param_card.dat", 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=' + "param_card.dat"
+
+    os.remove("analyses/tmp/param_card.dat")
+    return response
+
+def rebuild_yoda(request,id):
+    """
+        Purpose:
+            Rebuild yoda file from database and prompt user to download
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            id -> the (unique) id of the yoda data
+
+        Operations:
+            Call rebuild yoda from commands
+            Prompt user to download file
+
+        Context:
+            No specific context
+
+        Returns:
+            Content
+    """
+    from .management.commands.rebuild_yoda import generate_dict,write_yoda
+
+    # Generate dictionary from database data
+    yoda_create = generate_dict(id)
+
+    # Retrieve created dictionary
+    data_dict = yoda_create.data_dict
+
+    # Get file name
+    file_name = yoda_create.parent
+
+    # Write yoda data to file
+    file_path = "analyses/tmp/" +file_name[0][0]
+    write_yoda(data_dict, file_path)
+
+    with open("analyses/tmp/" + file_name[0][0] +".yoda", 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type='text/plain')
+        response['Content-Disposition'] = 'attachment; filename=' + file_name[0][0] +".yoda"
+
+    os.remove("analyses/tmp/" + file_name[0][0] +".yoda")
+    return response
+
+def rebuild_yoda_dir(request,name):
+    """
+        Purpose:
+            Rebuild multiple yoda file from database and prompt user to download
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            name -> name of results header that contains yoda data
+
+        Operations:
+            Get all associated results headers
+            Call rebuild yoda from commands for each one
+            Prompt user to download each file
+
+        Context:
+            No specific context
+
+        Returns:
+            Content
+    """
+    byte = BytesIO()
+    res_head = results_header.objects.get(name=name)
+    linked_positions = results_position.objects.filter(parent=res_head).values_list('id',flat=True)
+    from .management.commands.rebuild_yoda import generate_dict, write_yoda
+    os.makedirs('analyses/tmp/zip_export')
+    for id in linked_positions:
+
+        # Generate dictionary from database data
+        yoda_create = generate_dict(id)
+
+        # Retrieve created dictionary
+        data_dict = yoda_create.data_dict
+
+        # Get file name
+        file_name = yoda_create.parent
+
+        # Write yoda data to file
+        file_path = "analyses/tmp/zip_export/" + file_name[0][0]
+        write_yoda(data_dict, file_path)
+
+
+    zipf = zipfile.ZipFile(byte, 'w')
+    zipdir("analyses/tmp/zip_export",zipf)
+    zipf.close()
+
+
+    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename=' + 'yoda_files.zip'
+    shutil.rmtree('analyses/tmp/zip_export')
+
+    return response
+
+
+
+

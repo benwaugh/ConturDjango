@@ -93,7 +93,16 @@ urlpatterns = [
     url(r'^personalisation',views.personalisation,name='personalisation'),
 
     # URL for querying search box
-    url(r'^querying',views.querying,name='querying')
+    url(r'^querying',views.querying,name='querying'),
+
+    # URL for exporting runcard parameter cards
+    url(r'^runcard_export/(?P<name>[_A-Za-z0-9]+)/$',views.runcard_export,name='runcard_export'),
+
+    # URL for calling rebuild yoda and exporting data
+    url(r'^rebuild_yoda/(?P<id>[_A-Za-z0-9]+)/$',views.rebuild_yoda,name='rebuild_yoda'),
+
+    # URL for calling rebuild yoda for directory and exporting data
+    url(r'^rebuild_yoda_dir/(?P<name>[_A-Za-z0-9]+)/$',views.rebuild_yoda_dir,name='rebuild_yoda_dir')
 
 ]
 

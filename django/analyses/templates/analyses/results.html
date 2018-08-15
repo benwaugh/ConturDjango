@@ -90,10 +90,18 @@ tr:nth-child(even) {
             </ul>
             </div>
             <div class="trightpane"><h1><center>Grid Data</center></h1>
+                 <center>
+                        <form action="{% url 'rebuild_yoda_dir' res.name%}">
+                            <input type="submit" value="Export All Associated Yoda Files" />
+                        </form>
+                </center>
                 {% if mh %}
                         {% for m in mh %}
-                            <centre><a href="{% url 'produce_heatmap' m.analyses %}"
-                                       class="button">View Combined Heatmap</a></centre>
+                <center>
+                        <form action="{% url 'produce_heatmap' m.analyses %}">
+                            <input type="submit" value="View Combined Heatmap" />
+                        </form>
+                </center>
                         {% endfor %}
                     {% endif %}
                 {% if yoda_list %}
