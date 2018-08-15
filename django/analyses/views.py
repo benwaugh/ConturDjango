@@ -36,6 +36,7 @@ from .models import Analysis, AnalysisPool,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
                 overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images,\
                 attached_papers,attached_files
+from django.db.models import  Q
 
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm
 
@@ -1025,3 +1026,90 @@ def download_att_file(request,name):
         response['Content-Disposition'] = 'attachment; filename=' + str(file.file)
         return response
     raise Http404
+
+def personalisation(request):
+    """
+        Purpose:
+            Renders 'homepage' (index) of CoRaD with name filter applied
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            Has no data specific arguments
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Loads all Analysis Pools
+            Loads all Analyses
+            Loads all Models
+            Loads all Keywords
+            Loads all Runcards
+            Loads all Results
+
+        Returns:
+            Renders Index template with context
+    """
+
+    query = request.GET.get('q')
+
+    analysis_pools = AnalysisPool.objects.order_by('pool')
+    analysis_list = Analysis.objects.order_by('anaid')
+    models_list = BSM_Model.objects.filter(author=query).order_by('name')
+    keywords_list = Keyword.objects.order_by('key_word')
+    runcard_list = runcard.objects.filter(author=query).order_by('runcard_name')
+    results_list = results_header.objects.filter(author=query).order_by('name')
+    context = {
+        'analysis_pools': analysis_pools,
+        'analysis_list': analysis_list,
+        'models_list': models_list,
+        'keywords_list': keywords_list,
+        'runcard_list': runcard_list,
+        'results_list': results_list,
+    }
+    return render(request, 'analyses/index.html', context)
+
+def querying(request):
+    """
+        Purpose:
+            Renders 'homepage' (index) of CoRaD with name filter applied
+
+        Parameters:
+            Web request -> homepage of CoRaD system.
+            Has no data specific arguments
+
+        Operations:
+            No calculations undertaken.
+
+        Context:
+            Loads all Analysis Pools
+            Loads all Analyses
+            Loads all Models
+            Loads all Keywords
+            Loads all Runcards
+            Loads all Results
+
+        Returns:
+            Renders Index template with context
+    """
+
+
+    query = request.GET.get('q')
+    analysis_pools = AnalysisPool.objects.filter(Q(pool__contains=query)).order_by('pool')
+    analysis_list = Analysis.objects.filter(Q(anaid__contains=query)).order_by('anaid')
+    models_list = BSM_Model.objects.filter(Q(author__contains=query) | Q(UFO_Link__contains=query) |
+                                           Q(name__contains=query)).order_by('name')
+
+    keywords_list = Keyword.objects.order_by('key_word')
+    runcard_list = runcard.objects.filter(Q(runcard_name__contains=query) |
+                                          Q(param_card__contains=query)).order_by('runcard_name')
+    results_list = results_header.objects.filter(Q(author__contains=query) | Q(name__contains=query)).order_by('name')
+    context = {
+        'analysis_pools': analysis_pools,
+        'analysis_list': analysis_list,
+        'models_list': models_list,
+        'keywords_list': keywords_list,
+        'runcard_list': runcard_list,
+        'results_list': results_list,
+    }
+    return render(request, 'analyses/index.html', context)

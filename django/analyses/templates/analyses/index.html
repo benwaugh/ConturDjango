@@ -45,7 +45,30 @@ tr:nth-child(even) {
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <div class="container">
-            <div class="toppane"><h1>Contur Results and Data (Cord)</h1></div>
+            <div class="toppane"><h1>Contur Results and Data (Cord)</h1>
+
+        <form id="searchform" action="{% url 'personalisation'%}" method="get" accept-charset="utf-8">
+          <button class="searchbutton" type="submit" style="height:40px;width:100px">
+            <i class="fa fa-search"></i>View User Dashboard
+          </button>
+          <input class="searchfield" id="searchbox" name="q" type="text" placeholder="Author/Creator Name">
+        </form>
+
+
+        <form id="searchform2" action="{% url 'querying'%}" method="get" accept-charset="utf-8">
+          <button class="searchbutton" type="submit" style="height:40px;width:100px">
+            <i class="fa fa-search"></i>Search Data
+          </button>
+          <input class="searchfield" id="searchbox2" name="q" type="text" placeholder="Data Content">
+        </form>
+
+        <form action="{% url 'index'%}">
+            <input type="submit" value="Return to Home" />
+        </form>
+
+
+
+        </div>
 
             <div class="tleftpane"><h1><center>Contur BSM Models</center></h1>
                 <center><a href="{% url 'ufo_home' %}" class="button">Add New BSM Model</a></center>

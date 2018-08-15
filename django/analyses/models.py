@@ -471,8 +471,9 @@ class results_header(MPTTModel):
     author = models.CharField(max_length=50, default="Contur User")
     name = models.CharField(max_length=50, unique=True,primary_key=True)
     runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False,default='')
-    mc_ver = models.CharField(max_length=20, default='0.0.0')
+    herwig_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
+    rivet_ver = models.CharField(max_length=20, default='0.0.0')
     parent = TreeForeignKey('self', on_delete=models.CASCADE, null=True, blank=True, related_name='results')
     class MPTTMeta:
         order_insertion_by = ['name']

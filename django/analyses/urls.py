@@ -87,7 +87,13 @@ urlpatterns = [
     url(r'^create_paper/(?P<name>[_A-Za-z0-9]+)/$', views.create_paper,name='create_paper'),
 
     # Download file by click
-    url(r'^download_att_file/(?P<name>[_A-Za-z0-9]+)/$',views.download_att_file,name='download_att_file')
+    url(r'^download_att_file/(?P<name>[_A-Za-z0-9]+)/$',views.download_att_file,name='download_att_file'),
+
+    # URL for personalisation search box
+    url(r'^personalisation',views.personalisation,name='personalisation'),
+
+    # URL for querying search box
+    url(r'^querying',views.querying,name='querying')
 
 ]
 
