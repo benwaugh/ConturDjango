@@ -1,76 +1,139 @@
-<h1>Contur analysis {{ ana.anaid }}</h1>
-<input type=button value="Previous Page" onClick="javascript:history.go(-1);">
-{% if ana.used_analyses_set.all %}
-<p>
-    Is used in the following model scans
-</p>
-    <ul>
-    {% for ua in ana.used_analyses_set.all %}
-            <li>
-                <a href="{% url 'model' ua.modelname %}">
-                    {{ ua.modelname }}
-                </a>
-            </li>
-    {% endfor %}
-    </ul>
-{% else %}
-<p>
-    Is not used in any model scan.
-</p>
-{% endif %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 
-{% if ana.pool %}
-<p>
-	belongs to pool 
-	<a href="{% url 'pools' ana.pool %}">{{ ana.pool }}</a>
-</p>
-{% else %}
-<p>
-	belongs to no pool
-</p>
-{% endif %}
+{% load static %}
+    <html>
+<head>
+<style>
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
 
-<p>
-	uses lumi factor {{ ana.lumi }}
-</p>
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
 
-{% if ana.whitelist_set.all %}
-	<h2>Whitelist</h2>
-	<p>Only the following measurements will be used:</p>
-	<p>
-    {% for bl in ana.whitelist_set.all %}
-        	{{ bl.pattern }}
-    {% endfor %}
-    </p>
-{% endif %}
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+      <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+      <title>
+        Analysis Detail View
+      </title>
+      <link rel="shortcut icon" href="/favicon.ico">
+      <link rel="stylesheet" type="text/css" href="{% static 'corad_page.css' %}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="{% static 'jquery.js' %}"></script>
+    <script type="text/javascript" src="{% static 'underscore.js' %}"></script>
+    <script type="text/javascript" src="{% static 'doctools.js' %}"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <div class="container">
+            <div class="toppane"><h1>Contur analysis {{ ana.anaid }}</h1>
+            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+
+            <div class="tleftpane"><h1><center>Linked Models</center></h1>
+                {% if ana.ana_file_set.all %}
+                <p>
+                    Is used in the following analyses files:
+                </p>
+                    <ul>
+                    {% for ua in ana.ana_file_set.all %}
+                            <li>
+                                <ul>
+                                    <h3><a href="{% url 'inside_ana' ua.linked_ana %}">{{ua.linked_ana}}</a></h3>
+                                </ul>
+                                Which is used in:
+                                <ul>
+                                   {% for al in ua.linked_ana.used_analyses_set.all %}
+                                    <ul>
+                                        <a href="{% url 'model' al.modelname %}">{{al.modelname}}</a>
+                                    </ul>
+                                   {% endfor %}
+                                </ul>
+                            </li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                <p>
+                    Is not used in any model scan.
+                </p>
+                {% endif %}
+
+            </div>
+            <div class="tmiddlepane"><h1><center>Pools, Subpools and Luminosity</center></h1>
+                {% if ana.pool %}
+                <p>
+                    belongs to pool
+                    <a href="{% url 'pools' ana.pool %}">{{ ana.pool }}</a>
+                </p>
+                {% else %}
+                <p>
+                    belongs to no pool
+                </p>
+                {% endif %}
+
+                <p>
+                    uses lumi factor {{ ana.lumi }}
+                </p>
+
+                {% if ana.subpool_set.all %}
+                <h2>Subpools</h2>
+                <ul>
+                {% for bl in ana.subpool_set.all %}
+                        <li>{{ bl.subanaid }}: {{ bl.pattern }}</li>
+                {% endfor %}
+                </ul>
+                {% endif %}
+
+            </div>
+
+            <div class="trightpane"><h1><center>Blacklist,Whitelist and Normalisation</center></h1>
+                {% if ana.whitelist_set.all %}
+                <h2>Whitelist</h2>
+                <p>Only the following measurements will be used:</p>
+                <p>
+                {% for bl in ana.whitelist_set.all %}
+                        {{ bl.pattern }}
+                {% endfor %}
+                </p>
+                {% endif %}
 
 
-{% if ana.blacklist_set.all %}
-	<h2>Blacklist</h2>
-	<p>The following measurements will <b>not</b> be used:</p>
-	<p>
-    {% for bl in ana.blacklist_set.all %}
-        	{{ bl.pattern }}
-    {% endfor %}
-    </p>
-{% endif %}
+                {% if ana.blacklist_set.all %}
+                    <h2>Blacklist</h2>
+                    <p>The following measurements will <b>not</b> be used:</p>
+                    <p>
+                    {% for bl in ana.blacklist_set.all %}
+                            {{ bl.pattern }}
+                    {% endfor %}
+                    </p>
+                {% endif %}
 
 
-{% if ana.normalization_set.all %}
-	<h2>Normalization</h2>
-	<ul>
-    {% for bl in ana.normalization_set.all %}
-        	<li>{{ bl.pattern }} {{ bl.norm }} {{ bl.scalemc }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
+                {% if ana.normalization_set.all %}
+                    <h2>Normalization</h2>
+                    <ul>
+                    {% for bl in ana.normalization_set.all %}
+                            <li>{{ bl.pattern }} {{ bl.norm }} {{ bl.scalemc }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
 
-
-{% if ana.subpool_set.all %}
-	<h2>Subpools</h2>
-	<ul>
-    {% for bl in ana.subpool_set.all %}
-        	<li>{{ bl.subanaid }}: {{ bl.pattern }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
+            </div>
+        </div>

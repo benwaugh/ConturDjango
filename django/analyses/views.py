@@ -35,12 +35,12 @@ from .models import Analysis, AnalysisPool,\
                 results_analyses,counter,scatter1_data,scatter2_data,scatter3_data,\
                 histo1_data,profile1_data,overflow_underflow_profile,\
                 overflow_underflow_histo, histo_header, ana_file, ana_list, histo_data, histo_images,\
-                attached_papers,attached_files
+                attached_papers,attached_files,dat_database,dat_files
 from django.db.models import  Q
 import shutil
 from io import BytesIO
 
-from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm
+from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm, ResultsForm
 
 
 def retrieve_file_data(ana_file):
@@ -1196,7 +1196,7 @@ def rebuild_yoda_dir(request,name):
             Rebuild multiple yoda file from database and prompt user to download
 
         Parameters:
-            Web request -> homepage of CoRaD system.
+            Web request
             name -> name of results header that contains yoda data
 
         Operations:
@@ -1242,6 +1242,103 @@ def rebuild_yoda_dir(request,name):
 
     return response
 
+def results_form(request):
+    """
+        Purpose:
+            Links results_object creation form to results_create template
+            This produces the form required to upload a new results header into the system
+
+        Parameters:
+            Web request -> Comes from 'New Results Object' link.
+            Has no data specific arguments
+
+        Operations:
+            Saves new results object to database through form
+
+        Context:
+            No Specific Context
+
+        Returns:
+            Renders Results Upload form
+
+    """
+    if request.method == 'POST':
+        form = ResultsForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+    else:
+        form = ResultsForm()
+
+    return render(request, 'analyses/results_create.html', {
+        'form': form
+    })
+
+def data_histo_ex(request,id):
+    """
+        Purpose:
+             Prompt Download histogram data from fileserver
+
+        Parameters:
+            Web request
+            id -> unique id of results position
+
+        Operations:
+            Get associated histogram ID
+            Zip files from location in media folder
+            Prompt user to download folder
+
+        Context:
+            No specific context
+
+        Returns:
+            Content
+    """
+    byte = BytesIO()
+    res_pos = results_position.objects.get(id=id)
+
+    histo_data = dat_database.objects.get(results_object=res_pos)
+    id = histo_data.id
 
 
+
+    zipf = zipfile.ZipFile(byte, 'w')
+    zipdir("media/dat_store/" + str(id) + "/data", zipf)
+    zipf.close()
+
+    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
+    return response
+
+def image_histo_ex(request,id):
+    """
+        Purpose:
+             Prompt Download histogram images and htmls from fileserver
+
+        Parameters:
+            Web request
+            id -> unique id of results position
+
+        Operations:
+            Get associated histogram ID
+            Zip files from location in media folder
+            Prompt user to download folder
+
+        Context:
+            No specific context
+
+        Returns:
+            Content
+    """
+    byte = BytesIO()
+    res_pos = results_position.objects.get(id=id)
+    histo_data = histo_header.objects.get(results_object=res_pos)
+    id = histo_data.id
+
+    zipf = zipfile.ZipFile(byte, 'w')
+    zipdir("media/dat_store/" + str(id) + "/htmlplots", zipf)
+    zipf.close()
+
+    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+    response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
+    return response
 

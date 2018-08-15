@@ -219,8 +219,8 @@ class Test_Models(TestCase):
             self.Runcard_instance = self.create_Runcard("string Instead of BSM Object")
 
     # Tests for Results header model
-    def create_Results_header(self,runcard,author="author",name="name",mc_ver="0",contur_ver="0"):
-        return models.results_header.objects.create(runcard=runcard,author=author,name=name,mc_ver=mc_ver,
+    def create_Results_header(self,runcard,author="author",name="name",herwig_ver="0",contur_ver="0"):
+        return models.results_header.objects.create(runcard=runcard,author=author,name=name,herwig_ver=herwig_ver,
                                                     contur_ver=contur_ver)
 
     def test_Results_header_creation(self):

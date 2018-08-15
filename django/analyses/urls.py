@@ -101,8 +101,17 @@ urlpatterns = [
     # URL for calling rebuild yoda and exporting data
     url(r'^rebuild_yoda/(?P<id>[_A-Za-z0-9]+)/$',views.rebuild_yoda,name='rebuild_yoda'),
 
+    # URL to load results form
+    url(r'^results_form',views.results_form,name='results_form'),
+
     # URL for calling rebuild yoda for directory and exporting data
-    url(r'^rebuild_yoda_dir/(?P<name>[_A-Za-z0-9]+)/$',views.rebuild_yoda_dir,name='rebuild_yoda_dir')
+    url(r'^rebuild_yoda_dir/(?P<name>[_A-Za-z0-9]+)/$',views.rebuild_yoda_dir,name='rebuild_yoda_dir'),
+
+    # URL for calling results header form
+    url(r'^data_histo_ex/(?P<id>[_A-Za-z0-9]+)/$',views.data_histo_ex,name='data_histo_ex'),
+
+    # URL for calling histogram data export view
+    url(r'^image_histo_ex/(?P<id>[_A-Za-z0-9]+)/$', views.image_histo_ex, name='image_histo_ex')
 
 ]
 

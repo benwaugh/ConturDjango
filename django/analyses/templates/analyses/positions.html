@@ -77,6 +77,14 @@ tr:nth-child(even) {
                 </ul>
             </div>
             <div class="trightpane"><h1><center>Histograms</center></h1>
+                <center>
+                        <form action="{% url 'data_histo_ex' y.id%}">
+                            <input type="submit" value="Export Histogram Data Files" />
+                        </form>
+                        <form action="{% url 'image_histo_ex' y.id%}">
+                            <input type="submit" value="Export Histogram Images" />
+                        </form>
+                </center>
                 {% if hl %}
                 <table class="sortable">
                                 <tr>

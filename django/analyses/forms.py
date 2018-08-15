@@ -1,5 +1,5 @@
 from django import forms
-from .models import Download,runcard, BSM_Model,Analysis,AnalysisPool,attached_files,attached_papers
+from .models import Download,runcard, BSM_Model,Analysis,AnalysisPool,attached_files,attached_papers,results_header
 
 
 class DocumentForm(forms.ModelForm):
@@ -41,3 +41,8 @@ class FilesForm(forms.ModelForm):
     class Meta:
         model = attached_files
         fields = ('name','file',)
+
+class ResultsForm(forms.ModelForm):
+    class Meta:
+        model = results_header
+        fields = ('author','name','runcard','herwig_ver','contur_ver','rivet_ver',)

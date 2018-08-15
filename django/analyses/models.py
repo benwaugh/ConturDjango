@@ -872,7 +872,7 @@ def get_dat_path(instance, filename):
             (str) Path to plots folder
 
     """
-    return "dat_store/" + str(instance.parent.id) + "/plots/"
+    return "dat_store/" + str(instance.parent.id) + "/data/plots/" + filename.split('/')[-1]
 
 def get_sum_path(instance, filename):
     """
@@ -887,7 +887,7 @@ def get_sum_path(instance, filename):
             (str) Path to ANALYSIS folder
 
     """
-    return "dat_store/" + str(instance.parent.id) + "/ANALYSIS/"
+    return "dat_store/" + str(instance.parent.id) + "/data/ANALYSIS/" + filename.split('/')[-1]
 
 class dat_database(models.Model):
     """
