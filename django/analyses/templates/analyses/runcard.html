@@ -45,15 +45,15 @@ tr:nth-child(even) {
 
         <div class="container">
             <div class="toppane"><h1>Runcard: {{rc.runcard_name}}</h1>
-            Author: {{rc.author}} :: {{rc.now}}
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+            <center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center></div>
 
 
             <div class="tleftpane"><h1><center>Model</center></h1>
             {% if m %}
                     <a href="{% url 'model' m.name %}">{{m.name}}</a>
                     <h3>UFO Link:</h3> {{m.UFO_Link}}
-                    <h3>Author:</h3> {{m.author}}
+                    <h3>Author:</h3> {{m.author}} :: {{rc.now}}
                     <h3>Date Loaded:</h3>  {{m.date_downloaded}}
             {% endif %}
                 </div>

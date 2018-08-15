@@ -47,7 +47,8 @@ tr:nth-child(even) {
 
             <div class="toppane">
             <h2>Selected Analyses: {{y.name}}</h2>
-            <p><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></p>
+            <p><center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center></p>
                 </div>
             <div class="tleftpane"><h1><center>YODA Data</center></h1>
                 <center>

@@ -2,7 +2,7 @@
 
 {% block content %}
 <h2>Record Creation</h2>
-
+{{warning}}
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
@@ -12,4 +12,5 @@
   <p><a href="{% url 'index' %}">Return to index</a></p>
 {% endblock %}
 
-<input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+<center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+<center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>

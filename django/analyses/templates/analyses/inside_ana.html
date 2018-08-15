@@ -46,7 +46,8 @@ tr:nth-child(even) {
       <div class="container">
             <div class="toppane"><h1>{{n.ana_name}}</h1>
             <td><a href="{% url 'write_ana' n.ana_name %}">Download .ana File</a></td>
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+            <center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>
 
             <div class="tmiddlepane"><h1><center>Analyses</center></h1>
                 {% if anas %}

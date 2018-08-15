@@ -45,7 +45,8 @@ tr:nth-child(even) {
 
         <div class="container">
             <div class="toppane"><h1>Link new .ana File</h1>
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+            <center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>
 
             <div class="tleftpane"><h1><center>Linking To Model:</center></h1>
                 {% if m %}

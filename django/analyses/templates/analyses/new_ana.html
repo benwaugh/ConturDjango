@@ -45,9 +45,9 @@ tr:nth-child(even) {
 
       <div class="container">
             <div class="toppane"><h1>{{m.name}}</h1><center>
-                <a href="{% url 'add_ana' m.name %}" class="button">Return</a></center>
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
-
+            <center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center></div>
+            {{warning}}
             <div class="tmiddlepane"><h1>Analyses</h1>
                 <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}

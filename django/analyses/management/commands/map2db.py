@@ -112,7 +112,7 @@ class db_upload(object):
     def upload_header(self):
         # Create map header record in database using results name
         try:
-            results_object = results_header.objects.get(name=self.results_name)
+            results_object = results_header.objects.get(name__in=self.results_name)
             # If results header does not exist, throw custom error, otherwise retrieve object.
         except:
             print("Error: Enter Exisiting Results Object.")
@@ -120,7 +120,6 @@ class db_upload(object):
             raise (NotFoundInDatabase)
         return results_object
 
-        return results_object
 
     def upload_map_position(self,item,header):
         # Retrieve map header

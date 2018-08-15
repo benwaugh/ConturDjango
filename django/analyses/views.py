@@ -39,6 +39,7 @@ from .models import Analysis, AnalysisPool,\
 from django.db.models import  Q
 import shutil
 from io import BytesIO
+import re
 
 from .forms import DocumentForm, DownloadForm,UFOForm, AnalysesForm, PoolForm, PaperForm, FilesForm, ResultsForm
 
@@ -51,23 +52,48 @@ def retrieve_file_data(ana_file):
     #for line in data:
     #        f.write("insert Rivet:Analyses 0 " + str(line['anaid']) + "\n")
 
-def model_form_download(request):
-    answer = ''
-    if request.method == 'POST':
-        form = DownloadForm(request.POST, request.FILES)
-        runcard_name = form['runcard_name'].value()
-        modelname = form['modelname'].value()
-        BSM_instance = BSM_Model.objects.filter(name=modelname)[0]
+def valid_string(strg, search=re.compile(r'[^a-z0-9_]').search):
+    # Checks that input strings only contain valid characters
+     return not bool(search(strg))
 
-        param_card = form['param_card'].value()
-        author = form['author'].value()
-        runcard_object, runcard_created = runcard.objects.get_or_create(
-            runcard_name=runcard_name,modelname=BSM_instance,param_card=param_card,author=author)
+def model_form_download(request):
+    if request.method == 'POST':
+
+
+        form = DownloadForm(request.POST, request.FILES)
+
+        if form.is_valid():
+
+            runcard_name = form['runcard_name'].value()
+            modelname = form['modelname'].value()
+            BSM_instance = BSM_Model.objects.filter(name=modelname)[0]
+
+            param_card = form['param_card'].value()
+            author = form['author'].value()
+
+            if valid_string(runcard_name):
+                runcard_object, runcard_created = runcard.objects.get_or_create(
+                    runcard_name=runcard_name,modelname=BSM_instance,param_card=param_card,author=author)
+                return redirect('index')
+            else:
+                form = DownloadForm()
+                warning = "Invalid Form: Ensure that the runcard name only contains valid characters ([^a-z0-9])"
+                return render(request, 'analyses/model_form_download.html', {
+                    'form': form,
+                    'warning': warning
+                })
+        else:
+            form = DownloadForm()
+            warning = "Invalid Form: Ensure that the runcard name is unique"
+            return render(request, 'analyses/model_form_download.html', {
+                'form': form,
+                'warning': warning
+            })
     else:
         form = DownloadForm()
-    return render(request, 'analyses/model_form_download.html', {
-        'form': form
-    })
+        return render(request, 'analyses/model_form_download.html', {
+            'form': form
+        })
 
 def upload_keywords(request):
     with open('analyses/result.json') as f:
@@ -590,16 +616,38 @@ def ufo_home(request):
     answer = ''
     if request.method == 'POST':
         form = UFOForm(request.POST, request.FILES)
-        name = form['name'].value()
-        link = form['UFO_Link'].value()
-        author = form['author'].value()
-        date = datetime.now()
-        create_record_and_dl(name,link,date,author)
+        if form.is_valid():
+            name = form['name'].value()
+            link = form['UFO_Link'].value()
+            author = form['author'].value()
+            date = datetime.now()
+
+            if valid_string(name):
+
+                create_record_and_dl(name,link,date,author)
+                return redirect('index')
+
+            else:
+                form = UFOForm()
+                warning = "Invalid Form: Ensure that the model name only contains valid characters ([^a-z0-9])"
+                return render(request, 'analyses/ufo_home.html', {
+                    'form': form,
+                    'warning': warning
+                })
+
+        else:
+            form = UFOForm()
+            warning = "Invalid Form: Ensure that the model name is unique"
+            return render(request, 'analyses/ufo_home.html', {
+                'form': form,
+                'warning':warning
+            })
+
     else:
         form = UFOForm()
-    return render(request, 'analyses/ufo_home.html', {
-        'form': form
-    })
+        return render(request, 'analyses/ufo_home.html', {
+            'form': form
+        })
 
 def create_record_and_dl(name,link,date,author):
     """
@@ -624,12 +672,16 @@ def create_record_and_dl(name,link,date,author):
             None
 
     """
-    directory = "analyses/modelUFOs/" + name + "/"
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    ufo_record,ufo_created = BSM_Model.objects.get_or_create(name=name,UFO_Link=link,date_downloaded=date,author=author)
-    ufo_record.save()
-    wget.download(link,out=directory)
+    if "www" in link and ((".zip") or (".tgz")) in link:
+        directory = "analyses/modelUFOs/" + name + "/"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+        ufo_record,ufo_created = BSM_Model.objects.get_or_create(name=name,UFO_Link=link,date_downloaded=date,author=author)
+        ufo_record.save()
+        wget.download(link,out=directory)
+    else:
+        ufo_record, ufo_created = BSM_Model.objects.get_or_create(name=name, UFO_Link="Not Linked", date_downloaded=date,
+                                                                  author=author)
 
 def zipdir(path, ziph):
     """
@@ -723,7 +775,6 @@ def dl_bsm(request,name):
         response = HttpResponse(wrapper, content_type='application/force-download')
         response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
         return response
-
 
 def add_ana(request,name):
     """
@@ -863,25 +914,54 @@ def new_ana(request,name):
     """
     BSM_instance = BSM_Model.objects.get(name=name)
     if request.method == 'POST':
+
         form = AnalysesForm(request.POST, request.FILES)
-        ana_name = form['name'].value()
-        author = form['author'].value()
 
-        list_object,list_created = ana_list.objects.get_or_create(ana_name=ana_name,author=author)
+        if form.is_valid():
 
-        for analyses in form['analyses']:
-            if 'checked' in analyses.tag():
-                analyses = analyses.choice_label
-                ana_object = Analysis.objects.get(anaid=analyses)
+            ana_name = form['name'].value()
+            author = form['author'].value()
 
-                ana_object,ana_created = ana_file.objects.get_or_create(linked_ana=list_object,anaid=ana_object)
+            if valid_string(ana_name):
 
-        used_analyses.objects.get_or_create(ana_name=list_object,modelname=BSM_instance)
+                list_object,list_created = ana_list.objects.get_or_create(ana_name=ana_name,author=author)
+
+                for analyses in form['analyses']:
+                    if 'checked' in analyses.tag():
+                        analyses = analyses.choice_label
+                        ana_object = Analysis.objects.get(anaid=analyses)
+
+                        ana_object,ana_created = ana_file.objects.get_or_create(linked_ana=list_object,anaid=ana_object)
+
+                used_analyses.objects.get_or_create(ana_name=list_object,modelname=BSM_instance)
+
+                m = get_object_or_404(BSM_Model, pk=name)
+                linked_ana = used_analyses.objects.filter(modelname=m)
+                context = {
+                    'mod': m,
+                    'ana': linked_ana,
+                }
+                return redirect('model',name=name)
+
+            else:
+                warning = "Invalid Form: ana name in incorrect format"
+                return render(request, 'analyses/new_ana.html', {
+                    'form': form,
+                    'm': BSM_instance,
+                    'warning':warning
+                })
+
+        else:
+            warning = "Invalid Form"
+            form = AnalysesForm()
+            return render(request, 'analyses/new_ana.html', {
+                'form': form,
+                'm': BSM_instance,
+                'warning':warning
+            })
 
     else:
         form = AnalysesForm()
-
-
 
     return render(request, 'analyses/new_ana.html', {
         'form': form,
@@ -980,18 +1060,36 @@ def create_file(request,name):
         """
     res_head = results_header.objects.get(name=name)
 
+
     if request.method == 'POST':
+
         form = FilesForm(request.POST, request.FILES)
         if form.is_valid():
             file = form['file'].value()
             name = form['name'].value()
-            attached_files.objects.create(file=file,name=name,parent=res_head)
+
+            if valid_string(name):
+                attached_files.objects.create(file=file,name=name,parent=res_head)
+                return redirect('results_header', name=name)
+            else:
+                form = FilesForm()
+                warning = "Invalid Form: Ensure that the input name only contains valid characters ([^a-z0-9])"
+                return render(request, 'analyses/file_upload.html', {
+                    'form': form,
+                    'warning': warning
+                })
+        else:
+            form = FilesForm()
+            warning = "Invalid Form"
+            return render(request, 'analyses/file_upload.html', {
+                'form': form,
+                'warning':warning
+            })
     else:
         form = FilesForm()
-
-    return render(request, 'analyses/file_upload.html', {
-        'form': form
-    })
+        return render(request, 'analyses/file_upload.html', {
+            'form': form
+        })
 
 def create_paper(request,name):
     """
@@ -1014,17 +1112,34 @@ def create_paper(request,name):
         """
     res_head = results_header.objects.get(name=name)
     if request.method == 'POST':
+
         form = PaperForm(request.POST, request.FILES)
         if form.is_valid():
             file = form['file'].value()
             name = form['name'].value()
-            attached_papers.objects.create(file=file, name=name, parent=res_head)
+
+            if valid_string(name):
+                attached_papers.objects.create(file=file,name=name,parent=res_head)
+                return redirect('results_header', name=name)
+            else:
+                form = PaperForm()
+                warning = "Invalid Form: Ensure that the input name only contains valid characters ([^a-z0-9])"
+                return render(request, 'analyses/file_upload.html', {
+                    'form': form,
+                    'warning': warning
+                })
+        else:
+            form = PaperForm()
+            warning = "Invalid Form"
+            return render(request, 'analyses/file_upload.html', {
+                'form': form,
+                'warning':warning
+            })
     else:
         form = PaperForm()
-
-    return render(request, 'analyses/file_upload.html', {
-        'form': form
-    })
+        return render(request, 'analyses/file_upload.html', {
+            'form': form
+        })
 
 def download_att_file(request,name):
     file = attached_files.objects.get(name=name)
@@ -1055,7 +1170,6 @@ def download_att_paper(request,name):
         response['Content-Disposition'] = 'attachment; filename=' + str(file.file)
         return response
     raise Http404
-
 
 def personalisation(request):
     """
@@ -1238,37 +1352,42 @@ def rebuild_yoda_dir(request,name):
         Returns:
             Content
     """
-    byte = BytesIO()
-    res_head = results_header.objects.get(name=name)
-    linked_positions = results_position.objects.filter(parent=res_head).values_list('id',flat=True)
-    from .management.commands.rebuild_yoda import generate_dict, write_yoda
-    os.makedirs('analyses/tmp/zip_export')
-    for id in linked_positions:
 
-        # Generate dictionary from database data
-        yoda_create = generate_dict(id)
+    try:
+        byte = BytesIO()
+        res_head = results_header.objects.get(name=name)
+        linked_positions = results_position.objects.filter(parent=res_head).values_list('id',flat=True)
+        from .management.commands.rebuild_yoda import generate_dict, write_yoda
+        os.makedirs('analyses/tmp/zip_export')
+        for id in linked_positions:
 
-        # Retrieve created dictionary
-        data_dict = yoda_create.data_dict
+            # Generate dictionary from database data
+            yoda_create = generate_dict(id)
 
-        # Get file name
-        file_name = yoda_create.parent
+            # Retrieve created dictionary
+            data_dict = yoda_create.data_dict
 
-        # Write yoda data to file
-        file_path = "analyses/tmp/zip_export/" + file_name[0][0]
-        write_yoda(data_dict, file_path)
+            # Get file name
+            file_name = yoda_create.parent
 
-
-    zipf = zipfile.ZipFile(byte, 'w')
-    zipdir("analyses/tmp/zip_export",zipf)
-    zipf.close()
+            # Write yoda data to file
+            file_path = "analyses/tmp/zip_export/" + file_name[0][0]
+            write_yoda(data_dict, file_path)
 
 
-    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
-    response['Content-Disposition'] = 'attachment; filename=' + 'yoda_files.zip'
-    shutil.rmtree('analyses/tmp/zip_export')
+        zipf = zipfile.ZipFile(byte, 'w')
+        zipdir("analyses/tmp/zip_export",zipf)
+        zipf.close()
 
-    return response
+
+        response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+        response['Content-Disposition'] = 'attachment; filename=' + 'yoda_files.zip'
+        shutil.rmtree('analyses/tmp/zip_export')
+
+        return response
+    except:
+        render(request, 'analyses/histo_data_nf.html')
+
 
 def results_form(request):
     """
@@ -1293,7 +1412,23 @@ def results_form(request):
     if request.method == 'POST':
         form = ResultsForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            if valid_string(form['name'].value()):
+                form.save()
+                return redirect('index')
+            else:
+                form = ResultsForm()
+                warning = "Invalid Form: Ensure that the runcard name only contains valid characters ([^a-z0-9])"
+                return render(request, 'analyses/results_create.html', {
+                    'form': form,
+                    'warning':warning
+                })
+        else:
+            form = ResultsForm()
+            warning = "Invalid Form: Ensure that the runcard name is unique"
+            return render(request, 'analyses/results_create.html', {
+                'form': form,
+                'warning': warning
+            })
     else:
         form = ResultsForm()
 

@@ -51,7 +51,8 @@ tr:nth-child(even) {
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
         <div class="container">
-            <div class="toppane"><h1>Upload New Analysis</h1><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+            <div class="toppane"><h1>Upload New Analysis</h1><center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center></div>
 
             <div class="tleftpane"><h1><center>New Analysis Details</center></h1>
             {% block content %}

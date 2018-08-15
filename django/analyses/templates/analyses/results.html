@@ -47,7 +47,8 @@ tr:nth-child(even) {
     </script>
         <div class="container">
             <div class="toppane"><h1>Results Object: {{res.name}}</h1>
-            <input type=button value="Previous Page" onClick="javascript:history.go(-1);"></div>
+            <center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+            <center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>
 
             <div class="tleftpane"><h1><center>Runcard Details</center></h1>
                 	<ul>
@@ -94,9 +95,11 @@ tr:nth-child(even) {
             </div>
             <div class="trightpane"><h1><center>Grid Data</center></h1>
                  <center>
+                    {% if yoda_list %}
                         <form action="{% url 'rebuild_yoda_dir' res.name%}">
                             <input type="submit" value="Export All Associated Yoda Files" />
                         </form>
+                    {% endif %}
                 </center>
                 {% if mh %}
                         {% for m in mh %}

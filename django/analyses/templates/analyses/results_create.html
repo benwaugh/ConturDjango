@@ -1,6 +1,7 @@
 <h1>Create new Results Object</h1>
 
 {% block content %}
+{{warning}}
                 <form method="post" enctype="multipart/form-data">
                   {% csrf_token %}
                   {{ form.as_p }}
@@ -8,4 +9,5 @@
                 </form>
 {% endblock %}
 
-<input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+<center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+<center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>

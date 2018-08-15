@@ -36,13 +36,12 @@ class Analysis(models.Model):
     """
     anaid = models.TextField(primary_key=True)
     lumi = models.FloatField()
-    pool = models.ForeignKey('AnalysisPool', models.DO_NOTHING, db_column='pool', blank=True, null=True)
+    pool = models.ForeignKey('AnalysisPool', on_delete=models.CASCADE, db_column='pool', blank=True, null=True)
     def __str__(self):
         return self.anaid
 
     class Meta:
         db_table = 'analysis'
-
 
 
 @python_2_unicode_compatible
@@ -71,7 +70,6 @@ class AnalysisPool(models.Model):
         db_table = 'analysis_pool'
 
 
-
 @python_2_unicode_compatible
 class Blacklist(models.Model):
     """
@@ -90,14 +88,13 @@ class Blacklist(models.Model):
             blacklist
 
         """
-    anaid = models.ForeignKey(Analysis, models.DO_NOTHING, db_column='anaid')
+    anaid = models.ForeignKey(Analysis, on_delete=models.CASCADE, db_column='anaid')
     pattern = models.TextField()
     def __str__(self):
         return '%s %s' % (self.anaid, self.pattern)
 
     class Meta:
         db_table = 'blacklist'
-
 
 
 @python_2_unicode_compatible
@@ -120,7 +117,7 @@ class Normalization(models.Model):
             normalization
 
         """
-    anaid = models.ForeignKey(Analysis, models.DO_NOTHING, db_column='anaid')
+    anaid = models.ForeignKey(Analysis, on_delete=models.CASCADE, db_column='anaid')
     pattern = models.TextField()
     norm = models.FloatField()
     scalemc = models.IntegerField()
@@ -130,7 +127,6 @@ class Normalization(models.Model):
     class Meta:
         db_table = 'normalization'
         unique_together = (('anaid', 'pattern'),)
-
 
 
 @python_2_unicode_compatible
@@ -152,7 +148,7 @@ class Subpool(models.Model):
             subpool
 
     """
-    anaid = models.ForeignKey(Analysis, models.DO_NOTHING, db_column='anaid')
+    anaid = models.ForeignKey(Analysis, on_delete=models.CASCADE, db_column='anaid')
     pattern = models.TextField()
     subanaid = models.IntegerField()
     def __str__(self):
@@ -161,7 +157,6 @@ class Subpool(models.Model):
     class Meta:
         db_table = 'subpool'
         unique_together = (('anaid', 'pattern'),)
-
 
 
 @python_2_unicode_compatible
@@ -182,14 +177,13 @@ class Whitelist(models.Model):
             whitelist
 
     """
-    anaid = models.ForeignKey(Analysis, models.DO_NOTHING, db_column='anaid')
+    anaid = models.ForeignKey(Analysis, on_delete=models.CASCADE, db_column='anaid')
     pattern = models.TextField()
     def __str__(self):
         return '%s %s' % (self.anaid, self.pattern)
 
     class Meta:
         db_table = 'whitelist'
-
 
 
 @python_2_unicode_compatible
@@ -230,7 +224,6 @@ class BSM_Model(models.Model):
         db_table = 'bsm_model'
 
 
-
 @python_2_unicode_compatible
 class used_analyses(models.Model):
     """
@@ -253,8 +246,8 @@ class used_analyses(models.Model):
             used_analyses
 
     """
-    ana_name = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='ana_name', blank=False, null=False)
-    modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='model', blank=False, null=False)
+    ana_name = models.ForeignKey('ana_list', on_delete=models.CASCADE, db_column='ana_name', blank=False, null=False)
+    modelname = models.ForeignKey('BSM_Model', on_delete=models.CASCADE, db_column='model', blank=False, null=False)
 
     def __str__(self):
         return self.ana_name
@@ -263,6 +256,7 @@ class used_analyses(models.Model):
         db_table = 'used_analyses'
         unique_together = (('modelname', 'ana_name'),)
 
+@python_2_unicode_compatible
 class ana_file(models.Model):
     """
         Contains definition of ana_file model:
@@ -284,8 +278,8 @@ class ana_file(models.Model):
             ana_file
 
     """
-    linked_ana = models.ForeignKey('ana_list', models.DO_NOTHING, db_column='linked_ana', blank=False, null=False)
-    anaid = models.ForeignKey('Analysis', models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+    linked_ana = models.ForeignKey('ana_list', on_delete=models.CASCADE, db_column='linked_ana', blank=False, null=False)
+    anaid = models.ForeignKey('Analysis', on_delete=models.CASCADE, db_column='anaid', blank=False, null=False)
 
     def __str__(self):
         return '%s-%s' % (self.linked_ana, self.anaid)
@@ -293,6 +287,7 @@ class ana_file(models.Model):
     class Meta:
         db_table = 'ana_file'
 
+@python_2_unicode_compatible
 class ana_list(models.Model):
     """
         Contains definition of ana_list model:
@@ -322,7 +317,6 @@ class ana_list(models.Model):
         return self.ana_name
 
 
-
 @python_2_unicode_compatible
 class Download(models.Model):
     now = datetime.datetime.now()
@@ -332,11 +326,9 @@ class Download(models.Model):
     Parameter_Card = models.FileField(upload_to='analyses/parameters-cards/', default='')
 
 
-
 @python_2_unicode_compatible
 class Document(models.Model):
     a = 1
-
 
 
 @python_2_unicode_compatible
@@ -365,7 +357,6 @@ class Keyword(models.Model):
         db_table = 'keywords_list'
 
 
-
 @python_2_unicode_compatible
 class Linked_keys(models.Model):
     """
@@ -388,15 +379,14 @@ class Linked_keys(models.Model):
             linked_keywords
 
     """
-    anaid = models.ForeignKey('Analysis', models.DO_NOTHING, db_column='anaid', blank=False, null=False)
-    key_word = models.ForeignKey('Keyword', models.DO_NOTHING, db_column='keyword', blank=False, null=False)
+    anaid = models.ForeignKey('Analysis', on_delete=models.CASCADE, db_column='anaid', blank=False, null=False)
+    key_word = models.ForeignKey('Keyword', on_delete=models.CASCADE, db_column='keyword', blank=False, null=False)
     def __str__(self):
         return '%s %s' % (self.key_word, self.anaid)
 
     class Meta:
         db_table = 'linked_keywords'
         unique_together = (('key_word', 'anaid'),)
-
 
 
 @python_2_unicode_compatible
@@ -426,7 +416,7 @@ class runcard(models.Model):
     now = datetime.datetime.now()
     author = models.CharField(max_length = 50, default="Contur User")
     runcard_name = models.CharField(max_length=50, default=now.strftime("%d%m%Y%H%M"),primary_key=True)
-    modelname = models.ForeignKey('BSM_Model', models.DO_NOTHING, db_column='name', blank=False, null=False)
+    modelname = models.ForeignKey('BSM_Model', on_delete=models.CASCADE, db_column='name', blank=False, null=False)
     param_card = models.TextField(max_length=500)
 
     def __str__(self):
@@ -437,9 +427,8 @@ class runcard(models.Model):
         unique_together = (('runcard_name', 'param_card'),)
 
 
-
-
 # Define Modified Preorder Tree Traversal  Structure
+@python_2_unicode_compatible
 class results_header(MPTTModel):
     """
        Contains definition of results_header MPTTmodel:
@@ -470,7 +459,7 @@ class results_header(MPTTModel):
    """
     author = models.CharField(max_length=50, default="Contur User")
     name = models.CharField(max_length=50, unique=True,primary_key=True)
-    runcard = models.ForeignKey('runcard', models.DO_NOTHING, db_column='runcard_name', blank=False, null=False,default='')
+    runcard = models.ForeignKey('runcard', on_delete=models.CASCADE, db_column='runcard_name', blank=False, null=False,default='')
     herwig_ver = models.CharField(max_length=20, default='0.0.0')
     contur_ver = models.CharField(max_length=20, default='0.0.0')
     rivet_ver = models.CharField(max_length=20, default='0.0.0')
@@ -482,6 +471,7 @@ class results_header(MPTTModel):
         return self.name
 
 
+@python_2_unicode_compatible
 class results_position(MPTTModel):
     """
        Contains definition of results_position MPTTmodel:
@@ -513,6 +503,8 @@ class results_position(MPTTModel):
     def __str__(self):
         return self.name
 
+
+@python_2_unicode_compatible
 class results_analyses(MPTTModel):
     """
        Contains definition of results_analyses MPTTmodel:
@@ -559,7 +551,7 @@ class results_analyses(MPTTModel):
             analyses_results_analysis
 
     """
-    #name = models.ForeignKey('Analysis',models.DO_NOTHING, db_column='anaid', blank=False, null=False)
+    #name = models.ForeignKey('Analysis',on_delete=models.CASCADE, db_column='anaid', blank=False, null=False)
     name = models.CharField(max_length=50,null=False,blank=False)
     parent = TreeForeignKey('results_position',on_delete=models.CASCADE, null=True, blank=True, related_name='analyses')
     xyd = models.CharField(max_length=50,default="",null=True)
@@ -579,6 +571,8 @@ class results_analyses(MPTTModel):
     def __str__(self):
         return self.name
 
+
+@python_2_unicode_compatible
 class scatter3_data(models.Model):
     """
        Contains definition of scatter3_data model:
@@ -595,7 +589,7 @@ class scatter3_data(models.Model):
             analyses_scatter3_data
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses',on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
     xerr_p = models.FloatField(null=True)
@@ -606,6 +600,8 @@ class scatter3_data(models.Model):
     zerr_n = models.FloatField(null=True)
     zerr_p = models.FloatField(null=True)
 
+
+@python_2_unicode_compatible
 class scatter2_data(models.Model):
     """
        Contains definition of scatter2_data model:
@@ -622,7 +618,7 @@ class scatter2_data(models.Model):
             analyses_scatter2_data
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
     xerr_p = models.FloatField(null=True)
@@ -631,6 +627,7 @@ class scatter2_data(models.Model):
     yerr_p = models.FloatField(null=True)
 
 
+@python_2_unicode_compatible
 class scatter1_data(models.Model):
     """
        Contains definition of scatter1_data model:
@@ -647,13 +644,13 @@ class scatter1_data(models.Model):
             analyses_scatter1_data
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     xval = models.FloatField(null=True)
     xerr_n = models.FloatField(null=True)
     xerr_p = models.FloatField(null=True)
 
 
-
+@python_2_unicode_compatible
 class histo1_data(models.Model):
     """
        Contains definition of histo1_data model:
@@ -673,7 +670,7 @@ class histo1_data(models.Model):
             analyses_histo1_data
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     xlow = models.FloatField(null=True)
     xhigh = models.FloatField(null=True)
     sumw = models.FloatField(null=True)
@@ -683,6 +680,7 @@ class histo1_data(models.Model):
     numEntries = models.IntegerField(null=True)
 
 
+@python_2_unicode_compatible
 class profile1_data(models.Model):
     """
        Contains definition of profile1_data model:
@@ -702,7 +700,7 @@ class profile1_data(models.Model):
             analyses_profile1_data
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     xlow = models.FloatField(null=True)
     xhigh = models.FloatField(null=True)
     sumw = models.FloatField(null=True)
@@ -714,6 +712,7 @@ class profile1_data(models.Model):
     numEntries = models.IntegerField(null=True)
 
 
+@python_2_unicode_compatible
 class overflow_underflow_profile(models.Model):
     """
        Contains definition of overflow_underflow_profile model:
@@ -735,7 +734,7 @@ class overflow_underflow_profile(models.Model):
             analyses_overflow_underflow_profile
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
@@ -746,6 +745,7 @@ class overflow_underflow_profile(models.Model):
     numEntries  = models.IntegerField(null=True)
 
 
+@python_2_unicode_compatible
 class overflow_underflow_histo(models.Model):
     """
        Contains definition of overflow_underflow_histo model:
@@ -767,7 +767,7 @@ class overflow_underflow_histo(models.Model):
             analyses_overflow_underflow_histo
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     row_type = models.CharField(max_length=50)
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
@@ -776,6 +776,7 @@ class overflow_underflow_histo(models.Model):
     numEntries = models.IntegerField(null=True)
 
 
+@python_2_unicode_compatible
 class counter(models.Model):
     """
        Contains definition of counter model:
@@ -795,12 +796,13 @@ class counter(models.Model):
             analyses_counter
 
     """
-    parent = models.ForeignKey('results_analyses', models.DO_NOTHING, db_column='results_link', blank=False, null=False)
+    parent = models.ForeignKey('results_analyses', on_delete=models.CASCADE, db_column='results_link', blank=False, null=False)
     sumw = models.FloatField(null=True)
     sumw2 = models.FloatField(null=True)
     numEntries = models.IntegerField(null=True)
 
 
+@python_2_unicode_compatible
 class map_header(MPTTModel):
     """
        Contains definition of map_header MPTTmodel:
@@ -831,6 +833,7 @@ class map_header(MPTTModel):
         return self.analyses
 
 
+@python_2_unicode_compatible
 class map_pickle(models.Model):
     """
        Contains definition of map_pickle model:
@@ -852,7 +855,7 @@ class map_pickle(models.Model):
             analyses_map_header
 
     """
-    parent = models.ForeignKey('map_header',models.DO_NOTHING, db_column='map_header', blank=False, null=False)
+    parent = models.ForeignKey('map_header',on_delete=models.CASCADE, db_column='map_header', blank=False, null=False)
     pickle = PickledObjectField()
 
     def __str__(self):
@@ -874,6 +877,8 @@ def get_dat_path(instance, filename):
     """
     return "dat_store/" + str(instance.parent.id) + "/data/plots/" + filename.split('/')[-1]
 
+
+@python_2_unicode_compatible
 def get_sum_path(instance, filename):
     """
        Function to dynamical set path of summary text FileField
@@ -889,6 +894,8 @@ def get_sum_path(instance, filename):
     """
     return "dat_store/" + str(instance.parent.id) + "/data/ANALYSIS/" + filename.split('/')[-1]
 
+
+@python_2_unicode_compatible
 class dat_database(models.Model):
     """
        Contains definition of dat_database model:
@@ -912,13 +919,15 @@ class dat_database(models.Model):
             analyses_dat_database
 
     """
-    results_object = models.ForeignKey('results_position',models.DO_NOTHING, db_column='results_position',
+    results_object = models.ForeignKey('results_position',on_delete=models.CASCADE, db_column='results_position',
                                        blank=False, null=False)
     uploaded = models.DateField()
 
     def __str__(self):
         return self._check_id_field
 
+
+@python_2_unicode_compatible
 class summary_text(models.Model):
     """
        Contains definition of summary_text model:
@@ -937,13 +946,15 @@ class summary_text(models.Model):
             analyses_summary_text
 
     """
-    parent = models.ForeignKey('dat_database',models.DO_NOTHING, db_column='dat_database',
+    parent = models.ForeignKey('dat_database',on_delete=models.CASCADE, db_column='dat_database',
                                        blank=False, null=False)
     summary_store = models.FileField(upload_to=get_sum_path)
 
     def __str__(self):
         return self._check_id_field
 
+
+@python_2_unicode_compatible
 class dat_files(models.Model):
     """
        Contains definition of dat_files model:
@@ -966,13 +977,15 @@ class dat_files(models.Model):
     """
 
     name = models.TextField()
-    parent = models.ForeignKey('dat_database',models.DO_NOTHING, db_column='dat_database',
+    parent = models.ForeignKey('dat_database',on_delete=models.CASCADE, db_column='dat_database',
                                        blank=False, null=False)
     dat_store = models.FileField(upload_to=get_dat_path)
 
     def __str__(self):
         return self._check_id_field
 
+
+@python_2_unicode_compatible
 def get_histo_path(instance, filename):
     """
       Function to dynamical set path of histogram FileField
@@ -988,6 +1001,8 @@ def get_histo_path(instance, filename):
    """
     return "dat_store/" + str(instance.id) + "/htmlplots/index.html"
 
+
+@python_2_unicode_compatible
 class histo_header(models.Model):
     """
        Contains definition of histo_header model:
@@ -1007,13 +1022,15 @@ class histo_header(models.Model):
             analyses_histo_header
 
     """
-    results_object = models.ForeignKey('results_position', models.DO_NOTHING, db_column='results_header',
+    results_object = models.ForeignKey('results_position', on_delete=models.CASCADE, db_column='results_header',
                                        blank=False, null=False)
     uploaded = models.FileField(upload_to=get_histo_path)
 
     def __str__(self):
         return self._check_id_field
 
+
+@python_2_unicode_compatible
 def get_data_path(instance,filename):
     """
       Function to dynamical set path of histogram data FileField and ImageField
@@ -1037,6 +1054,8 @@ def get_data_path(instance,filename):
         folder = instance.position
         return "dat_store/" + str(instance.parent.id) + "/htmlplots/" + folder + "/" + filename
 
+
+@python_2_unicode_compatible
 class histo_data(models.Model):
     """
        Contains definition of histo_data model:
@@ -1057,7 +1076,7 @@ class histo_data(models.Model):
             analyses_histo_data
 
     """
-    parent = models.ForeignKey('histo_header', models.DO_NOTHING, db_column='histo_header',
+    parent = models.ForeignKey('histo_header', on_delete=models.CASCADE, db_column='histo_header',
                                        blank=False, null=False)
     position = models.CharField(max_length=100)
     dat_store = models.FileField(upload_to=get_data_path)
@@ -1065,6 +1084,8 @@ class histo_data(models.Model):
     def __str__(self):
         return self._check_id_field
 
+
+@python_2_unicode_compatible
 class histo_images(models.Model):
     """
        Contains definition of histo_images model:
@@ -1085,7 +1106,7 @@ class histo_images(models.Model):
             analyses_histo_data
 
     """
-    parent = models.ForeignKey('histo_header', models.DO_NOTHING, db_column='histo_header',
+    parent = models.ForeignKey('histo_header', on_delete=models.CASCADE, db_column='histo_header',
                                        blank=False, null=False)
     position = models.CharField(max_length=100)
     image = models.ImageField(upload_to=get_data_path)
@@ -1094,6 +1115,7 @@ class histo_images(models.Model):
         return self._check_id_field
 
 
+@python_2_unicode_compatible
 class attached_files(models.Model):
     """
            Contains definition of attached_files model:
@@ -1113,7 +1135,7 @@ class attached_files(models.Model):
                 analyses_attached_file
     """
     name = models.CharField(primary_key=True,max_length=100)
-    parent = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+    parent = models.ForeignKey('results_header', on_delete=models.CASCADE, db_column='results_header',
                                blank=False, null=False)
     file = models.FileField()
 
@@ -1121,6 +1143,7 @@ class attached_files(models.Model):
         return self.name
 
 
+@python_2_unicode_compatible
 class attached_papers(models.Model):
     """
            Contains definition of attached_files model:
@@ -1140,7 +1163,7 @@ class attached_papers(models.Model):
                 analyses_attached_file
     """
     name = models.CharField(primary_key=True,max_length=100)
-    parent = models.ForeignKey('results_header', models.DO_NOTHING, db_column='results_header',
+    parent = models.ForeignKey('results_header', on_delete=models.CASCADE, db_column='results_header',
                                blank=False, null=False)
     file = models.FileField()
 

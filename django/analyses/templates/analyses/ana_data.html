@@ -2,7 +2,8 @@
 {% load static %}
 
 <h1>Results Object: {{y.name}}</h1>
-<input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+<center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+<center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>
 
 {% if scatter1 %}
 <h2>1D Scatter Data</h2>

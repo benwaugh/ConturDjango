@@ -1,5 +1,7 @@
 <h1>Download UFO Data from Feynrules</h1>
 
+{{warning}}
+
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
@@ -7,4 +9,5 @@
   </form>
 </form>
 
-<input type=button value="Previous Page" onClick="javascript:history.go(-1);">
+<center><input type=button value="Previous Page" onClick="javascript:history.go(-1);"></center>
+<center> <input type=button value="Home" onClick="location.href='{% url 'index' %}'"></center>

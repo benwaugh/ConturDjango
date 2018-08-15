@@ -201,7 +201,7 @@ class db_upload(object):
     def upload_header(self):
         # Find input results header in database
         try:
-            results_object = results_header.objects.get(name=self.results_name)
+            results_object = results_header.objects.get(name__in=self.results_name)
             # If results header does not exist, throw custom error, otherwise retrieve object.
         except:
             print("Error: Enter Exisiting Results Object.")
@@ -277,7 +277,8 @@ class db_upload(object):
         # This function uploads the data from the tables into the correct data tables in the database
         datas = []
         self.i += 1
-        print("Tables Uploaded: " + str(self.i))
+        # Uncomment below line if you wish to see the upload progress:
+        #print("Tables Uploaded: " + str(self.i))
 
         # Loop over every table for selected analyses and pattern in
         for key in select_dict:
