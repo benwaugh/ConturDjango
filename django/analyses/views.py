@@ -1291,23 +1291,26 @@ def data_histo_ex(request,id):
             No specific context
 
         Returns:
-            Content
+            Content or not found page
     """
-    byte = BytesIO()
-    res_pos = results_position.objects.get(id=id)
+    try:
+        byte = BytesIO()
+        res_pos = results_position.objects.get(id=id)
 
-    histo_data = dat_database.objects.get(results_object=res_pos)
-    id = histo_data.id
+        histo_data = dat_database.objects.get(results_object=res_pos)
+        id = histo_data.id
 
 
 
-    zipf = zipfile.ZipFile(byte, 'w')
-    zipdir("media/dat_store/" + str(id) + "/data", zipf)
-    zipf.close()
+        zipf = zipfile.ZipFile(byte, 'w')
+        zipdir("media/dat_store/" + str(id) + "/data", zipf)
+        zipf.close()
 
-    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
-    response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
-    return response
+        response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+        response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
+        return response
+    except:
+        return render(request, 'analyses/histo_data_nf.html')
 
 def image_histo_ex(request,id):
     """
@@ -1329,16 +1332,19 @@ def image_histo_ex(request,id):
         Returns:
             Content
     """
-    byte = BytesIO()
-    res_pos = results_position.objects.get(id=id)
-    histo_data = histo_header.objects.get(results_object=res_pos)
-    id = histo_data.id
+    try:
+        byte = BytesIO()
+        res_pos = results_position.objects.get(id=id)
+        histo_data = histo_header.objects.get(results_object=res_pos)
+        id = histo_data.id
 
-    zipf = zipfile.ZipFile(byte, 'w')
-    zipdir("media/dat_store/" + str(id) + "/htmlplots", zipf)
-    zipf.close()
+        zipf = zipfile.ZipFile(byte, 'w')
+        zipdir("media/dat_store/" + str(id) + "/htmlplots", zipf)
+        zipf.close()
 
-    response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
-    response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
-    return response
+        response = HttpResponse(byte.getvalue(), content_type='application/x-zip-compressed')
+        response['Content-Disposition'] = 'attachment; filename=' + str(id) + "data.zip"
+        return response
+    except:
+        return render(request, 'analyses/histo_image_nf.html')
 
