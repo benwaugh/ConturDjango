@@ -13,7 +13,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "contur_db.settings")
 django.setup()
 
 from analyses.models import runcard, results_header, map_header, map_pickle
-from .exceptions import NotFoundInDatabase
+from analyses.management.commands.exceptions import NotFoundInDatabase
 
 class file_discovery(object):
 
@@ -39,6 +39,8 @@ class file_discovery(object):
             Searches for .map files and adds them to a list
         """
         for filename in glob.iglob(self.dir_path + '/*.map', recursive=True):
+            self.map_list.append(filename)
+        for filename in glob.iglob(self.dir_path + '/.map', recursive=True):
             self.map_list.append(filename)
 
     def identify_relevent(self):
@@ -76,6 +78,7 @@ class store_data(object):
             self.file_id = file_name.split("/")[-1]
             if str(self.file_id) == ".map":
                 self.file_id = "heatmap"
+            self.file_id = self.file_id.replace(".map","")
 
             with open(file_name, 'r+b') as myfile:
                 data = pickle.load(myfile)
@@ -108,20 +111,16 @@ class db_upload(object):
 
     def upload_header(self):
         # Create map header record in database using results name
-        db = results_header.objects.filter(name__in=self.results_name)
-
-        if len(db)==0:
-            print("Error: Enter Exisiting Results Object")
+        try:
+            results_object = results_header.objects.get(name=self.results_name)
+            # If results header does not exist, throw custom error, otherwise retrieve object.
+        except:
+            print("Error: Enter Exisiting Results Object.")
+            print("Existing Results Objects:" + str(results_header.objects.all()))
             raise (NotFoundInDatabase)
-        else:
-            results_object, created = results_header.objects.get_or_create(name__in=self.results_name)
+        return results_object
 
-        res_head = results_header.objects.get(
-            name=str(results_object))
-
-        res_head.save()
-
-        return res_head
+        return results_object
 
     def upload_map_position(self,item,header):
         # Retrieve map header
@@ -147,7 +146,7 @@ class db_upload(object):
 if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Map Data to Database")
     parser.add_argument('--directory', '-d',help='Directory to search in to find the specified data')
-    parser.add_argument('--results','-o',help='Corresponding results object')
+    parser.add_argument('--results','-r',help='Corresponding results object')
     arguments = parser.parse_args()
 
     # Run file discovery to find relevent files

@@ -17,7 +17,7 @@ from analyses.models import Analysis, AnalysisPool,\
                 runcard, results_header, results_analyses, results_position,\
                 overflow_underflow_histo, profile1_data, histo1_data, scatter1_data,\
                 scatter2_data, scatter3_data, overflow_underflow_profile, counter
-from .exceptions import NotFoundInDatabase
+from analyses.management.commands.exceptions import NotFoundInDatabase
 
 class file_discovery(object):
     """
@@ -50,9 +50,6 @@ class file_discovery(object):
         for item in self.yoda_list:
             address = item.split('/')
             name = address[-1]
-            if name == "LHC.yoda" and self.lhcyoda_count == 0:
-                self.file_dict.append(item)
-                self.lhcyoda_count =+ 1
             if "LHC" not in name:
                 self.file_dict.append(item)
 
@@ -203,16 +200,14 @@ class db_upload(object):
 
     def upload_header(self):
         # Find input results header in database
-        db = results_header.objects.filter(name__in=self.results_name)
-
-        # If results header does not exist, throw custom error, otherwise retrieve object.
-        if len(db) == 0:
-            print("Error: Enter Exisiting Results Object")
+        try:
+            results_object = results_header.objects.get(name=self.results_name)
+            # If results header does not exist, throw custom error, otherwise retrieve object.
+        except:
+            print("Error: Enter Exisiting Results Object.")
+            print("Existing Results Objects:" + str(results_header.objects.all()))
             raise (NotFoundInDatabase)
-        else:
-            results_object, created = results_header.objects.get_or_create(name__in=self.results_name)
-            results_object.save()
-            return results_object
+        return results_object
 
 
     def upload_positions(self,position,header):
@@ -282,6 +277,7 @@ class db_upload(object):
         # This function uploads the data from the tables into the correct data tables in the database
         datas = []
         self.i += 1
+        print("Tables Uploaded: " + str(self.i))
 
         # Loop over every table for selected analyses and pattern in
         for key in select_dict:
@@ -400,7 +396,7 @@ class db_upload(object):
 if __name__ == "__main__":
     parser = ArgumentParser(description="Upload Yoda Data to Database")
     parser.add_argument('--directory', '-d',help='Directory to search in to find the specified data')
-    parser.add_argument('--results','-o',help='Corresponding results object')
+    parser.add_argument('--results','-r',help='Corresponding results object')
     arguments = parser.parse_args()
 
 

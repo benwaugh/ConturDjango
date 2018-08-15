@@ -70,7 +70,7 @@ tr:nth-child(even) {
                                        class="button">Add new file</a></center></h3>
                         {% if papers %}
                             {% for paper in papers %}
-                                <li><a href="{% url 'download_att_file' paper.name %}">{{paper.name}}</a></li>
+                                <li><a href="{% url 'download_att_paper' paper.name %}">{{paper.name}}</a></li>
                             {% endfor %}
                         {% else %}
                         <p>No linked papers to display.</p>

@@ -704,14 +704,26 @@ def dl_bsm(request,name):
             Requests Download to user in standard format
 
     """
+    #try:
+    #    for file in glob.glob("analyses/modelUFOs/" + name + "/*.tgz"):
+    #        wrapper = FileWrapper(open(file, 'rb'))
+    #        response = HttpResponse(wrapper, content_type='application/force-download')
+    #        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+    #        print(response)
+    #        return response
+    #except:
     for file in glob.glob("analyses/modelUFOs/" + name + "/*.tgz"):
-        try:
-            wrapper = FileWrapper(open(file, 'rb'))
-            response = HttpResponse(wrapper, content_type='application/force-download')
-            response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
-            return response
-        except Exception as e:
-            return None
+        wrapper = FileWrapper(open(file, 'rb'))
+        response = HttpResponse(wrapper, content_type='application/force-download')
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+        return response
+    for file in glob.glob("analyses/modelUFOs/" + name + "/*.zip"):
+        print("Here")
+        wrapper = FileWrapper(open(file, 'rb'))
+        response = HttpResponse(wrapper, content_type='application/force-download')
+        response['Content-Disposition'] = 'inline; filename=' + os.path.basename(file)
+        return response
+
 
 def add_ana(request,name):
     """
@@ -1028,6 +1040,22 @@ def download_att_file(request,name):
         response['Content-Disposition'] = 'attachment; filename=' + str(file.file)
         return response
     raise Http404
+
+def download_att_paper(request,name):
+    file = attached_papers.objects.get(name=name)
+    file_path = os.getcwd() + "/media/" + str(file.file)
+
+    if "pdf" in file_path:
+        content = 'application/pdf'
+    else:
+        content = 'text/plain'
+
+    with open(file_path, 'rb') as fh:
+        response = HttpResponse(fh.read(), content_type=content)
+        response['Content-Disposition'] = 'attachment; filename=' + str(file.file)
+        return response
+    raise Http404
+
 
 def personalisation(request):
     """
