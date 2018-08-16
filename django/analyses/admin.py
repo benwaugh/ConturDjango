@@ -12,8 +12,49 @@ from .models import Analysis, AnalysisPool,\
                 runcard, results_header, results_position, results_analyses, \
                 scatter3_data,scatter2_data,scatter1_data,histo1_data,\
                 profile1_data,overflow_underflow_histo,overflow_underflow_profile,\
-                counter, ana_file, ana_list
+                counter, ana_file, ana_list, attached_papers, attached_files,\
+                histo_images, histo_data,histo_header, dat_files,summary_text,\
+                dat_database,map_pickle,map_header
 
+@admin.register(map_header)
+class MapHeaderAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(map_pickle)
+class MapPickleAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(dat_database)
+class DatDatabaseAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(summary_text)
+class SummaryTextAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(dat_files)
+class DatFilesAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(histo_header)
+class HistoHeaderAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(histo_images)
+class HistoImagesAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(histo_data)
+class HistoDataAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(attached_files)
+class AttachedFilesAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(attached_papers)
+class AttachedPapersAdmin(ImportExportModelAdmin):
+    pass
 
 
 @admin.register(Analysis)

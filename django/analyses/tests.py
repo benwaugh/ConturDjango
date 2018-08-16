@@ -16,6 +16,7 @@ import os
 from django.core.files import File
 from PIL import Image, ImageDraw
 from django.urls import reverse
+import shutil
 
 class Test_Models(TestCase):
 

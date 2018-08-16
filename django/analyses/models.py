@@ -878,7 +878,6 @@ def get_dat_path(instance, filename):
     return "dat_store/" + str(instance.parent.id) + "/data/plots/" + filename.split('/')[-1]
 
 
-@python_2_unicode_compatible
 def get_sum_path(instance, filename):
     """
        Function to dynamical set path of summary text FileField
