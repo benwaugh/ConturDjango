@@ -12,4 +12,5 @@ Provided in tests.py is over 100 unit tests that test the classes and functions 
 
 The below image shows an overview of the database network.
 
-![alt text](https://raw.githubusercontent.com/NathanRobertPart/ConturDjango/database_network.pdf)
+![alt text](https://raw.githubusercontent.com/NathanRobertPart/ConturDjango//blob/master/database_network.pdf)
+
