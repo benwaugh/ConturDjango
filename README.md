@@ -7,5 +7,5 @@ and focus on providing tools for collaboration, reproducibility of results, and 
 
 The code in this project is set up to follow the Model-View-Template design pattern. The models file defines all of the data structures and database table,
 the views describe the data to display from these models on the web interface, and the templates define the design of each page on the web interface. 
-Also contained are codes in the /management/command folder, which define command line Python scripts that interact with the web interface. 
+Also contained are Python scripts in the /management/command folder, which define command line tools that interact with the web interface. 
 Provided in tests.py is over 100 unit tests that test the classes and functions in this project.
