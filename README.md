@@ -9,8 +9,3 @@ The code in this project is set up to follow the Model-View-Template design patt
 the views describe the data to display from these models on the web interface, and the templates define the design of each page on the web interface. 
 Also contained are codes in the /management/command folder, which define command line Python scripts that interact with the web interface. 
 Provided in tests.py is over 100 unit tests that test the classes and functions in this project.
-
-The below image shows an overview of the database network.
-
-![alt text](https://raw.githubusercontent.com/NathanRobertPart/ConturDjango//blob/master/database_network.pdf)
-
